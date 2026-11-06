@@ -44,7 +44,7 @@ The D1 and R2 bindings are declared in `wrangler.toml`. Do not commit real passw
 
 ## Adding games
 
-Sign in at `/admin`, choose a game folder and upload it. The selected folder must contain an `index.html` at its root. Its other files (scripts, styles, images, audio, fonts and data) are uploaded using their relative paths. Each file is limited to 20 MB. The game is served from `/games/<slug>/index.html`.
+Sign in at `/admin`, choose a game folder and upload it. The selected folder must contain an `index.html` at its root. Its other files (scripts, styles, images, audio, fonts and data) are uploaded using their relative paths. Each file is limited to 20 MB. The game is served from `/games/<slug>/index.html`. For the `mashukui/web-games` seed collection, upload the repository-root `i18n.js` once using the separate shared-runtime uploader before adding games; each individual game references that shared file as `../i18n.js`.
 
 For each game, the admin form requires:
 - The original source URL.
