@@ -17,7 +17,7 @@ export async function onRequestPost({ request, env }) {
   if (!/^[a-zA-Z0-9_ -]{2,20}$/.test(username)) return json({ error: "Username must be 2–20 letters, numbers, spaces, _ or -." }, 400);
   if (!message || message.length > 500) return json({ error: "Message must be between 1 and 500 characters." }, 400);
   const ipHash = await hash(request.headers.get("CF-Connecting-IP"));
-  const recent = await env.DB.prepare("SELECT COUNT(*) AS total FROM chat_messages WHERE (ip_hash=? OR username=?) AND created_at >= datetime('now','-10 seconds')").bind(ipHash, username.toLowerCase()).first();
+  const recent = await env.DB.prepare("SELECT COUNT(*) AS total FROM chat_messages WHERE (ip_hash=? OR lower(username)=?) AND created_at >= datetime('now','-10 seconds')").bind(ipHash, username.toLowerCase()).first();
   if ((recent?.total || 0) >= 4) return json({ error: "Slow down a moment before sending another message." }, 429);
   const result = await env.DB.prepare("INSERT INTO chat_messages (username,message,ip_hash) VALUES (?,?,?)").bind(username, message, ipHash).run();
   return json({ ok: true, id: result.meta.last_row_id }, 201);
