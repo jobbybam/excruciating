@@ -5,7 +5,7 @@
   "attribution": "© 2026 mashukui; preserve the repository MIT licence notice.",
   "checked": "2026-11-06",
   "status": "candidate-import-list-not-yet-uploaded",
-  "note": "The repository README describes 48 self-contained HTML5 game files and the repository LICENSE is MIT. Each folder still needs a quick runtime check and review of embedded assets before publication. This file is an import queue, not the live catalogue.",
+  "note": "The repository README lists 48 single-file HTML5 games and its repository LICENSE is MIT. Each game HTML references the repository-root i18n.js shared language file, which must be uploaded once through the shared-runtime uploader. Each folder still needs a quick runtime check and review of embedded assets before publication. This file is an import queue, not the live catalogue.",
   "games": [
     {
       "slug": "ant-flap",
