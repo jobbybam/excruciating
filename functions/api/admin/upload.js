@@ -7,9 +7,10 @@ export async function onRequestPost({ request, env }) {
   const url = new URL(request.url);
   const slug = url.searchParams.get("slug") || "";
   const path = url.searchParams.get("path") || "";
-  if (!slugPattern.test(slug) || !safePath(path)) return json({ error: "Invalid game or file path." }, 400);
+  const shared = url.searchParams.get("shared") === "1";
+  if ((!shared && !slugPattern.test(slug)) || (shared && path !== "i18n.js") || !safePath(path)) return json({ error: "Invalid game or file path." }, 400);
   const file = await request.arrayBuffer();
   if (!file.byteLength || file.byteLength > 20 * 1024 * 1024) return json({ error: "Each file must be between 1 byte and 20 MB." }, 413);
-  await env.GAMES.put(slug + "/" + path, file, { httpMetadata: { contentType: mime(path), cacheControl: "public, max-age=3600" } });
+  await env.GAMES.put(shared ? path : slug + "/" + path, file, { httpMetadata: { contentType: mime(path), cacheControl: "public, max-age=3600" } });
   return json({ ok: true, path, bytes: file.byteLength });
 }
