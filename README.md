@@ -51,7 +51,7 @@ For each game, the admin form requires:
 - The applicable licence name or a clear description of the permission obtained.
 - Attribution details where required.
 
-Only publish games when the licence or rights-holder permission permits self-hosting and redistribution. A game appearing in an archive is not proof that it can be copied. Keep any required copyright and attribution notices with the game files. The project does not bundle third-party games by default; the catalogue stays empty until properly cleared games are uploaded.
+Only publish games when the licence or rights-holder permission permits self-hosting and redistribution. A game appearing in an archive is not proof that it can be copied. Keep any required copyright and attribution notices with the game files. The project does not bundle third-party games by default; the catalogue stays empty until properly cleared games are uploaded. A 48-title candidate list from [mashukui/web-games](https://github.com/mashukui/web-games) is recorded in `catalog/import-queue.json`. Its repository README describes 48 self-contained HTML5 games and its repository licence is MIT. The admin seed selector pre-fills metadata; download the source repository, choose each candidate's game folder, and upload it. The list is a starting point, not a claim that the games have already been copied, tested or published.
 
 ## Chat
 
