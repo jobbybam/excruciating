@@ -116,7 +116,14 @@ $("#login-form").addEventListener("submit",async e=>{
   catch(error){$("#login-error").textContent=error.message;}
 });
 $("#admin-logout").addEventListener("click",async()=>{await api("/api/admin/logout",{method:"POST"});$("#admin-content").hidden=true;$("#admin-logout").hidden=true;$("#admin-login").hidden=false;});
-$("#shared-upload").addEventListener("click",async()=>{\n  const file=$("#shared-file").files[0],status=$("#shared-status");\n  if(!file){status.textContent="Choose the repository root i18n.js file first.";return;}\n  if(file.name!=="i18n.js"){status.textContent="The shared file must be named i18n.js.";return;}\n  status.textContent="Uploading shared language file…";\n  try{const response=await fetch("/api/admin/upload?shared=1&path=i18n.js",{method:"POST",body:file});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||"Upload failed.");status.textContent="Shared i18n.js uploaded. It can now be used by the seed games.";}catch(error){status.textContent=error.message;}\n});\n$("#game-form").addEventListener("submit",async e=>{
+$("#shared-upload").addEventListener("click",async()=>{
+  const file=$("#shared-file").files[0],status=$("#shared-status");
+  if(!file){status.textContent="Choose the repository root i18n.js file first.";return;}
+  if(file.name!=="i18n.js"){status.textContent="The shared file must be named i18n.js.";return;}
+  status.textContent="Uploading shared language file…";
+  try{const response=await fetch("/api/admin/upload?shared=1&path=i18n.js",{method:"POST",body:file});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||"Upload failed.");status.textContent="Shared i18n.js uploaded. It can now be used by the seed games.";}catch(error){status.textContent=error.message;}
+});
+$("#game-form").addEventListener("submit",async e=>{
   e.preventDefault();const status=$("#upload-status");status.textContent="Checking files…";
   const title=$("#game-title").value.trim(),slug=$("#game-slug").value.trim().toLowerCase(),category=$("#game-category").value;
   const files=Array.from($("#game-files").files);
