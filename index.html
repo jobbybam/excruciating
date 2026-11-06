@@ -57,6 +57,8 @@
             <label>Thumbnail path<input id="game-thumbnail" placeholder="thumbnail.png (optional)"></label>
           </div>
           <label>Description<input id="game-description" maxlength="300" placeholder="Short description (optional)"></label>
+          <div class="form-grid"><label>Original source URL<input id="game-source" type="url" required placeholder="https://…"></label><label>Licence / permission<input id="game-license" required maxlength="100" placeholder="MIT, GPL-3.0, or written permission"></label></div>
+          <label>Attribution<input id="game-attribution" maxlength="300" placeholder="Creator / copyright notice (if required)"></label>
           <label class="file-picker">Game files (select the game's folder)<input id="game-files" type="file" webkitdirectory directory multiple required><span id="file-count">No folder selected</span></label>
           <p class="form-hint">The folder must contain an <code>index.html</code>. Files are uploaded to private project storage and served from this site. Maximum 20 MB per file.</p>
           <button class="primary-button" type="submit">Upload and publish</button><p id="upload-status" class="form-status" role="status"></p>
