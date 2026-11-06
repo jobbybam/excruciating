@@ -62,7 +62,7 @@ For each game, the admin form requires:
 - The applicable licence name or a clear description of the permission obtained.
 - Attribution details where required.
 
-Only publish games when the licence or rights-holder permission permits self-hosting and redistribution. A game appearing in an archive is not proof that it can be copied. Keep required copyright and attribution notices with the game files. The project does not bundle third-party games by default; the catalogue stays empty until properly cleared games are added.
+Only publish games when the licence or rights-holder permission permits self-hosting and redistribution. A game appearing in an archive is not proof that it can be copied. Keep required copyright and attribution notices with the game files. The initial catalogue contains 48 HTML5 games copied from `mashukui/web-games`, a repository distributed under the MIT License. Their source pages, shared `i18n.js` runtime, upstream licence text and attribution are included under `games/`. The games are seeded into D1 by migration `0002_seed_games.sql`. Review and test each game on the deployed site before treating it as production-ready.
 
 ## Chat
 
