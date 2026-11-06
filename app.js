@@ -92,7 +92,7 @@ async function refreshAdmin(){
   const data=await api("/api/admin/games");const list=$("#admin-games");list.replaceChildren();$("#admin-game-count").textContent=data.games.length+" games";
   for(const game of data.games){
     const row=document.createElement("div");row.className="admin-list-row";
-    const info=document.createElement("div");const name=document.createElement("strong");name.textContent=game.title;const sub=document.createElement("small");sub.textContent=game.category+" · "+game.slug;info.append(name,sub);
+    const info=document.createElement("div");const name=document.createElement("strong");name.textContent=game.title;const sub=document.createElement("small");sub.textContent=game.category+" · "+game.slug+" · "+(game.license||"Licence missing");info.append(name,sub);
     const del=document.createElement("button");del.className="text-button danger";del.textContent="Remove";del.addEventListener("click",async()=>{if(!confirm("Remove "+game.title+" and its uploaded files?"))return;try{await api("/api/admin/games?slug="+encodeURIComponent(game.slug),{method:"DELETE"});await refreshAdmin();await loadGames();}catch(e){alert(e.message);}});
     row.append(info,del);list.append(row);
   }
@@ -100,14 +100,14 @@ async function refreshAdmin(){
   for(const message of chatData.messages){appendChatMessage(message,chatList,true);}
   if(!chatData.messages.length){const p=document.createElement("p");p.className="chat-muted";p.textContent="No chat messages.";chatList.append(p);}
 }
-async function showAdmin(){
+async function loadSeedQueue(){\n  try{const response=await fetch("/catalog/import-queue.json",{cache:"no-store"});if(!response.ok)return;const data=await response.json();const select=$("#seed-game");for(const game of data.games||[]){const option=document.createElement("option");option.value=game.slug;option.textContent=game.title+" · "+game.category;option.dataset.game=JSON.stringify(game);select.append(option);}}catch(error){console.warn("Seed list unavailable",error);}\n}\n$("#seed-game").addEventListener("change",()=>{const option=$("#seed-game").selectedOptions[0];if(!option||!option.dataset.game)return;const game=JSON.parse(option.dataset.game);$("#game-title").value=game.title;$("#game-slug").value=game.slug;$("#game-slug").dataset.edited="1";$("#game-category").value=game.category;$("#game-source").value=game.source_url;$("#game-license").value=game.license;$("#game-attribution").value=game.attribution;});\nasync function showAdmin(){
   home.hidden=true;$("#search-wrap").hidden=true;$("#chat-toggle").hidden=true;$("#admin-view").hidden=false;
-  try{const me=await api("/api/admin/me");if(me.authenticated){$("#admin-content").hidden=false;$("#admin-login").hidden=true;$("#admin-logout").hidden=false;await refreshAdmin();}else{$("#admin-login").hidden=false;}}
+  try{const me=await api("/api/admin/me");if(me.authenticated){$("#admin-content").hidden=false;$("#admin-login").hidden=true;$("#admin-logout").hidden=false;await loadSeedQueue();await refreshAdmin();}else{$("#admin-login").hidden=false;}}
   catch(error){$("#admin-login").hidden=false;$("#login-error").textContent=error.message;}
 }
 $("#login-form").addEventListener("submit",async e=>{
   e.preventDefault();$("#login-error").textContent="";
-  try{await api("/api/admin/login",{method:"POST",body:JSON.stringify({password:$("#admin-password").value})});$("#admin-password").value="";$("#admin-login").hidden=true;$("#admin-content").hidden=false;$("#admin-logout").hidden=false;await refreshAdmin();}
+  try{await api("/api/admin/login",{method:"POST",body:JSON.stringify({password:$("#admin-password").value})});$("#admin-password").value="";$("#admin-login").hidden=true;$("#admin-content").hidden=false;$("#admin-logout").hidden=false;await loadSeedQueue();await refreshAdmin();}
   catch(error){$("#login-error").textContent=error.message;}
 });
 $("#admin-logout").addEventListener("click",async()=>{await api("/api/admin/logout",{method:"POST"});$("#admin-content").hidden=true;$("#admin-logout").hidden=true;$("#admin-login").hidden=false;});
