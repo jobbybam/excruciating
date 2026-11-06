@@ -30,11 +30,5 @@ export async function onRequestDelete({ request, env }) {
   const slug = new URL(request.url).searchParams.get("slug") || "";
   if (!slugPattern.test(slug)) return json({ error: "Invalid game slug." }, 400);
   await env.DB.prepare("DELETE FROM games WHERE slug=?").bind(slug).run();
-  let cursor;
-  do {
-    const page = await env.GAMES.list({ prefix: slug + "/", cursor, limit: 1000 });
-    if (page.objects.length) await env.GAMES.delete(page.objects.map(o => o.key));
-    cursor = page.truncated ? page.cursor : undefined;
-  } while (cursor);
   return json({ ok: true });
 }
