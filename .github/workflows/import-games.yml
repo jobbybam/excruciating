@@ -1,0 +1,77 @@
+name: Import licensed game files
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/import-games.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  import-games:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out excruciating
+        uses: actions/checkout@v4
+
+      - name: Fetch the MIT-licensed game source
+        run: git clone --depth 1 https://github.com/mashukui/web-games.git /tmp/web-games
+
+      - name: Copy all 48 games and shared runtime
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          import pathlib
+          import shutil
+
+          root = pathlib.Path.cwd()
+          source = pathlib.Path("/tmp/web-games")
+          queue = json.loads((root / "catalog/import-queue.json").read_text())
+          destination = root / "games"
+          destination.mkdir(exist_ok=True)
+
+          imported = 0
+          for item in queue["games"]:
+              slug = item["slug"]
+              source_dir = source / slug
+              entry = source_dir / "index.html"
+              if not entry.is_file():
+                  raise SystemExit(f"Missing source game entry: {entry}")
+              target = destination / slug
+              shutil.copytree(source_dir, target, dirs_exist_ok=True)
+              html = target / "index.html"
+              content = html.read_text(encoding="utf-8")
+              content = content.replace('href="../"', 'href="/"')
+              html.write_text(content, encoding="utf-8")
+              imported += 1
+
+          shutil.copy2(source / "i18n.js", destination / "i18n.js")
+          shutil.copy2(source / "LICENSE", destination / "SOURCE-LICENSE-MIT.txt")
+          (destination / "ATTRIBUTION.md").write_text(
+              "# Game source and attribution\n\n"
+              "The 48 HTML5 games in this directory are copied from "
+              "[mashukui/web-games](https://github.com/mashukui/web-games).\n\n"
+              "The source repository is distributed under the MIT License. "
+              "Its licence text is preserved in SOURCE-LICENSE-MIT.txt. "
+              "Individual game pages retain their original author credit.\n\n"
+              "Shared runtime: i18n.js, required by the game pages.\n",
+              encoding="utf-8"
+          )
+          print(f"Imported {imported} games.")
+          PY
+
+      - name: Commit game files to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add games/
+          if git diff --cached --quiet; then
+            echo "No game files changed."
+          else
+            git commit -m "Add 48 self-hosted MIT HTML5 games"
+            git push
+          fi
