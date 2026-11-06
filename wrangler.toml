@@ -7,7 +7,3 @@ binding = "DB"
 database_name = "excruciating"
 database_id = "e3fc52aa-0982-4c76-a09c-d603f899749a"
 migrations_dir = "migrations"
-
-[[r2_buckets]]
-binding = "GAMES"
-bucket_name = "excruciating-games"
