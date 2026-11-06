@@ -1,0 +1,491 @@
+{
+  "source": "https://github.com/mashukui/web-games",
+  "source_license": "MIT",
+  "source_license_file": "https://github.com/mashukui/web-games/blob/main/LICENSE",
+  "attribution": "© 2026 mashukui; preserve the repository MIT licence notice.",
+  "checked": "2026-11-06",
+  "status": "candidate-import-list-not-yet-uploaded",
+  "note": "The repository README describes 48 self-contained HTML5 game files and the repository LICENSE is MIT. Each folder still needs a quick runtime check and review of embedded assets before publication. This file is an import queue, not the live catalogue.",
+  "games": [
+    {
+      "slug": "ant-flap",
+      "title": "Ant Flap",
+      "category": "Arcade",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/ant-flap",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "ant-flap/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "ant-jump",
+      "title": "Ant Jump",
+      "category": "Arcade",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/ant-jump",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "ant-jump/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "block-drop",
+      "title": "Block Drop",
+      "category": "Arcade",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/block-drop",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "block-drop/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "breakout",
+      "title": "Breakout",
+      "category": "Arcade",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/breakout",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "breakout/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "paddle-duel",
+      "title": "Paddle Duel",
+      "category": "Arcade",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/paddle-duel",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "paddle-duel/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "stack-tower",
+      "title": "Stack Tower",
+      "category": "Arcade",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/stack-tower",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "stack-tower/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "whack-a-mole",
+      "title": "Whack-a-Mole",
+      "category": "Arcade",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/whack-a-mole",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "whack-a-mole/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "snake",
+      "title": "Snake",
+      "category": "Arcade",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/snake",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "snake/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "tic-tac-toe",
+      "title": "Tic Tac Toe",
+      "category": "Multiplayer",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/tic-tac-toe",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "tic-tac-toe/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "connect-four",
+      "title": "Connect Four",
+      "category": "Multiplayer",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/connect-four",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "connect-four/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "2048",
+      "title": "2048",
+      "category": "Puzzle",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/2048",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "2048/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "minesweeper",
+      "title": "Minesweeper",
+      "category": "Puzzle",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/minesweeper",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "minesweeper/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "memory-match",
+      "title": "Memory Match",
+      "category": "Puzzle",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/memory-match",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "memory-match/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "star-defender",
+      "title": "Star Defender",
+      "category": "Action",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/star-defender",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "star-defender/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "dino-run",
+      "title": "Dino Run",
+      "category": "Arcade",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/dino-run",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "dino-run/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "piano-tap",
+      "title": "Piano Tap",
+      "category": "Arcade",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/piano-tap",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "piano-tap/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "cross-road",
+      "title": "Cross Road",
+      "category": "Arcade",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/cross-road",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "cross-road/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "slide-puzzle",
+      "title": "Slide Puzzle",
+      "category": "Puzzle",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/slide-puzzle",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "slide-puzzle/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "fruit-slice",
+      "title": "Fruit Slice",
+      "category": "Action",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/fruit-slice",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "fruit-slice/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "bubble-shooter",
+      "title": "Bubble Shooter",
+      "category": "Puzzle",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/bubble-shooter",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "bubble-shooter/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "sudoku",
+      "title": "Sudoku",
+      "category": "Puzzle",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/sudoku",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "sudoku/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "merge-drop",
+      "title": "Merge Drop",
+      "category": "Puzzle",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/merge-drop",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "merge-drop/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "water-sort",
+      "title": "Water Sort",
+      "category": "Puzzle",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/water-sort",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "water-sort/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "slingshot",
+      "title": "Slingshot",
+      "category": "Action",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/slingshot",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "slingshot/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "helix-drop",
+      "title": "Helix Drop",
+      "category": "Action",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/helix-drop",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "helix-drop/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "gem-match",
+      "title": "Gem Match",
+      "category": "Puzzle",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/gem-match",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "gem-match/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "maze-muncher",
+      "title": "Maze Muncher",
+      "category": "Arcade",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/maze-muncher",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "maze-muncher/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "air-hockey",
+      "title": "Air Hockey",
+      "category": "Sports",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/air-hockey",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "air-hockey/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "reversi",
+      "title": "Reversi",
+      "category": "Multiplayer",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/reversi",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "reversi/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "battleship",
+      "title": "Battleship",
+      "category": "Multiplayer",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/battleship",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "battleship/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "sokoban",
+      "title": "Sokoban",
+      "category": "Puzzle",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/sokoban",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "sokoban/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "lights-out",
+      "title": "Lights Out",
+      "category": "Puzzle",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/lights-out",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "lights-out/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "hanoi",
+      "title": "Hanoi",
+      "category": "Puzzle",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/hanoi",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "hanoi/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "pipe-connect",
+      "title": "Pipe Connect",
+      "category": "Puzzle",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/pipe-connect",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "pipe-connect/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "rush-hour",
+      "title": "Rush Hour",
+      "category": "Puzzle",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/rush-hour",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "rush-hour/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "mahjong-link",
+      "title": "Mahjong Link",
+      "category": "Puzzle",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/mahjong-link",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "mahjong-link/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "nonogram",
+      "title": "Nonogram",
+      "category": "Puzzle",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/nonogram",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "nonogram/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "checkers",
+      "title": "Checkers",
+      "category": "Multiplayer",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/checkers",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "checkers/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "snakes-ladders",
+      "title": "Snakes and Ladders",
+      "category": "Multiplayer",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/snakes-ladders",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "snakes-ladders/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "hoop-shot",
+      "title": "Hoop Shot",
+      "category": "Sports",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/hoop-shot",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "hoop-shot/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "mini-golf",
+      "title": "Mini Golf",
+      "category": "Sports",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/mini-golf",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "mini-golf/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "helicopter",
+      "title": "Helicopter",
+      "category": "Arcade",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/helicopter",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "helicopter/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "balloon-pop",
+      "title": "Balloon Pop",
+      "category": "Arcade",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/balloon-pop",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "balloon-pop/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "simon-says",
+      "title": "Simon Says",
+      "category": "Arcade",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/simon-says",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "simon-says/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "gomoku",
+      "title": "Gomoku",
+      "category": "Multiplayer",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/gomoku",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "gomoku/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "mancala",
+      "title": "Mancala",
+      "category": "Multiplayer",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/mancala",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "mancala/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "bowling",
+      "title": "Bowling",
+      "category": "Sports",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/bowling",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "bowling/index.html",
+      "status": "candidate"
+    },
+    {
+      "slug": "penalty-kick",
+      "title": "Penalty Kick",
+      "category": "Sports",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/penalty-kick",
+      "license": "MIT",
+      "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
+      "source_path": "penalty-kick/index.html",
+      "status": "candidate"
+    }
+  ]
+}
