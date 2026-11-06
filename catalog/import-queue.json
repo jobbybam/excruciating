@@ -487,5 +487,44 @@
       "source_path": "penalty-kick/index.html",
       "status": "candidate"
     }
+  ],
+  "additional_sources": [
+    {
+      "name": "OpenGames.dev",
+      "repository": "https://github.com/opengames-dev/opengames-dev.github.io",
+      "license": "MIT",
+      "games": [
+        "Labyrinth",
+        "Snake",
+        "Memory",
+        "Whac-A-Mole",
+        "Flap",
+        "Blocks"
+      ],
+      "status": "candidate-needs-repackaging",
+      "notes": "The repository states all six games, artwork and synthesized sounds are MIT. Games use a shared folder, so package each game with the required shared files before uploading."
+    },
+    {
+      "name": "Games Hub",
+      "repository": "https://github.com/sausi-7/games",
+      "license": "MIT",
+      "games_count": 142,
+      "status": "secondary-review",
+      "notes": "Repository-level MIT licence verified. Inspect individual game folders and any recognizable third-party characters, names or assets before rehosting."
+    },
+    {
+      "name": "Selenite old archive",
+      "repository": "https://github.com/selenite-cc/selenite-old",
+      "license": "GPL-3.0 repository",
+      "status": "manual-game-by-game-audit",
+      "notes": "The repository is archived and has a GPL-3.0 project licence, but do not assume every bundled third-party game or asset is covered by that licence."
+    },
+    {
+      "name": "3kh0 / 3kh0 Assets",
+      "repository": "https://github.com/3kh0website/3kh0",
+      "assets_repository": "https://gitlab.com/3kh0/3kh0-assets",
+      "status": "permission-required",
+      "notes": "The original 3kh0 README explicitly asks people who want to use its games on another website to contact the creator. The assets repository README says files moved to GitLab and provides a contact email. Do not import until permission and asset terms are confirmed."
+    }
   ]
 }
