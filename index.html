@@ -50,6 +50,8 @@
       <section class="admin-card">
         <div class="admin-section-heading"><h2>Add a game</h2><span class="muted">Upload a game folder</span></div>
         <form id="game-form" class="game-form">
+          <label>Seed candidate<select id="seed-game"><option value="">Choose from the 48-game MIT candidate list…</option></select></label>
+          <p class="form-hint">Candidates fill in the title, category and licence details. You still need to select that game’s folder from a local copy of the source repository.</p>
           <div class="form-grid">
             <label>Game title<input id="game-title" required maxlength="80" placeholder="Game title"></label>
             <label>Category<select id="game-category" required><option>Arcade</option><option>Action</option><option>Racing</option><option>Sports</option><option>Puzzle</option><option>Multiplayer</option></select></label>
