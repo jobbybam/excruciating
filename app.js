@@ -128,7 +128,7 @@ $("#game-form").addEventListener("submit",async e=>{
     }
     let thumbnail=$("#game-thumbnail").value.trim();
     if(thumbnail&&!thumbnail.startsWith("http://")&&!thumbnail.startsWith("https://"))thumbnail="/games/"+slug+"/"+thumbnail.replace(/^\/+/, "");
-    await api("/api/admin/games",{method:"POST",body:JSON.stringify({title,slug,category,thumbnail,description:$("#game-description").value.trim()})});
+    await api("/api/admin/games",{method:"POST",body:JSON.stringify({title,slug,category,thumbnail,description:$("#game-description").value.trim(),source_url:$("#game-source").value.trim(),license:$("#game-license").value.trim(),attribution:$("#game-attribution").value.trim()})});
     status.textContent="Game uploaded and published.";$("#game-form").reset();$("#game-slug").dataset.edited="";$("#file-count").textContent="No folder selected";await refreshAdmin();await loadGames();
   }catch(error){status.textContent=error.message;}
 });
