@@ -4,8 +4,8 @@
   "source_license_file": "https://github.com/mashukui/web-games/blob/main/LICENSE",
   "attribution": "© 2026 mashukui; preserve the repository MIT licence notice.",
   "checked": "2026-11-06",
-  "status": "candidate-import-list-not-yet-uploaded",
-  "note": "The repository README lists 48 single-file HTML5 games and its repository LICENSE is MIT. Each game HTML references the repository-root i18n.js shared language file, which must be uploaded once through the shared-runtime uploader. Each folder still needs a quick runtime check and review of embedded assets before publication. This file is an import queue, not the live catalogue.",
+  "status": "imported-to-github",
+  "note": "All 48 single-file HTML5 games have been copied into games/<slug>/ with the shared i18n.js runtime and upstream MIT licence. Apply migration 0002_seed_games.sql to D1 before expecting them to appear in the live catalogue; test gameplay on the deployed Pages site.",
   "games": [
     {
       "slug": "ant-flap",
@@ -15,7 +15,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "ant-flap/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "ant-jump",
@@ -25,7 +25,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "ant-jump/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "block-drop",
@@ -35,7 +35,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "block-drop/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "breakout",
@@ -45,7 +45,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "breakout/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "paddle-duel",
@@ -55,7 +55,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "paddle-duel/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "stack-tower",
@@ -65,7 +65,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "stack-tower/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "whack-a-mole",
@@ -75,7 +75,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "whack-a-mole/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "snake",
@@ -85,7 +85,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "snake/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "tic-tac-toe",
@@ -95,7 +95,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "tic-tac-toe/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "connect-four",
@@ -105,7 +105,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "connect-four/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "2048",
@@ -115,7 +115,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "2048/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "minesweeper",
@@ -125,7 +125,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "minesweeper/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "memory-match",
@@ -135,7 +135,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "memory-match/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "star-defender",
@@ -145,7 +145,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "star-defender/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "dino-run",
@@ -155,7 +155,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "dino-run/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "piano-tap",
@@ -165,7 +165,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "piano-tap/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "cross-road",
@@ -175,7 +175,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "cross-road/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "slide-puzzle",
@@ -185,7 +185,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "slide-puzzle/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "fruit-slice",
@@ -195,7 +195,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "fruit-slice/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "bubble-shooter",
@@ -205,7 +205,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "bubble-shooter/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "sudoku",
@@ -215,7 +215,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "sudoku/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "merge-drop",
@@ -225,7 +225,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "merge-drop/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "water-sort",
@@ -235,7 +235,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "water-sort/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "slingshot",
@@ -245,7 +245,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "slingshot/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "helix-drop",
@@ -255,7 +255,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "helix-drop/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "gem-match",
@@ -265,7 +265,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "gem-match/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "maze-muncher",
@@ -275,7 +275,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "maze-muncher/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "air-hockey",
@@ -285,7 +285,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "air-hockey/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "reversi",
@@ -295,7 +295,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "reversi/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "battleship",
@@ -305,7 +305,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "battleship/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "sokoban",
@@ -315,7 +315,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "sokoban/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "lights-out",
@@ -325,7 +325,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "lights-out/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "hanoi",
@@ -335,7 +335,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "hanoi/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "pipe-connect",
@@ -345,7 +345,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "pipe-connect/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "rush-hour",
@@ -355,7 +355,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "rush-hour/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "mahjong-link",
@@ -365,7 +365,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "mahjong-link/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "nonogram",
@@ -375,7 +375,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "nonogram/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "checkers",
@@ -385,7 +385,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "checkers/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "snakes-ladders",
@@ -395,7 +395,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "snakes-ladders/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "hoop-shot",
@@ -405,7 +405,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "hoop-shot/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "mini-golf",
@@ -415,7 +415,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "mini-golf/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "helicopter",
@@ -425,7 +425,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "helicopter/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "balloon-pop",
@@ -435,7 +435,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "balloon-pop/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "simon-says",
@@ -445,7 +445,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "simon-says/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "gomoku",
@@ -455,7 +455,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "gomoku/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "mancala",
@@ -465,7 +465,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "mancala/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "bowling",
@@ -475,7 +475,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "bowling/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     },
     {
       "slug": "penalty-kick",
@@ -485,7 +485,7 @@
       "license": "MIT",
       "attribution": "© 2026 mashukui; see https://github.com/mashukui/web-games/blob/main/LICENSE",
       "source_path": "penalty-kick/index.html",
-      "status": "candidate"
+      "status": "imported-to-github-pending-d1-migration-and-pages-deploy"
     }
   ],
   "additional_sources": [
