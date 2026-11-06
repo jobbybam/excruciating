@@ -69,11 +69,12 @@ function appendChatMessage(message,target=$("#chat-messages"),moderate=false){
 async function pollChat(reset=false){
   if(state.chatBusy||chat.hidden)return;state.chatBusy=true;
   try{
+    const box=$("#chat-messages");const nearBottom=box.scrollHeight-box.scrollTop-box.clientHeight<48;
     const data=await api("/api/chat?after="+(reset?0:state.chatId));
     if(reset){$("#chat-messages").replaceChildren();state.chatId=0;}
     for(const message of data.messages||[]){appendChatMessage(message);state.chatId=Math.max(state.chatId,message.id);}
     if(!$("#chat-messages").children.length){const p=document.createElement("p");p.className="chat-muted";p.textContent="No messages yet. Start the conversation.";$("#chat-messages").append(p);}
-    $("#chat-messages").scrollTop=$("#chat-messages").scrollHeight;
+    if(reset||nearBottom)$("#chat-messages").scrollTop=$("#chat-messages").scrollHeight;
   }catch(error){$("#chat-status").textContent=error.message;}
   finally{state.chatBusy=false;}
 }
