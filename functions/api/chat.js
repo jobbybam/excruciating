@@ -5,9 +5,7 @@ async function hash(value) {
   return Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, "0")).join("");
 }
 export async function onRequestGet({ request, env }) {
-  const url = new URL(request.url);
-  const after = Math.max(0, Number(url.searchParams.get("after")) || 0);
-  const rows = await env.DB.prepare("SELECT id,username,message,created_at FROM chat_messages WHERE id>? ORDER BY id DESC LIMIT 60").bind(after).all();
+  const rows = await env.DB.prepare("SELECT id,username,message,created_at FROM chat_messages ORDER BY id DESC LIMIT 60").all();
   return json({ messages: (rows.results || []).reverse() });
 }
 export async function onRequestPost({ request, env }) {
