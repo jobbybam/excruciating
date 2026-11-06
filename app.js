@@ -1,4 +1,4 @@
-const state={games:[],category:"All",query:"",chatId:0,chatBusy:false};
+const state={games:[],category:"All",query:"",chatBusy:false};
 const $=selector=>document.querySelector(selector);
 const grid=$("#game-grid"),empty=$("#empty-state"),count=$("#game-count"),home=$("#home-view"),player=$("#player"),frame=$("#game-frame"),playerTitle=$("#player-title"),placeholder=$("#player-placeholder");
 const chat=$("#chat-panel");
@@ -87,60 +87,43 @@ setInterval(()=>pollChat(false),4000);
 function slugify(value){return value.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");}
 $("#game-title").addEventListener("input",()=>{if(!$("#game-slug").dataset.edited)$("#game-slug").value=slugify($("#game-title").value);});
 $("#game-slug").addEventListener("input",()=>$("#game-slug").dataset.edited="1");
-$("#game-files").addEventListener("change",()=>{$("#file-count").textContent=$("#game-files").files.length+" files selected";});
 async function refreshAdmin(){
   const data=await api("/api/admin/games");const list=$("#admin-games");list.replaceChildren();$("#admin-game-count").textContent=data.games.length+" games";
   for(const game of data.games){
     const row=document.createElement("div");row.className="admin-list-row";
     const info=document.createElement("div");const name=document.createElement("strong");name.textContent=game.title;const sub=document.createElement("small");sub.textContent=game.category+" · "+game.slug+" · "+(game.license||"Licence missing");info.append(name,sub);
-    const del=document.createElement("button");del.className="text-button danger";del.textContent="Remove";del.addEventListener("click",async()=>{if(!confirm("Remove "+game.title+" and its uploaded files?"))return;try{await api("/api/admin/games?slug="+encodeURIComponent(game.slug),{method:"DELETE"});await refreshAdmin();await loadGames();}catch(e){alert(e.message);}});
+    const del=document.createElement("button");del.className="text-button danger";del.textContent="Remove";del.addEventListener("click",async()=>{if(!confirm("Remove "+game.title+" from the catalogue? The files remain in GitHub until deleted there."))return;try{await api("/api/admin/games?slug="+encodeURIComponent(game.slug),{method:"DELETE"});await refreshAdmin();await loadGames();}catch(e){alert(e.message);}});
     row.append(info,del);list.append(row);
   }
   const chatData=await api("/api/admin/chat");const chatList=$("#admin-chat");chatList.replaceChildren();
-  for(const message of chatData.messages){appendChatMessage(message,chatList,true);}
+  for(const message of chatData.messages)appendChatMessage(message,chatList,true);
   if(!chatData.messages.length){const p=document.createElement("p");p.className="chat-muted";p.textContent="No chat messages.";chatList.append(p);}
 }
-async function loadSeedQueue(){
-  try{const response=await fetch("/catalog/import-queue.json",{cache:"no-store"});if(!response.ok)return;const data=await response.json();const select=$("#seed-game");for(const game of data.games||[]){const option=document.createElement("option");option.value=game.slug;option.textContent=game.title+" · "+game.category;option.dataset.game=JSON.stringify(game);select.append(option);}}catch(error){console.warn("Seed list unavailable",error);}
-}
-$("#seed-game").addEventListener("change",()=>{const option=$("#seed-game").selectedOptions[0];if(!option||!option.dataset.game)return;const game=JSON.parse(option.dataset.game);$("#game-title").value=game.title;$("#game-slug").value=game.slug;$("#game-slug").dataset.edited="1";$("#game-category").value=game.category;$("#game-source").value=game.source_url;$("#game-license").value=game.license;$("#game-attribution").value=game.attribution;});
 async function showAdmin(){
   home.hidden=true;$("#search-wrap").hidden=true;$("#chat-toggle").hidden=true;$("#admin-view").hidden=false;
-  try{const me=await api("/api/admin/me");if(me.authenticated){$("#admin-content").hidden=false;$("#admin-login").hidden=true;$("#admin-logout").hidden=false;await loadSeedQueue();await refreshAdmin();}else{$("#admin-login").hidden=false;}}
+  try{const me=await api("/api/admin/me");if(me.authenticated){$("#admin-content").hidden=false;$("#admin-login").hidden=true;$("#admin-logout").hidden=false;await refreshAdmin();}else{$("#admin-login").hidden=false;}}
   catch(error){$("#admin-login").hidden=false;$("#login-error").textContent=error.message;}
 }
 $("#login-form").addEventListener("submit",async e=>{
   e.preventDefault();$("#login-error").textContent="";
-  try{await api("/api/admin/login",{method:"POST",body:JSON.stringify({password:$("#admin-password").value})});$("#admin-password").value="";$("#admin-login").hidden=true;$("#admin-content").hidden=false;$("#admin-logout").hidden=false;await loadSeedQueue();await refreshAdmin();}
+  try{await api("/api/admin/login",{method:"POST",body:JSON.stringify({password:$("#admin-password").value})});$("#admin-password").value="";$("#admin-login").hidden=true;$("#admin-content").hidden=false;$("#admin-logout").hidden=false;await refreshAdmin();}
   catch(error){$("#login-error").textContent=error.message;}
 });
 $("#admin-logout").addEventListener("click",async()=>{await api("/api/admin/logout",{method:"POST"});$("#admin-content").hidden=true;$("#admin-logout").hidden=true;$("#admin-login").hidden=false;});
-$("#shared-upload").addEventListener("click",async()=>{
-  const file=$("#shared-file").files[0],status=$("#shared-status");
-  if(!file){status.textContent="Choose the repository root i18n.js file first.";return;}
-  if(file.name!=="i18n.js"){status.textContent="The shared file must be named i18n.js.";return;}
-  status.textContent="Uploading shared language file…";
-  try{const response=await fetch("/api/admin/upload?shared=1&path=i18n.js",{method:"POST",body:file});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||"Upload failed.");status.textContent="Shared i18n.js uploaded. It can now be used by the seed games.";}catch(error){status.textContent=error.message;}
-});
 $("#game-form").addEventListener("submit",async e=>{
-  e.preventDefault();const status=$("#upload-status");status.textContent="Checking files…";
+  e.preventDefault();const status=$("#upload-status");
   const title=$("#game-title").value.trim(),slug=$("#game-slug").value.trim().toLowerCase(),category=$("#game-category").value;
-  const files=Array.from($("#game-files").files);
-  if(!files.length){status.textContent="Choose the game folder first.";return;}
-  const relative=files.map(file=>file.webkitRelativePath.split("/").slice(1).join("/")).filter(Boolean);
-  if(!relative.includes("index.html")){status.textContent="The selected folder must contain index.html at its root.";return;}
-  if(files.some(file=>file.size>20*1024*1024)){status.textContent="One or more files exceed the 20 MB per-file limit.";return;}
+  const sourceUrl=$("#game-source").value.trim(),license=$("#game-license").value.trim();
+  const gamePath="/games/"+slug+"/index.html";
+  status.textContent="Checking the game files…";
   try{
-    for(let i=0;i<files.length;i++){
-      const path=relative[i];if(!path)continue;
-      status.textContent="Uploading "+(i+1)+" of "+files.length+": "+path;
-      const response=await fetch("/api/admin/upload?slug="+encodeURIComponent(slug)+"&path="+encodeURIComponent(path),{method:"POST",body:files[i]});
-      const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||"Upload failed for "+path);
-    }
+    const check=await fetch(gamePath,{method:"HEAD",cache:"no-store"});
+    if(!check.ok)throw new Error("The game files are not deployed yet. Add the game folder to GitHub at games/"+slug+"/ and wait for the Pages deployment before publishing it here.");
     let thumbnail=$("#game-thumbnail").value.trim();
-    if(thumbnail&&!thumbnail.startsWith("http://")&&!thumbnail.startsWith("https://"))thumbnail="/games/"+slug+"/"+thumbnail.replace(/^\/+/, "");
-    await api("/api/admin/games",{method:"POST",body:JSON.stringify({title,slug,category,thumbnail,description:$("#game-description").value.trim(),source_url:$("#game-source").value.trim(),license:$("#game-license").value.trim(),attribution:$("#game-attribution").value.trim()})});
-    status.textContent="Game uploaded and published.";$("#game-form").reset();$("#game-slug").dataset.edited="";$("#file-count").textContent="No folder selected";await refreshAdmin();await loadGames();
+    if(thumbnail&&!/^https?:\/\//i.test(thumbnail))thumbnail="/games/"+slug+"/"+thumbnail.replace(/^\/+/, "");
+    await api("/api/admin/games",{method:"POST",body:JSON.stringify({title,slug,category,thumbnail,description:$("#game-description").value.trim(),source_url:sourceUrl,license,attribution:$("#game-attribution").value.trim()})});
+    status.textContent="Game added to the catalogue.";
+    $("#game-form").reset();$("#game-slug").dataset.edited="";await refreshAdmin();await loadGames();
   }catch(error){status.textContent=error.message;}
 });
 if(isAdminRoute)showAdmin();else loadGames();
