@@ -11,8 +11,21 @@ async function api(url,options={}){
   return data;
 }
 async function loadGames(){
-  try{const data=await api("/api/games");state.games=Array.isArray(data.games)?data.games:[];}
-  catch(error){console.error(error);state.games=[];}
+  try{
+    const data=await api("/api/games");
+    state.games=Array.isArray(data.games)?data.games:[];
+  }catch(error){
+    console.error("D1 game catalogue unavailable; trying the static GitHub catalogue.",error);
+    try{
+      const response=await fetch("/catalog/games.json",{cache:"no-store"});
+      if(!response.ok)throw new Error("Static catalogue returned "+response.status);
+      const data=await response.json();
+      state.games=Array.isArray(data.games)?data.games.filter(game=>game.published!==false):[];
+    }catch(fallbackError){
+      console.error("Static game catalogue could not be loaded.",fallbackError);
+      state.games=[];
+    }
+  }
   render();
 }
 function render(){
