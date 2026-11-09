@@ -1,0 +1,121 @@
+name: Validate Cloudflare Pages build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build static Pages output
+        run: npm run build
+      - name: Verify asset limits, Ruffle files and Deltarune reconstruction
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import re
+          from pathlib import Path
+
+          root = Path(".")
+          dist = root / "dist"
+          max_bytes = 25 * 1024 * 1024
+          source_index = (root / "games/deltarune/index.html").read_text(encoding="utf-8")
+          built_index = (dist / "games/deltarune/index.html").read_text(encoding="utf-8")
+          pattern = r"const deltaruneArchives\\s*=\\s*(\\{[^\\n]*\\});"
+          source_match = re.search(pattern, source_index)
+          built_match = re.search(pattern, built_index)
+          if not source_match or not built_match:
+              raise SystemExit("Could not read source or built Deltarune archive map.")
+          source_map = json.loads(source_match.group(1))
+          built_map = json.loads(built_match.group(1))
+
+          checked = 0
+          for chapter, source_files in source_map.items():
+              deployed_files = built_map[chapter]
+              cursor = 0
+              for source_name in source_files:
+                  source_path = root / "games/deltarune" / source_name
+                  source_size = source_path.stat().st_size
+                  if source_size > max_bytes:
+                      prefix = source_name + ".pages-part"
+                      pieces = []
+                      while cursor < len(deployed_files) and deployed_files[cursor].startswith(prefix):
+                          pieces.append(deployed_files[cursor])
+                          cursor += 1
+                      if len(pieces) < 2:
+                          raise SystemExit(f"No split deployment pieces found for {source_name}")
+                      digest = hashlib.sha256()
+                      total = 0
+                      for piece in pieces:
+                          piece_path = dist / "games/deltarune" / piece
+                          size = piece_path.stat().st_size
+                          if size > max_bytes:
+                              raise SystemExit(f"Pages asset limit exceeded: {piece}")
+                          total += size
+                          with piece_path.open("rb") as stream:
+                              for block in iter(lambda: stream.read(1024 * 1024), b""):
+                                  digest.update(block)
+                      expected = hashlib.sha256()
+                      with source_path.open("rb") as stream:
+                          for block in iter(lambda: stream.read(1024 * 1024), b""):
+                              expected.update(block)
+                      if total != source_size or digest.digest() != expected.digest():
+                          raise SystemExit(f"Split pieces do not rebuild the original bytes: {source_name}")
+                      checked += 1
+                  else:
+                      if cursor >= len(deployed_files) or deployed_files[cursor] != source_name:
+                          raise SystemExit(f"Unexpected deployment map entry for {source_name}")
+                      cursor += 1
+              if cursor != len(deployed_files):
+                  raise SystemExit(f"Unexpected extra deployment chunks for chapter {chapter}")
+
+          oversized = [str(p.relative_to(dist)) for p in dist.rglob("*")
+                       if p.is_file() and p.stat().st_size > max_bytes]
+          if oversized:
+              raise SystemExit("Assets exceed Cloudflare Pages 25 MiB limit:\\n" + "\\n".join(oversized))
+
+          wasm_files = list((dist / "games/ruffle").glob("*.wasm"))
+          if not wasm_files:
+              raise SystemExit("No locally hosted Ruffle WASM binaries were copied to dist.")
+          for wasm in wasm_files:
+              with wasm.open("rb") as stream:
+                  if stream.read(4) != b"\\x00asm":
+                      raise SystemExit(f"Invalid WebAssembly file: {wasm}")
+
+          ruffle_js = (dist / "games/ruffle/ruffle.js").read_text(encoding="utf-8")
+          referenced = set(re.findall(r'a\\.p+"([a-f0-9]+\\.wasm)"', ruffle_js))
+          available = {p.name for p in wasm_files}
+          if not referenced or not referenced.issubset(available):
+              raise SystemExit(f"Ruffle WASM mismatch. Referenced={sorted(referenced)}, available={sorted(available)}")
+
+          headers = (dist / "_headers").read_text(encoding="utf-8')
+          if "Content-Type: application/wasm" not in headers:
+              raise SystemExit("Missing Ruffle WebAssembly MIME header in Pages output.")
+
+          papa_pages = list((dist / "games").glob("papas-*/index.html"))
+          if len(papa_pages) != 14:
+              raise SystemExit(f"Expected 14 Papa game wrappers, found {len(papa_pages)}")
+          for page in papa_pages:
+              html = page.read_text(encoding="utf-8")
+              if '/games/ruffle/ruffle.js' not in html or 'new URL("/games/ruffle/"' not in html:
+                  raise SystemExit(f"Incorrect local Ruffle paths in {page}")
+
+          print(f"Verified {checked} oversized Deltarune source chunks rebuild byte-for-byte.")
+          print(f"Verified {len(wasm_files)} Ruffle WASM files and all {len(papa_pages)} Papa wrappers.")
+          print("All Pages output assets meet the 25 MiB limit.")
+          PY
