@@ -98,7 +98,7 @@ jobs:
                       raise SystemExit(f"Invalid WebAssembly file: {wasm}")
 
           ruffle_js = (dist / "games/ruffle/ruffle.js").read_text(encoding="utf-8")
-          referenced = set(re.findall(r'a\\.p\\+"([a-f0-9]+\\.wasm)"', ruffle_js))
+          referenced = set(re.findall(r'a\.p\+"([a-f0-9]+\.wasm)"', ruffle_js))
           available = {p.name for p in wasm_files}
           if not referenced or not referenced.issubset(available):
               raise SystemExit(f"Ruffle WASM mismatch. Referenced={sorted(referenced)}, available={sorted(available)}")
