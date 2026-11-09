@@ -37,14 +37,14 @@
       player.style.height = "100%";
       document.getElementById("game").appendChild(player);
       try {
-        await player.load(new URL("./game.swf", window.location.href).href);
-      } catch (error) {
-        console.error("Failed to load the locally hosted Papa's SWF or Ruffle WASM.", error);
-        const message = document.createElement("div");
-        message.textContent = "The game could not start. Ruffle failed to load its local game or WebAssembly files. Reload the page or check the deployment.";
-        message.style.cssText = "position:fixed;inset:0;display:grid;place-items:center;padding:24px;background:#080808;color:#fff;font:16px system-ui;text-align:center;z-index:99999";
-        document.body.appendChild(message);
-      }
+    await player.load(new URL("./game.swf", window.location.href).href);
+  } catch (error) {
+    console.error("Failed to load the locally hosted Papa's SWF or Ruffle WASM.", error);
+    const message = document.createElement("div");
+    message.textContent = "The game could not start. Ruffle failed to load its local game or WebAssembly files. Reload the page or check the deployment.";
+    message.style.cssText = "position:fixed;inset:0;display:grid;place-items:center;padding:24px;background:#080808;color:#fff;font:16px system-ui;text-align:center;z-index:99999";
+    document.body.appendChild(message);
+  }
     });
   </script>
 </body>
