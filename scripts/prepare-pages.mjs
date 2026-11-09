@@ -116,33 +116,59 @@ async function listFiles(directory, relative = "") {
 }
 
 async function main() {
-  const archiveEntries = (await readdir(GAME_DIR, { withFileTypes: true }))
-    .filter((entry) => entry.isFile() && /\.unx\.part\d+$/.test(entry.name));
-
-  const splitFiles = new Map();
-  for (const entry of archiveEntries) {
-    const archivePath = path.join(GAME_DIR, entry.name);
-    const info = await stat(archivePath);
-    if (info.size <= PAGES_MAX_BYTES) continue;
-
-    const parts = await splitArchive(archivePath, entry.name, info.size);
-    splitFiles.set(entry.name, parts);
-    console.log(
-      `Pages build: split ${entry.name} (${(info.size / 1024 / 1024).toFixed(2)} MiB) into ${parts.length} pieces.`
-    );
-  }
-
-  // Rewrite only the generated deployment copy of the archive map. The
-  // checked-in index.html still points to the original files for local use.
+  // Read the checked-in map first so a retry can recover if a previous build
+  // stopped after generating segments but before rewriting index.html.
   const html = await readFile(INDEX_FILE, "utf8");
   const archiveMapMatch = html.match(
-    /(const deltaruneArchives\s*=\s*)(\{[^\n]*\})(;)/
+    /(const deltaruneArchives\\s*=\\s*)(\\{[^\\n]*\\})(;)/
   );
   if (!archiveMapMatch) {
     throw new Error("Could not find the deltaruneArchives map in games/deltarune/index.html");
   }
 
   const archiveMap = JSON.parse(archiveMapMatch[2]);
+  const referencedArchives = [...new Set(Object.values(archiveMap).flat())];
+  const directoryEntries = await readdir(GAME_DIR);
+  const splitFiles = new Map();
+
+  for (const fileName of referencedArchives) {
+    const archivePath = path.join(GAME_DIR, fileName);
+    let info;
+    try {
+      info = await stat(archivePath);
+    } catch (error) {
+      if (error?.code !== "ENOENT") throw error;
+
+      // Resume a partially completed build if its source was already removed.
+      const existingParts = directoryEntries
+        .filter((entry) =>
+          entry.startsWith(`${fileName}.pages-part`) &&
+          /\\.pages-part\\d{3}$/.test(entry)
+        )
+        .sort();
+      if (existingParts.length < 2) {
+        throw new Error(`Archive is missing and its generated pieces are incomplete: ${fileName}`);
+      }
+      for (const partName of existingParts) {
+        const partInfo = await stat(path.join(GAME_DIR, partName));
+        if (partInfo.size > PAGES_MAX_BYTES) {
+          throw new Error(`Generated segment exceeds the Pages limit: ${partName}`);
+        }
+      }
+      splitFiles.set(fileName, existingParts);
+      continue;
+    }
+
+    if (info.size <= PAGES_MAX_BYTES) continue;
+    const parts = await splitArchive(archivePath, fileName, info.size);
+    splitFiles.set(fileName, parts);
+    console.log(
+      `Pages build: split ${fileName} (${(info.size / 1024 / 1024).toFixed(2)} MiB) into ${parts.length} pieces.`
+    );
+  }
+
+  // Rewrite only the generated deployment copy of the archive map. The
+  // checked-in index.html still points to the original files for local use.
   for (const [chapter, archiveChunks] of Object.entries(archiveMap)) {
     archiveMap[chapter] = archiveChunks.flatMap((fileName) =>
       splitFiles.get(fileName) ?? [fileName]
