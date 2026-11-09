@@ -36,7 +36,7 @@ jobs:
           max_bytes = 25 * 1024 * 1024
           source_index = (root / "games/deltarune/index.html").read_text(encoding="utf-8")
           built_index = (dist / "games/deltarune/index.html").read_text(encoding="utf-8")
-          pattern = r"const deltaruneArchives\\s*=\\s*(\\{[^\\n]*\\});"
+          pattern = r"const deltaruneArchives\s*=\s*(\{[^\n]*\});"
           source_match = re.search(pattern, source_index)
           built_match = re.search(pattern, built_index)
           if not source_match or not built_match:
@@ -87,23 +87,23 @@ jobs:
           oversized = [str(p.relative_to(dist)) for p in dist.rglob("*")
                        if p.is_file() and p.stat().st_size > max_bytes]
           if oversized:
-              raise SystemExit("Assets exceed Cloudflare Pages 25 MiB limit:\\n" + "\\n".join(oversized))
+              raise SystemExit("Assets exceed Cloudflare Pages 25 MiB limit:\n" + "\n".join(oversized))
 
           wasm_files = list((dist / "games/ruffle").glob("*.wasm"))
           if not wasm_files:
               raise SystemExit("No locally hosted Ruffle WASM binaries were copied to dist.")
           for wasm in wasm_files:
               with wasm.open("rb") as stream:
-                  if stream.read(4) != b"\\x00asm":
+                  if stream.read(4) != b"\x00asm":
                       raise SystemExit(f"Invalid WebAssembly file: {wasm}")
 
           ruffle_js = (dist / "games/ruffle/ruffle.js").read_text(encoding="utf-8")
-          referenced = set(re.findall(r'a\\.p+"([a-f0-9]+\\.wasm)"', ruffle_js))
+          referenced = set(re.findall(r'a\.p+"([a-f0-9]+\.wasm)"', ruffle_js))
           available = {p.name for p in wasm_files}
           if not referenced or not referenced.issubset(available):
               raise SystemExit(f"Ruffle WASM mismatch. Referenced={sorted(referenced)}, available={sorted(available)}")
 
-          headers = (dist / "_headers").read_text(encoding="utf-8')
+          headers = (dist / "_headers").read_text(encoding="utf-8")
           if "Content-Type: application/wasm" not in headers:
               raise SystemExit("Missing Ruffle WebAssembly MIME header in Pages output.")
 
