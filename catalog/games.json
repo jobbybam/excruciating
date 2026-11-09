@@ -16,6 +16,17 @@
       "published": true
     },
     {
+      "slug": "deltarune",
+      "title": "Deltarune",
+      "category": "Adventure",
+      "description": "Locally hosted Deltarune browser build.",
+      "url": "/games/deltarune/index.html",
+      "source_url": "https://github.com/Mollomm1/test",
+      "license": "Proprietary game assets; redistribution status not verified",
+      "attribution": "Deltarune © Toby Fox. This local webport is unofficial.",
+      "published": true
+    },
+    {
       "slug": "papas-scooperia",
       "title": "Papa's Scooperia",
       "category": "Simulation",
