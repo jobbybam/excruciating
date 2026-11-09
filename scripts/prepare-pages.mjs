@@ -155,7 +155,7 @@ async function main() {
 
   const html = await readFile(INDEX_FILE, "utf8");
   const archiveMapMatch = html.match(
-    /(const deltaruneArchives\\s*=\\s*)(\\{[^\\n]*\\})(;)/
+    /(const deltaruneArchives\s*=\s*)(\{[^\n]*\})(;)/
   );
   if (!archiveMapMatch) {
     throw new Error("Could not find the deltaruneArchives map in dist/games/deltarune/index.html");
@@ -174,7 +174,7 @@ async function main() {
       const existingParts = (await readdir(GAME_DIR))
         .filter((entry) =>
           entry.startsWith(`${fileName}.pages-part`) &&
-          /\\.pages-part\\d{3}$/.test(entry)
+          /\.pages-part\d{3}$/.test(entry)
         )
         .sort();
       if (existingParts.length < 2) {
@@ -224,8 +224,8 @@ async function main() {
   }
   if (oversized.length) {
     throw new Error(
-      "Files still exceed Cloudflare Pages' 25 MiB asset limit:\\n" +
-      oversized.map((file) => ` - ${file}`).join("\\n")
+      "Files still exceed Cloudflare Pages' 25 MiB asset limit:\n" +
+      oversized.map((file) => ` - ${file}`).join("\n")
     );
   }
 
