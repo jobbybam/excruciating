@@ -38,6 +38,9 @@ jobs:
               raise SystemExit("No WASM runtime found in Ruffle web package")
           shutil.copy2(js_matches[0], out / "ruffle.js")
           for wasm in wasm_matches:
+              with wasm.open("rb") as stream:
+                  if wasm.stat().st_size < 1024 or stream.read(4) != b"\\x00asm":
+                      raise SystemExit(f"Invalid Ruffle WebAssembly binary: {wasm}")
               shutil.copy2(wasm, out / wasm.name)
           PY
           test -s games/ruffle/ruffle.js
