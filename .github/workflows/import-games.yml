@@ -1,0 +1,182 @@
+name: Import requested self-hosted games
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/import-games.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-games:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Import the Scratch/TurboWarp Geometry Dash game
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p games/geometry-dash
+          curl --fail --location --retry 3 https://raw.githubusercontent.com/AJ2130/Geometry-dash-/main/Geometry_Dash_Styled.html --output games/geometry-dash/index.html
+          curl --fail --location --retry 3 https://raw.githubusercontent.com/AJ2130/Geometry-dash-/main/LICENSE --output games/geometry-dash/LICENSE
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          entry = Path("games/geometry-dash/index.html")
+          html = entry.read_text(encoding="utf-8")
+          html, count = re.subn(r"<title>.*?</title>", "<title>Geometry Dash — Scratch Fan Game</title>", html, count=1, flags=re.IGNORECASE | re.DOTALL)
+          if count:
+              entry.write_text(html, encoding="utf-8")
+          if len(html) < 100000:
+              raise SystemExit("Geometry Dash HTML import is unexpectedly small.")
+          Path("games/geometry-dash/ATTRIBUTION.md").write_text(
+              "# Geometry Dash — Scratch/TurboWarp fan game\n\n"
+              "Third-party fan game, not the official RobTop game.\n\n"
+              "- Upstream: https://github.com/AJ2130/Geometry-dash-\n"
+              "- Author: Ajaykrishna Ramesh (AJ2130)\n"
+              "- Code licence: MIT; see LICENSE.\n"
+              "- Engine/export: Scratch / TurboWarp.\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Download Ruffle web player (self-hosted)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/ruffle games/ruffle
+          curl --fail --location --retry 3 https://github.com/ruffle-rs/ruffle/releases/download/v0.7.1/ruffle-0.7.1-web-selfhosted.zip --output /tmp/ruffle/ruffle.zip
+          unzip -q /tmp/ruffle/ruffle.zip -d /tmp/ruffle/extracted
+          python3 - <<'PY'
+          from pathlib import Path
+          import shutil
+          root = Path("/tmp/ruffle/extracted")
+          out = Path("games/ruffle")
+          js_matches = list(root.rglob("ruffle.js"))
+          wasm_matches = list(root.rglob("*.wasm"))
+          print("Ruffle WASM files:", [p.name for p in wasm_matches])
+          if not js_matches:
+              raise SystemExit("Missing ruffle.js from Ruffle web package")
+          if not wasm_matches:
+              raise SystemExit("No WASM runtime found in Ruffle web package")
+          shutil.copy2(js_matches[0], out / "ruffle.js")
+          for wasm in wasm_matches:
+              shutil.copy2(wasm, out / wasm.name)
+          PY
+          test -s games/ruffle/ruffle.js
+          curl --fail --location --retry 3 https://raw.githubusercontent.com/ruffle-rs/ruffle/master/LICENSE.md --output games/ruffle/LICENSE.md
+
+      - name: Import the 14 officially downloadable Papa's games
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          games = [{"slug":"papas-scooperia","title":"Papa's Scooperia","swf":"papasscooperia_v102.swf","folder":"papasscooperia"},{"slug":"papas-sushiria","title":"Papa's Sushiria","swf":"papassushiria_101.swf","folder":"papassushiria"},{"slug":"papas-bakeria","title":"Papa's Bakeria","swf":"papasbakeria_101.swf","folder":"papasbakeria"},{"slug":"papas-cheeseria","title":"Papa's Cheeseria","swf":"papascheeseria_102.swf","folder":"papascheeseria"},{"slug":"papas-donuteria","title":"Papa's Donuteria","swf":"papasdonuteria_102.swf","folder":"papasdonuteria"},{"slug":"papas-pastaria","title":"Papa's Pastaria","swf":"papaspastaria_v2.swf","folder":"papaspastaria"},{"slug":"papas-cupcakeria","title":"Papa's Cupcakeria","swf":"papascupcakeria_v2.swf","folder":"papascupcakeria"},{"slug":"papas-hot-doggeria","title":"Papa's Hot Doggeria","swf":"papashotdoggeria_v2.swf","folder":"papashotdoggeria"},{"slug":"papas-wingeria","title":"Papa's Wingeria","swf":"papaswingeria_v2.swf","folder":"papaswingeria"},{"slug":"papas-pancakeria","title":"Papa's Pancakeria","swf":"papaspancakeria_v2.swf","folder":"papaspancakeria"},{"slug":"papas-freezeria","title":"Papa's Freezeria","swf":"papasfreezeria_v2.swf","folder":"papasfreezeria"},{"slug":"papas-taco-mia","title":"Papa's Taco Mia!","swf":"papastacomia_v2.swf","folder":"papastacomia"},{"slug":"papas-burgeria","title":"Papa's Burgeria","swf":"papasburgeria_v2.swf","folder":"papasburgeria"},{"slug":"papas-pizzeria","title":"Papa's Pizzeria","swf":"papaspizzeria_v2.swf","folder":"papaspizzeria"}]
+          with open("/tmp/papas.json", "w", encoding="utf-8") as f:
+              json.dump(games, f)
+          PY
+          while IFS=$'\t' read -r slug title folder swf; do
+            target="games/$slug"
+            mkdir -p "$target"
+            curl --fail --location --retry 3 "https://i.flipline.com/gamefiles/$folder/$swf" --output "$target/game.swf"
+            curl --fail --location --retry 3 "https://i.flipline.com/gamefiles/$folder/images/gameicon.jpg" --output "$target/thumbnail.jpg"
+            size=$(stat -c%s "$target/game.swf")
+            if [ "$size" -lt 100000 ] || [ "$size" -gt 26214400 ]; then
+              echo "Unexpected SWF size for $title: $size bytes"
+              exit 1
+            fi
+            cat > "$target/index.html" <<HTML
+          <!doctype html>
+          <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+            <meta name="theme-color" content="#080808">
+            <title>$title</title>
+            <style>
+              * { box-sizing: border-box; }
+              html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#080808; }
+              body { display:flex; align-items:center; justify-content:center; }
+              #game { width:100vw; height:100vh; }
+              ruffle-player { width:100%; height:100%; }
+            </style>
+          </head>
+          <body>
+            <div id="game"></div>
+            <script>
+              window.RufflePlayer = window.RufflePlayer || {};
+              window.RufflePlayer.config = {
+                publicPath: "/games/ruffle/",
+                autoplay: "on",
+                unmuteOverlay: "visible",
+                letterbox: "on",
+                backgroundColor: "#080808",
+                scale: "showAll",
+                forceScale: true,
+                logLevel: "error"
+              };
+            </script>
+            <script src="../ruffle/ruffle.js"></script>
+            <script>
+              window.addEventListener("load", () => {
+                const ruffle = window.RufflePlayer.newest();
+                const player = ruffle.createPlayer();
+                player.style.width = "100%";
+                player.style.height = "100%";
+                document.getElementById("game").appendChild(player);
+                player.load("game.swf");
+              });
+            </script>
+          </body>
+          </html>
+          HTML
+            cat > "$target/ATTRIBUTION.md" <<NOTICE
+          # $title
+          
+          Original game and assets © Flipline Studios.
+          
+          This unmodified game file is the Standard Version made available by Flipline Studios for website hosting through its official “Free Games for your Site” programme:
+          https://www.flipline.com/freegames.html
+          
+          Flipline's terms state that downloads in the “Free Games for your Site” section may be hosted on your website. No sale or redistribution as a separate download is intended.
+          
+          Ruffle is used as the locally hosted Flash-compatible player; see ../ruffle/LICENSE.md.
+          NOTICE
+          done < <(python3 - <<'PY'
+          import json
+          for g in json.load(open("/tmp/papas.json", encoding="utf-8")):
+              print("\t".join([g["slug"],g["title"],g["folder"],g["swf"]]))
+          PY
+          )
+
+      - name: Add official game icons to the catalogue
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path("catalog/games.json")
+          data = json.loads(path.read_text(encoding="utf-8"))
+          for game in data["games"]:
+              if game["slug"].startswith("papas-"):
+                  icon = Path("games") / game["slug"] / "thumbnail.jpg"
+                  if icon.is_file() and icon.stat().st_size > 1000:
+                      game["thumbnail"] = f"/games/{game['slug']}/thumbnail.jpg"
+          path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          PY
+
+      - name: Commit all imported game files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add games/ catalog/games.json
+          git commit -m "Add Scratch Geometry Dash and 14 authorized Papa's games" || echo "No file changes to commit."
+          git fetch origin main
+          git rebase origin/main
+          git push

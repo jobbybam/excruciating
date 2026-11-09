@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080808">
+  <meta name="description" content="Browse and play browser games.">
+  <title>excruciating</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+  <script src="/mobile-player.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="wordmark" href="/" aria-label="excruciating home">excruciating</a>
+    <label class="search-wrap" id="search-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 4 4"></path></svg><input id="search" type="search" placeholder="Search games" autocomplete="off" aria-label="Search games"><kbd>/</kbd></label>
+    <button class="chat-toggle" id="chat-toggle" type="button" aria-label="Open chat" title="Chat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H5l1.8-3A7.5 7.5 0 1 1 20 11.5Z"></path></svg></button>
+  </header>
+  <main class="shell" id="home-view">
+    <nav class="categories" id="categories" aria-label="Game categories">
+      <button class="category active" data-category="All" type="button">All games</button><button class="category" data-category="Arcade" type="button">Arcade</button><button class="category" data-category="Action" type="button">Action</button><button class="category" data-category="Racing" type="button">Racing</button><button class="category" data-category="Sports" type="button">Sports</button><button class="category" data-category="Puzzle" type="button">Puzzle</button><button class="category" data-category="Multiplayer" type="button">Multiplayer</button><button class="category" data-category="Simulation" type="button">Simulation</button><button class="category" data-category="Adventure" type="button">Adventure</button><button class="category" data-category="Horror" type="button">Horror</button><button class="category" data-category="Visual Novel" type="button">Visual novels</button>
+    </nav>
+    <section class="library" aria-labelledby="library-heading"><div class="section-heading"><h1 id="library-heading">Games</h1><span id="game-count" class="muted">0 games</span></div><div id="game-grid" class="game-grid" aria-live="polite"></div><div id="empty-state" class="empty-state" hidden><div class="empty-mark">—</div><h2>No games found</h2><p>Try another search or category.</p></div></section>
+  </main>
+  <main id="admin-view" class="admin-view" hidden>
+    <div class="admin-top"><div><p class="eyebrow">CONTROL PANEL</p><h1>Admin</h1></div><button id="admin-logout" class="toolbar-button" type="button" hidden>Log out</button></div>
+    <section id="admin-login" class="admin-card" hidden><h2>Sign in</h2><form id="login-form"><label for="admin-password">Admin password</label><input id="admin-password" type="password" autocomplete="current-password" required maxlength="256"><button class="primary-button" type="submit">Sign in</button><p id="login-error" class="form-error" role="alert"></p></form></section>
+    <div id="admin-content" hidden>
+      <section class="admin-card">
+        <div class="admin-section-heading"><h2>Add a game</h2><span class="muted">Free GitHub hosting</span></div>
+        <p class="form-hint">First add the game's files to the GitHub repository under <code>games/your-game-slug/</code>. The folder must contain <code>index.html</code> at its root. Wait for Cloudflare Pages to deploy, then enter the details below to publish it in the catalogue. <a href="https://github.com/jobbybam/excruciating/blob/main/ADDING_GAMES.md" target="_blank" rel="noopener">Read the full step-by-step guide</a>.</p>
+        <form id="game-form" class="game-form">
+          <div class="form-grid"><label>Game title<input id="game-title" required maxlength="80" placeholder="Game title"></label><label>Category<select id="game-category" required><option>Arcade</option><option>Action</option><option>Racing</option><option>Sports</option><option>Puzzle</option><option>Multiplayer</option></select></label><label>URL slug<input id="game-slug" required pattern="[a-z0-9]+(?:-[a-z0-9]+)*" placeholder="game-name"></label><label>Thumbnail path<input id="game-thumbnail" placeholder="thumbnail.png (optional)"></label></div>
+          <label>Description<input id="game-description" maxlength="300" placeholder="Short description (optional)"></label>
+          <div class="form-grid"><label>Original source URL<input id="game-source" type="url" required placeholder="https://…"></label><label>Licence / permission<input id="game-license" required maxlength="100" placeholder="MIT, GPL-3.0, or written permission"></label></div>
+          <label>Attribution<input id="game-attribution" maxlength="300" placeholder="Creator / copyright notice (if required)"></label>
+          <button class="primary-button" type="submit">Publish in catalogue</button><p id="upload-status" class="form-status" role="status"></p>
+        </form>
+      </section>
+      <section class="admin-card"><div class="admin-section-heading"><h2>Game library</h2><span id="admin-game-count" class="muted"></span></div><div id="admin-games" class="admin-list"></div></section>
+      <section class="admin-card"><div class="admin-section-heading"><h2>Chat moderation</h2><span class="muted">Latest 150 messages</span></div><div id="admin-chat" class="admin-chat-list"></div></section>
+    </div>
+  </main>
+  <section id="player" class="player-page" hidden aria-label="Game player"><div class="player-toolbar"><button id="back-button" class="toolbar-button" type="button">← <span>Games</span></button><h2 id="player-title">Game</h2><div class="player-actions"><button id="reload-button" class="toolbar-button" type="button">↻ <span>Reload</span></button><button id="open-game-button" class="toolbar-button" type="button" title="Open the game's HTML page in a new tab">↗ <span>Open game</span></button><button id="fullscreen-button" class="toolbar-button" type="button" title="Enter fullscreen">⛶ <span>Fullscreen</span></button></div></div><div class="game-frame-wrap" id="game-frame-wrap"><div id="player-placeholder" class="player-placeholder">Select a game to play.</div><iframe id="game-frame" title="Game" allow="fullscreen; gamepad; autoplay" referrerpolicy="no-referrer" hidden></iframe></div></section>
+  <aside id="chat-panel" class="chat-panel" hidden aria-label="Public chat"><div class="chat-heading"><strong>Chat</strong><button id="chat-close" type="button" aria-label="Close chat">×</button></div><label class="chat-user-label" for="chat-username">Username</label><input id="chat-username" class="chat-input" maxlength="20" autocomplete="nickname" placeholder="Choose a username"><div id="chat-messages" class="chat-messages" aria-live="polite"><p class="chat-muted">Loading chat…</p></div><form id="chat-form" class="chat-compose"><input id="chat-message" class="chat-input" maxlength="500" placeholder="Write a message…" autocomplete="off" required><button class="primary-button" type="submit">Send</button></form><p id="chat-status" class="chat-status" role="status"></p></aside>
+  <footer><span>excruciating</span><span></span></footer>
+</body>
+</html>
