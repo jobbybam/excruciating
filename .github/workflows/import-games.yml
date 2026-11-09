@@ -84,7 +84,7 @@ jobs:
             <script>
               window.RufflePlayer = window.RufflePlayer || {};
               window.RufflePlayer.config = {
-                publicPath: "/games/ruffle/",
+                publicPath: new URL("/games/ruffle/", window.location.origin).href,
                 autoplay: "on",
                 unmuteOverlay: "visible",
                 letterbox: "on",
@@ -94,15 +94,23 @@ jobs:
                 logLevel: "error"
               };
             </script>
-            <script src="../ruffle/ruffle.js"></script>
+            <script src="/games/ruffle/ruffle.js"></script>
             <script>
-              window.addEventListener("load", () => {
+              window.addEventListener("load", async () => {
                 const ruffle = window.RufflePlayer.newest();
                 const player = ruffle.createPlayer();
                 player.style.width = "100%";
                 player.style.height = "100%";
                 document.getElementById("game").appendChild(player);
-                player.load("game.swf");
+                try {
+              await player.load(new URL("./game.swf", window.location.href).href);
+            } catch (error) {
+              console.error("Failed to load the locally hosted Papa's SWF or Ruffle WASM.", error);
+              const message = document.createElement("div");
+              message.textContent = "The game could not start. Ruffle failed to load its local game or WebAssembly files. Reload the page or check the deployment.";
+              message.style.cssText = "position:fixed;inset:0;display:grid;place-items:center;padding:24px;background:#080808;color:#fff;font:16px system-ui;text-align:center;z-index:99999";
+              document.body.appendChild(message);
+            }
               });
             </script>
           </body>
