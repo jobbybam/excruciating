@@ -29,7 +29,7 @@ function makeBricks(){bricks=[];const cols=Math.max(5,Math.min(10,Math.floor((w-
 function updateHud(){$('score').textContent=score;$('lives').textContent=lives;$('best').textContent=best;}
 function reset(){score=0;lives=3;ball.vx=3.4;ball.vy=-4.6;ball.stuck=true;started=false;paused=false;running=false;paddle.x=(w-paddle.w)/2;placeBall();makeBricks();updateHud();$('pause').textContent='Pause';showOverlay('Brick Breaker','Move the paddle to bounce the ball and clear every brick. Use your mouse, touch, or the arrow keys.','Start game');draw();}
 function showOverlay(title,msg,button){$('heading').textContent=title;$('message').textContent=msg;$('start').textContent=button;$('overlay').hidden=false;}
-function launch(){if(!started){started=true;running=true;$('overlay').hidden=true;}if(ball.stuck){ball.stuck=false;ball.vx=(Math.random()-.5)*3.5;ball.vy=-Math.max(4.4,Math.abs(ball.vy));}}
+function launch(){if(lives<=0)reset();if(!started){started=true;running=true;$('overlay').hidden=true;}if(ball.stuck){ball.stuck=false;ball.vx=(Math.random()-.5)*3.5;ball.vy=-Math.max(4.4,Math.abs(ball.vy));}}
 function movePaddle(x){paddle.x=Math.max(0,Math.min(w-paddle.w,x-paddle.w/2));if(ball.stuck)placeBall();}
 function tick(t){raf=requestAnimationFrame(tick);if(!running||paused)return;const dt=Math.min((t-last)/16.67||1,2);last=t;
 if(keys.left)paddle.x=Math.max(0,paddle.x-paddle.speed*dt);if(keys.right)paddle.x=Math.min(w-paddle.w,paddle.x+paddle.speed*dt);if(ball.stuck)placeBall();else{ball.x+=ball.vx*dt;ball.y+=ball.vy*dt;
