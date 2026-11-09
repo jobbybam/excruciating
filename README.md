@@ -31,7 +31,7 @@ The original Deltarune archive chunks in Git remain unchanged. Pages Functions a
 
 Use these settings for the Pages project:
 
-- **Root directory:** `. ` (the repository root, without a subdirectory)
+- **Root directory:** `.` (the repository root, without a subdirectory)
 - **Build command:** `npm run build`
 - **Build output directory:** `dist`
 
