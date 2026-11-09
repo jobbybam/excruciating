@@ -2,22 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#080808">
   <title>Papa's Scooperia</title>
   <style>
     * { box-sizing: border-box; }
-    html, body { width:100%; height:100%; min-height:100%; margin:0; padding:0; overflow:hidden; background:#080808; }
-    body { width:100vw; height:100vh; height:100dvh; display:flex; align-items:center; justify-content:center; }
-    #game { width:100vw; height:100vh; height:100dvh; overflow:hidden; }
-    ruffle-player { display:block; width:100%; height:100%; touch-action:none; }
-    #load-error { position:fixed; inset:auto 12px 12px; z-index:10; padding:12px; border:1px solid #733; border-radius:6px; background:#211; color:#fff; font:13px/1.45 system-ui,sans-serif; overflow-wrap:anywhere; }
-    #load-error[hidden] { display:none; }
-    @media (max-width: 700px) {
-      body, #game { width:100vw; height:100dvh; }
-      ruffle-player { width:100%; height:100%; }
-    }
+    html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#080808; }
+    body { display:flex; align-items:center; justify-content:center; }
+    #game { width:100vw; height:100vh; }
+    ruffle-player { width:100%; height:100%; }
   </style>
+</head>
+<body>
+  <div id="game"></div>
   <script>
     window.RufflePlayer = window.RufflePlayer || {};
     window.RufflePlayer.config = {
@@ -28,39 +25,19 @@
       backgroundColor: "#080808",
       scale: "showAll",
       forceScale: true,
-      allowFullscreen: true,
-      warnOnUnsupportedContent: true,
-      logLevel: "warn"
+      logLevel: "error"
     };
   </script>
-  <script src="/games/ruffle/ruffle.js"></script>
-</head>
-<body>
-  <div id="game"></div>
-  <div id="load-error" role="alert" hidden></div>
+  <script src="../ruffle/ruffle.js"></script>
   <script>
-    (async () => {
-      const errorBox = document.getElementById("load-error");
-      const showError = error => {
-        console.error("Ruffle could not start papas-scooperia:", error);
-        errorBox.textContent = "This game could not start. " + (error && error.message ? error.message : String(error));
-        errorBox.hidden = false;
-      };
-      try {
-        if (!window.RufflePlayer || !window.RufflePlayer.newest) {
-          throw new Error("The Ruffle player script did not load. Check /games/ruffle/ruffle.js.");
-        }
-        const ruffle = window.RufflePlayer.newest();
-        const player = ruffle.createPlayer();
-        player.style.width = "100%";
-        player.style.height = "100%";
-        player.setAttribute("aria-label", "Papa's Scooperia");
-        document.getElementById("game").appendChild(player);
-        await player.load({ url: new URL("./game.swf", window.location.href).href });
-      } catch (error) {
-        showError(error);
-      }
-    })();
+    window.addEventListener("load", () => {
+      const ruffle = window.RufflePlayer.newest();
+      const player = ruffle.createPlayer();
+      player.style.width = "100%";
+      player.style.height = "100%";
+      document.getElementById("game").appendChild(player);
+      player.load("game.swf");
+    });
   </script>
 </body>
 </html>
