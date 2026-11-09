@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta
+    name="viewport"
+    content="width=device-width,height=device-height,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
+  >
+  <title>Ballistic</title>
+
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="mask-icon" href="./safari-pinned-tab.svg" color="#6485B8">
+  <link rel="shortcut icon" href="./favicon.ico">
+  <meta name="msapplication-config" content="./browserconfig.xml">
+  <meta name="theme-color" content="#6485B8">
+
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+      background: #6485b8;
+    }
+
+    #renderCanvas {
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+    }
+
+    #babylonjsLoadingDiv {
+      background-color: #6485b8 !important;
+    }
+  </style>
+
+  <script src="./js/pep.min.js"></script>
+  <script src="./js/cannon.min.js"></script>
+  <script src="./js/babylon.js"></script>
+</head>
+<body>
+  <canvas id="renderCanvas" touch-action="none"></canvas>
+
+  <script src="./js/master.js"></script>
+  <script src="./js/desktop-controls.js"></script>
+  <script src="./js/register-service-worker.js"></script>
+</body>
+</html>

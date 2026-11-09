@@ -1,0 +1,29 @@
+{
+  "name": "ballistic",
+  "version": "1.0.0",
+  "private": true,
+  "description": "First-person 3D browser physics shooter",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --base /Ballistic/",
+    "check": "node tools/check.mjs",
+    "build": "node tools/build.mjs",
+    "preview": "vite preview --host 0.0.0.0 --base /Ballistic/"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xtreemze/Ballistic.git"
+  },
+  "author": "Carlos Velasco",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/xtreemze/Ballistic/issues"
+  },
+  "homepage": "https://xtreemze.github.io/Ballistic/",
+  "devDependencies": {
+    "vite": "8.3.3"
+  }
+}
