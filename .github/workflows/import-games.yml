@@ -17,34 +17,6 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Import the Scratch/TurboWarp Geometry Dash game
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p games/geometry-dash
-          curl --fail --location --retry 3 https://raw.githubusercontent.com/AJ2130/Geometry-dash-/main/Geometry_Dash_Styled.html --output games/geometry-dash/index.html
-          curl --fail --location --retry 3 https://raw.githubusercontent.com/AJ2130/Geometry-dash-/main/LICENSE --output games/geometry-dash/LICENSE
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-          entry = Path("games/geometry-dash/index.html")
-          html = entry.read_text(encoding="utf-8")
-          html, count = re.subn(r"<title>.*?</title>", "<title>Geometry Dash — Scratch Fan Game</title>", html, count=1, flags=re.IGNORECASE | re.DOTALL)
-          if count:
-              entry.write_text(html, encoding="utf-8")
-          if len(html) < 100000:
-              raise SystemExit("Geometry Dash HTML import is unexpectedly small.")
-          Path("games/geometry-dash/ATTRIBUTION.md").write_text(
-              "# Geometry Dash — Scratch/TurboWarp fan game\n\n"
-              "Third-party fan game, not the official RobTop game.\n\n"
-              "- Upstream: https://github.com/AJ2130/Geometry-dash-\n"
-              "- Author: Ajaykrishna Ramesh (AJ2130)\n"
-              "- Code licence: MIT; see LICENSE.\n"
-              "- Engine/export: Scratch / TurboWarp.\n",
-              encoding="utf-8",
-          )
-          PY
-
       - name: Download Ruffle web player (self-hosted)
         shell: bash
         run: |
@@ -176,7 +148,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add games/ catalog/games.json
-          git commit -m "Add Scratch Geometry Dash and 14 authorized Papa's games" || echo "No file changes to commit."
+          git commit -m "Add 14 authorized Papa's games" || echo "No file changes to commit."
           git fetch origin main
           git rebase origin/main
           git push
