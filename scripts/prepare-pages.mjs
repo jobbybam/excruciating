@@ -1,7 +1,10 @@
 import {
+  cp,
+  mkdir,
   open,
   readdir,
   readFile,
+  rm,
   stat,
   unlink,
   writeFile
@@ -9,20 +12,54 @@ import {
 import path from "node:path";
 
 const ROOT = process.cwd();
-const GAME_DIR = path.join(ROOT, "games", "deltarune");
+const OUT_DIR = path.join(ROOT, "dist");
+const GAME_DIR = path.join(OUT_DIR, "games", "deltarune");
 const INDEX_FILE = path.join(GAME_DIR, "index.html");
 
-// Cloudflare Pages rejects a single static asset above 25 MiB.
-// Keep each generated piece comfortably below that hard limit.
+// Cloudflare Pages rejects an individual static asset above 25 MiB.
+// Use 20 MiB segments to leave a comfortable margin below its hard limit.
 const PAGES_MAX_BYTES = 25 * 1024 * 1024;
 const SEGMENT_BYTES = 20 * 1024 * 1024;
 const READ_BUFFER_BYTES = 1024 * 1024;
 
+// These are source/build/runtime directories, not public static assets.
+// Pages Functions are discovered from the repository root, not dist/.
+const EXCLUDED_ROOT_ENTRIES = new Set([
+  ".git",
+  ".github",
+  ".wrangler",
+  "node_modules",
+  "dist",
+  "functions",
+  "migrations",
+  "scripts",
+  "package.json",
+  "package-lock.json",
+  "pnpm-lock.yaml",
+  "yarn.lock",
+  "wrangler.toml",
+  ".gitignore",
+  ".dev.vars",
+  ".env"
+]);
+
+async function copyStaticSite() {
+  await rm(OUT_DIR, { recursive: true, force: true });
+  await mkdir(OUT_DIR, { recursive: true });
+
+  for (const entry of await readdir(ROOT, { withFileTypes: true })) {
+    if (EXCLUDED_ROOT_ENTRIES.has(entry.name)) continue;
+    await cp(
+      path.join(ROOT, entry.name),
+      path.join(OUT_DIR, entry.name),
+      { recursive: true, force: true }
+    );
+  }
+}
+
 async function splitArchive(filePath, fileName, fileSize) {
-  // Remove remnants from an interrupted or repeated build before recreating
-  // the pieces. The original archive remains available until splitting passes.
-  const entries = await readdir(GAME_DIR);
-  const oldParts = entries.filter((entry) =>
+  const oldEntries = await readdir(GAME_DIR);
+  const oldParts = oldEntries.filter((entry) =>
     entry.startsWith(`${fileName}.pages-part`)
   );
   await Promise.all(oldParts.map((entry) => unlink(path.join(GAME_DIR, entry))));
@@ -78,7 +115,6 @@ async function splitArchive(filePath, fileName, fileSize) {
         await unlink(partPath);
         break;
       }
-
       if (partBytes > PAGES_MAX_BYTES) {
         throw new Error(`Generated segment exceeds the Pages limit: ${partName}`);
       }
@@ -94,7 +130,7 @@ async function splitArchive(filePath, fileName, fileSize) {
     );
   }
 
-  // Only remove the source after every output segment has been written.
+  // Only remove the deployment copy once every segment was written successfully.
   await unlink(filePath);
   return generated;
 }
@@ -103,7 +139,6 @@ async function listFiles(directory, relative = "") {
   const results = [];
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     if (entry.name === ".git" || entry.name === "node_modules") continue;
-
     const absolute = path.join(directory, entry.name);
     const rel = path.join(relative, entry.name);
     if (entry.isDirectory()) {
@@ -116,19 +151,18 @@ async function listFiles(directory, relative = "") {
 }
 
 async function main() {
-  // Read the checked-in map first so a retry can recover if a previous build
-  // stopped after generating segments but before rewriting index.html.
+  await copyStaticSite();
+
   const html = await readFile(INDEX_FILE, "utf8");
   const archiveMapMatch = html.match(
-    /(const deltaruneArchives\s*=\s*)(\{[^\n]*\})(;)/
+    /(const deltaruneArchives\\s*=\\s*)(\\{[^\\n]*\\})(;)/
   );
   if (!archiveMapMatch) {
-    throw new Error("Could not find the deltaruneArchives map in games/deltarune/index.html");
+    throw new Error("Could not find the deltaruneArchives map in dist/games/deltarune/index.html");
   }
 
   const archiveMap = JSON.parse(archiveMapMatch[2]);
   const referencedArchives = [...new Set(Object.values(archiveMap).flat())];
-  const directoryEntries = await readdir(GAME_DIR);
   const splitFiles = new Map();
 
   for (const fileName of referencedArchives) {
@@ -136,14 +170,11 @@ async function main() {
     let info;
     try {
       info = await stat(archivePath);
-    } catch (error) {
-      if (error?.code !== "ENOENT") throw error;
-
-      // Resume a partially completed build if its source was already removed.
-      const existingParts = directoryEntries
+    } catch {
+      const existingParts = (await readdir(GAME_DIR))
         .filter((entry) =>
           entry.startsWith(`${fileName}.pages-part`) &&
-          /\.pages-part\d{3}$/.test(entry)
+          /\\.pages-part\\d{3}$/.test(entry)
         )
         .sort();
       if (existingParts.length < 2) {
@@ -167,8 +198,8 @@ async function main() {
     );
   }
 
-  // Rewrite only the generated deployment copy of the archive map. The
-  // checked-in index.html still points to the original files for local use.
+  // The deployed loader joins each generated set back into the original byte
+  // stream in order. The checked-in index.html and source archives stay intact.
   for (const [chapter, archiveChunks] of Object.entries(archiveMap)) {
     archiveMap[chapter] = archiveChunks.flatMap((fileName) =>
       splitFiles.get(fileName) ?? [fileName]
@@ -181,10 +212,9 @@ async function main() {
   );
   await writeFile(INDEX_FILE, rewrittenHtml, "utf8");
 
-  // Fail early with a useful filename rather than allowing Pages asset
-  // validation to fail later with the generic exit-code message.
+  const outputFiles = await listFiles(OUT_DIR);
   const oversized = [];
-  for (const file of await listFiles(ROOT)) {
+  for (const file of outputFiles) {
     const info = await stat(file.absolute);
     if (info.size > PAGES_MAX_BYTES) {
       oversized.push(
@@ -192,32 +222,32 @@ async function main() {
       );
     }
   }
-
   if (oversized.length) {
     throw new Error(
-      "Files still exceed Cloudflare Pages' 25 MiB asset limit:\n" +
-      oversized.map((file) => ` - ${file}`).join("\n")
+      "Files still exceed Cloudflare Pages' 25 MiB asset limit:\\n" +
+      oversized.map((file) => ` - ${file}`).join("\\n")
     );
   }
 
-  // Confirm that every filename in the rewritten map exists before upload.
   for (const [chapter, chunks] of Object.entries(archiveMap)) {
     for (const chunk of chunks) {
-      const chunkPath = path.join(GAME_DIR, chunk);
       try {
-        await stat(chunkPath);
+        await stat(path.join(GAME_DIR, chunk));
       } catch {
         throw new Error(`Chapter ${chapter} archive piece is missing: ${chunk}`);
       }
     }
   }
 
+  if (archiveMapMatch[2] && !rewrittenHtml.includes("deltaruneArchives")) {
+    throw new Error("Deployment page lost the Deltarune archive map.");
+  }
   console.log(
-    `Pages build preparation complete. Split ${splitFiles.size} archive file(s); all output assets are at or below 25 MiB.`
+    `Pages build complete: copied ${outputFiles.length} static files to dist/; split ${splitFiles.size} archive file(s); every asset is at or below 25 MiB.`
   );
 }
 
 main().catch((error) => {
-  console.error(error instanceof Error ? error.message : error);
+  console.error(error instanceof Error ? error.stack || error.message : error);
   process.exitCode = 1;
 });
