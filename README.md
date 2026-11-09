@@ -6,6 +6,7 @@ A self-hosted browser-game library built from files in this repository and deplo
 
 - **Undertale** — local browser build in `games/undertale/`.
 - **Deltarune** — local browser build in `games/deltarune/`. Its large archive chunks are split for Cloudflare Pages during the build and reassembled by the game loader at runtime.
+- **Ballistic** — upstream AGPL-3.0 browser shooter, built and hosted locally in `games/ballistic/`; upstream licence and source are included.
 - **14 Papa's games** — local Standard Version SWF files in `games/papas-*/`, played through the local Ruffle WebAssembly runtime in `games/ruffle/`.
 
 Only titles with actual local files are included in the published static catalogue. A link to a remote game is not counted as a self-hosted game.
