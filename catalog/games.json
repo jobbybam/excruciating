@@ -193,17 +193,6 @@
       "attribution": "© Flipline Studios. Official Standard Version supplied for website hosting.",
       "published": true,
       "thumbnail": "/games/papas-pizzeria/thumbnail.jpg"
-    },
-    {
-      "slug": "brick-breaker",
-      "title": "Brick Breaker",
-      "category": "Arcade",
-      "description": "Original locally hosted brick-breaking arcade game with keyboard, mouse and touch controls.",
-      "url": "/games/brick-breaker/index.html",
-      "source_url": "https://github.com/jobbybam/excruciating",
-      "license": "Original code created for Excruciating Leg Pain; no third-party game assets.",
-      "attribution": "Original Excruciating Leg Pain game.",
-      "published": true
     }
   ]
 }
