@@ -1,55 +1,53 @@
-# excruciating
+# Excruciating Leg Pain
 
-A self-hosted browser-game library deployed from this GitHub repository with Cloudflare Pages.
+A self-hosted browser-game library built from files in this repository and deployed with Cloudflare Pages.
 
-## Current catalogue
+## Locally hosted games
 
-- **Geometry Dash (Scratch)** — a self-hosted Scratch/TurboWarp fan game in `games/geometry-dash/`, with its MIT licence and attribution.
-- **14 Papa's restaurant games** — the official Standard Version SWF downloads from Flipline's “Free Games for your Site” programme, hosted locally with the self-hosted Ruffle player. Each folder contains its source/hosting notice.
-- **Sound Buttons Space** — https://soundbuttonsspace.com/en/categories (the requested sound-button categories destination).
+- **Undertale** — local browser build in `games/undertale/`.
+- **Deltarune** — local browser build in `games/deltarune/`. Its large archive chunks are split for Cloudflare Pages during the build and reassembled by the game loader at runtime.
+- **14 Papa's games** — local Standard Version SWF files in `games/papas-*/`, played through the local Ruffle WebAssembly runtime in `games/ruffle/`.
 
-Only the games listed in the catalogue are displayed. The unrelated generic mini-games and the old bulk-import workflow have been removed.
+Only titles with actual local files are included in the published static catalogue. A link to a remote game is not counted as a self-hosted game.
 
-## Add your own games
+## Add games
 
 Follow [ADDING_GAMES.md](ADDING_GAMES.md). In brief:
 
-1. Check that you created the game, have written permission, or its licence permits redistribution and self-hosting.
-2. Put all files in `games/<slug>/`, with `index.html` directly inside that folder.
-3. Upload/commit the folder to the `main` branch.
-4. After Cloudflare Pages deploys it, sign in at `/admin` and publish the title, category, thumbnail, source URL, licence and attribution.
+1. Add the game's complete files to `games/<slug>/`, with `index.html` directly inside the folder.
+2. Check that you created the game, have written permission, or its licence allows redistribution and self-hosting.
+3. Commit the game files to `main`.
+4. Publish it in the static catalogue only after checking that it runs locally.
 
-Keep all relative asset paths working. Do not copy proprietary games or assets just because a browser archive or GitHub repository contains them.
+Keep all local asset paths working. Do not copy proprietary games or assets just because a browser archive or GitHub repository contains them.
 
-## Cloudflare hosting
+## Cloudflare build
 
-- Cloudflare Pages serves the static site and game files from this repository.
-- Pages Functions provide the API and admin routes.
-- Cloudflare D1 stores the catalogue and chat messages.
+The build command is `npm run build`. It creates a clean `dist/` deployment directory, copies the static site into it, splits any Deltarune archive file larger than Cloudflare Pages' 25 MiB per-file limit into 20 MiB pieces, and updates only the deployment copy of the Deltarune loader's archive map. The loader fetches those pieces and concatenates them in their original order into a Blob before starting the game.
+
+The original Deltarune archive chunks in Git remain unchanged. Pages Functions and D1 migrations remain in the repository root and are not copied into the static output directory.
+
+## Cloudflare Pages setup
+
+Use these settings for the Pages project:
+
+- **Root directory:** `. ` (the repository root, without a subdirectory)
+- **Build command:** `npm run build`
+- **Build output directory:** `dist`
+
+The Wrangler configuration also sets `pages_build_output_dir = "./dist"`.
+
+The root `_headers` file sets the Ruffle `.wasm` files to `Content-Type: application/wasm`, which is required for reliable WebAssembly loading.
+
+## Cloudflare services
+
+- Pages serves the static site and locally hosted game assets.
+- Pages Functions provide the API and admin/chat routes.
+- D1 stores the catalogue and chat messages.
 - No R2 bucket or paid storage service is used.
-- The Pages build splits oversized Deltarune archive pieces into deployment-only files no larger than 20 MiB; the generated game page joins them back together in order. The checked-in archive files remain unchanged.
 
-The Cloudflare free-plan quotas and file-size limits apply.
+Apply D1 migrations and set `ADMIN_PASSWORD` and `SESSION_SECRET` as Pages secrets in Cloudflare. Never commit passwords, session secrets or API tokens. Admin is available at `/admin` and is intentionally not linked on the public page.
 
-## Cloudflare setup
+## Status
 
-1. Connect this repository to a Cloudflare Pages project named `excruciating`, with root directory `.` and build command `npm run build`. Set the build output directory to `.`. The build command is required so the Deltarune archive pieces are split before Pages validates and uploads the assets.
-2. Create the D1 database if required:
-   ```sh
-   npx wrangler d1 create excruciating
-   ```
-3. Apply pending migrations:
-   ```sh
-   npx wrangler d1 migrations apply excruciating --remote
-   ```
-4. Set `ADMIN_PASSWORD` and `SESSION_SECRET` as Pages secrets:
-   ```sh
-   npx wrangler pages secret put ADMIN_PASSWORD --project-name excruciating
-   npx wrangler pages secret put SESSION_SECRET --project-name excruciating
-   ```
-
-Never commit passwords, session secrets or API tokens. Admin is available at `/admin`; it is intentionally not linked on the public page.
-
-## Deployment status
-
-A GitHub commit does not prove Cloudflare has deployed it or applied D1 migrations. Test game playback, admin publishing and chat on the deployed Pages hostname.
+A successful Git commit is not proof that Cloudflare has deployed it or applied D1 migrations. Check the latest Pages deployment and test each game in the live player.
