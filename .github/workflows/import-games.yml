@@ -10,6 +10,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: excruciating-game-imports
+  cancel-in-progress: false
+
 jobs:
   import-games:
     runs-on: ubuntu-latest
