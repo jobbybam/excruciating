@@ -27,12 +27,13 @@ Keep all relative asset paths working. Do not copy proprietary games or assets j
 - Pages Functions provide the API and admin routes.
 - Cloudflare D1 stores the catalogue and chat messages.
 - No R2 bucket or paid storage service is used.
+- The Pages build splits oversized Deltarune archive pieces into deployment-only files no larger than 20 MiB; the generated game page joins them back together in order. The checked-in archive files remain unchanged.
 
 The Cloudflare free-plan quotas and file-size limits apply.
 
 ## Cloudflare setup
 
-1. Connect this repository to a Cloudflare Pages project named `excruciating`, with root directory `.` and no build command.
+1. Connect this repository to a Cloudflare Pages project named `excruciating`, with root directory `.` and build command `npm run build`. Set the build output directory to `.`. The build command is required so the Deltarune archive pieces are split before Pages validates and uploads the assets.
 2. Create the D1 database if required:
    ```sh
    npx wrangler d1 create excruciating
