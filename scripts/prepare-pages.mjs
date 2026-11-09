@@ -120,7 +120,7 @@ async function main() {
   // stopped after generating segments but before rewriting index.html.
   const html = await readFile(INDEX_FILE, "utf8");
   const archiveMapMatch = html.match(
-    /(const deltaruneArchives\\s*=\\s*)(\\{[^\\n]*\\})(;)/
+    /(const deltaruneArchives\s*=\s*)(\{[^\n]*\})(;)/
   );
   if (!archiveMapMatch) {
     throw new Error("Could not find the deltaruneArchives map in games/deltarune/index.html");
@@ -143,7 +143,7 @@ async function main() {
       const existingParts = directoryEntries
         .filter((entry) =>
           entry.startsWith(`${fileName}.pages-part`) &&
-          /\\.pages-part\\d{3}$/.test(entry)
+          /\.pages-part\d{3}$/.test(entry)
         )
         .sort();
       if (existingParts.length < 2) {
