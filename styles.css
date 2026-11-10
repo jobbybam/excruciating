@@ -203,11 +203,6 @@ html,body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans
 .library-heading{align-items:center}
 .library-heading>div{display:flex;align-items:baseline;gap:12px}
 .continue-section{margin-bottom:34px}
-.continue-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
-.continue-card{padding:10px}
-.continue-card .game-thumb{aspect-ratio:16/9;border-radius:11px}
-.continue-card .game-name{margin-top:12px;font-size:15px;font-weight:700}
-.continue-card .game-category{margin-top:6px}
 .chat-toggle{position:relative;border-radius:11px}
 .chat-unread{position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;padding:0 4px;border-radius:20px;background:#eee;color:#111;border:2px solid #080808;font-size:9px;font-weight:800;display:grid;place-items:center}
 .chat-panel{border:1px solid #303030;box-shadow:0 18px 60px #000c}
@@ -232,9 +227,21 @@ html,body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans
 @keyframes rise-in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
 .game-card,.admin-card{animation:rise-in .24s ease both}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
-@media(max-width:620px){.library-heading{align-items:flex-start;gap:12px}.library-heading>div{display:block}.library-heading .muted{display:block;margin-top:5px}.continue-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.continue-card{padding:7px}.continue-card .game-name{font-size:13px}.suggest-dialog{padding:17px}.admin-row-actions{flex-direction:column;align-items:flex-end}}
+@media(max-width:620px){.library-heading{align-items:flex-start;gap:12px}.library-heading>div{display:block}.library-heading .muted{display:block;margin-top:5px}.suggest-dialog{padding:17px}.admin-row-actions{flex-direction:column;align-items:flex-end}}
 
 .chat-heading-actions{display:flex;align-items:center;gap:9px}
 .chat-heading-actions #chat-close{font-size:22px}
 .suggestion-link{display:inline-block;margin-top:5px;color:#aaa;font-size:10px;text-decoration:underline;text-underline-offset:3px}
 .suggestion-link:hover{color:#fff}
+
+.chat-toasts{position:fixed;left:20px;bottom:20px;z-index:40;display:flex;flex-direction:column;gap:9px;pointer-events:none;width:min(340px,calc(100vw - 32px));}
+.chat-toast{display:flex;flex-direction:column;gap:4px;padding:12px 15px;border:1px solid #343434;border-radius:12px;background:rgba(18,18,18,.97);box-shadow:0 12px 36px #0009;opacity:0;transform:translateY(12px);transition:opacity .22s ease,transform .22s ease;overflow-wrap:anywhere;}
+.chat-toast.is-visible{opacity:1;transform:translateY(0);}
+.chat-toast strong{font-size:12px;font-weight:750;color:#fff;}
+.chat-toast span{font-size:12px;line-height:1.4;color:#c8c8c8;}
+.blocklist-form{display:grid!important;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:10px!important;margin-bottom:14px;}
+.blocklist-form label{min-width:0;}
+.blocklist-form .form-status{grid-column:1/-1;margin:0;}
+.blocklist-row{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid #222;padding:10px 0;}
+.blocklist-row strong{font-size:12px;font-weight:600;overflow-wrap:anywhere;}
+@media(max-width:620px){.chat-toasts{left:12px;bottom:12px}.blocklist-form{grid-template-columns:1fr!important}.blocklist-form button{width:100%}}
