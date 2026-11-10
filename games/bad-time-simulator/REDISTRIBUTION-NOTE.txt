@@ -1,0 +1,5 @@
+Bad Time Simulator compiled mirror.
+Source: https://github.com/FlafyDev/bad-time-simulator-compiled
+Original project: https://github.com/Jcw87/c2-sans-fight
+The site owner reports receiving permission from the compiled build's developer to mirror this build.
+Bad Time Simulator is an unofficial fan project and is not affiliated with Toby Fox.

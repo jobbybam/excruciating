@@ -1,5 +1,5 @@
 {
-  "version": 24,
+  "version": 25,
   "source": "Locally hosted games; Soundboard is an external site link.",
   "attribution": "Each locally hosted title retains its source-specific attribution and licence/hosting notice.",
   "games": [
@@ -465,6 +465,66 @@
       "url": "https://soundbuttonsspace.org",
       "external": true,
       "published": true
+    },
+    {
+      "slug": "bad-time-simulator",
+      "title": "Bad Time Simulator",
+      "category": "Action",
+      "description": "Locally hosted compiled Bad Time Simulator mirror.",
+      "url": "/games/bad-time-simulator/index.html",
+      "thumbnail": "/games/bad-time-simulator/icon-256.png",
+      "source_url": "https://github.com/FlafyDev/bad-time-simulator-compiled",
+      "license": "Redistribution rights not independently verified; see REDISTRIBUTION-NOTE.txt.",
+      "attribution": "Compiled build by FlafyDev; original project by Jcw87. Unofficial fan project.",
+      "published": true
+    },
+    {
+      "slug": "fnaf-1",
+      "title": "Five Nights at Freddy's 1",
+      "category": "Horror",
+      "description": "Locally hosted unofficial HTML remake of Five Nights at Freddy's 1.",
+      "url": "/games/fnaf-1/index.html",
+      "thumbnail": "/games/fnaf-1/resources/title.png",
+      "source_url": "https://github.com/irv77/hd_fnaf",
+      "license": "Redistribution rights not independently verified; see REDISTRIBUTION-NOTE.txt.",
+      "attribution": "Unofficial browser remake by irv77. Five Nights at Freddy's © Scott Cawthon.",
+      "published": true
+    },
+    {
+      "slug": "fnaf-2",
+      "title": "Five Nights at Freddy's 2",
+      "category": "Horror",
+      "description": "Locally hosted unofficial HTML remake of Five Nights at Freddy's 2.",
+      "url": "/games/fnaf-2/index.html",
+      "thumbnail": "/games/fnaf-2/resources/title.png",
+      "source_url": "https://github.com/irv77/hd_fnaf",
+      "license": "Redistribution rights not independently verified; see REDISTRIBUTION-NOTE.txt.",
+      "attribution": "Unofficial browser remake by irv77. Five Nights at Freddy's © Scott Cawthon.",
+      "published": true
+    },
+    {
+      "slug": "fnaf-3",
+      "title": "Five Nights at Freddy's 3",
+      "category": "Horror",
+      "description": "Locally hosted unofficial HTML remake of Five Nights at Freddy's 3.",
+      "url": "/games/fnaf-3/index.html",
+      "thumbnail": "/games/fnaf-3/resources/title.png",
+      "source_url": "https://github.com/irv77/hd_fnaf",
+      "license": "Redistribution rights not independently verified; see REDISTRIBUTION-NOTE.txt.",
+      "attribution": "Unofficial browser remake by irv77. Five Nights at Freddy's © Scott Cawthon.",
+      "published": true
+    },
+    {
+      "slug": "fnaf-4",
+      "title": "Five Nights at Freddy's 4",
+      "category": "Horror",
+      "description": "Locally hosted unofficial HTML remake of Five Nights at Freddy's 4.",
+      "url": "/games/fnaf-4/index.html",
+      "thumbnail": "/games/fnaf-4/resources/title.png",
+      "source_url": "https://github.com/irv77/hd_fnaf",
+      "license": "Redistribution rights not independently verified; see REDISTRIBUTION-NOTE.txt.",
+      "attribution": "Unofficial browser remake by irv77. Five Nights at Freddy's © Scott Cawthon.",
+      "published": true
     }
   ]
-}
+}\n
