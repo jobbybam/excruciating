@@ -283,3 +283,5 @@ html,body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans
 #changelog-form textarea{width:100%;min-width:0;border:1px solid #303030;border-radius:6px;background:#090909;color:#eee;padding:10px;font:inherit;font-size:12px;line-height:1.5;resize:vertical;outline:none}
 #changelog-form textarea:focus{border-color:#777}
 @media(max-width:620px){.public-changelog{padding-left:18px;padding-right:18px}.changelog-admin-entry{flex-wrap:wrap}}
+
+#featured-section{margin-bottom:34px}#featured-section .section-heading{margin-bottom:14px}
