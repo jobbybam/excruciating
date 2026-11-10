@@ -3,8 +3,10 @@ CREATE TABLE IF NOT EXISTS chat_users (
   username TEXT NOT NULL COLLATE NOCASE UNIQUE,
   password_salt TEXT NOT NULL,
   password_hash TEXT NOT NULL,
+  registration_ip_hash TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+CREATE INDEX IF NOT EXISTS idx_chat_users_registration_ip ON chat_users(registration_ip_hash, created_at);
 ALTER TABLE chat_messages ADD COLUMN user_id INTEGER REFERENCES chat_users(id);
 CREATE INDEX IF NOT EXISTS idx_chat_user_created ON chat_messages(user_id, created_at);
 CREATE TABLE IF NOT EXISTS chat_auth_attempts (
