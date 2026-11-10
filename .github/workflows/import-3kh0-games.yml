@@ -7,16 +7,36 @@ on:
       - ".github/workflows/import-3kh0-games.yml"
 permissions:
   contents: write
-concurrency:
-  group: excruciating-game-imports
-  cancel-in-progress: false
 jobs:
   import:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Clone the 3kh0 GitLab assets repository
-        run: git clone --depth 1 https://gitlab.com/3kh0/3kh0-assets.git /tmp/3kh0-assets
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            catalog/games.json
+            games/bitlife
+            games/geodash
+            games/happywheels
+            games/jetpack-joyride
+            games/motox3m
+            games/monster-tracks
+            games/ovo
+            games/rooftop-snipers
+            games/slope
+            games/yohoho
+            games/eaglerfaithful
+          sparse-checkout-cone-mode: false
+      - name: Clone only the requested 3kh0 GitLab game folders
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --depth 1 --filter=blob:none --no-checkout https://gitlab.com/3kh0/3kh0-assets.git /tmp/3kh0-assets
+          git -C /tmp/3kh0-assets sparse-checkout init --cone
+          git -C /tmp/3kh0-assets sparse-checkout set bitlife geodash happywheels jetpack-joyride motox3m monster-tracks ovo rooftop-snipers slope yohoho eaglerfaithful
+          git -C /tmp/3kh0-assets checkout
       - name: Import only requested game folders
         shell: bash
         run: |
@@ -86,7 +106,10 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add games/ catalog/games.json
+          git add catalog/games.json
+          for folder in bitlife geodash happywheels jetpack-joyride motox3m monster-tracks ovo rooftop-snipers slope yohoho eaglerfaithful; do
+            if [ -d "games/$folder" ]; then git add "games/$folder"; fi
+          done
           git commit -m "Add requested locally hosted 3kh0 games"
           git fetch origin main
           git rebase origin/main
