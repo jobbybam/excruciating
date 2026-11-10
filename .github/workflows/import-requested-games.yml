@@ -34,6 +34,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          if [ -s games/bad-time-simulator/index.html ] && \
+             [ -s games/fnaf-1/index.html ] && [ -s games/fnaf-2/index.html ] && \
+             [ -s games/fnaf-3/index.html ] && [ -s games/fnaf-4/index.html ]; then
+            echo "Bad Time Simulator and FNAF 1-4 are already imported."
+            exit 0
+          fi
           tmp="$(mktemp -d)"
           trap 'rm -rf "$tmp"' EXIT
 
