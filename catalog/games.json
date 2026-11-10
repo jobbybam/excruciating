@@ -1,6 +1,6 @@
 {
-  "version": 14,
-  "source": "Locally hosted games only.",
+  "version": 15,
+  "source": "Locally hosted selected 3kh0 games from GitLab.",
   "attribution": "Each locally hosted title retains its source-specific attribution and licence/hosting notice.",
   "games": [
     {
@@ -193,6 +193,127 @@
       "attribution": "© Flipline Studios. Official Standard Version supplied for website hosting.",
       "published": true,
       "thumbnail": "/games/papas-pizzeria/thumbnail.jpg"
+    },
+    {
+      "slug": "bitlife",
+      "title": "BitLife",
+      "category": "Simulation",
+      "description": "Locally hosted game imported from the 3kh0 assets collection.",
+      "url": "/games/bitlife/index.html",
+      "source_url": "https://gitlab.com/3kh0/3kh0-assets",
+      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
+      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
+      "published": true
+    },
+    {
+      "slug": "geodash",
+      "title": "Geometry Dash",
+      "category": "Arcade",
+      "description": "Locally hosted game imported from the 3kh0 assets collection.",
+      "url": "/games/geodash/index.html",
+      "source_url": "https://gitlab.com/3kh0/3kh0-assets",
+      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
+      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
+      "published": true
+    },
+    {
+      "slug": "happywheels",
+      "title": "Happy Wheels",
+      "category": "Action",
+      "description": "Locally hosted game imported from the 3kh0 assets collection.",
+      "url": "/games/happywheels/index.html",
+      "source_url": "https://gitlab.com/3kh0/3kh0-assets",
+      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
+      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
+      "published": true
+    },
+    {
+      "slug": "jetpack-joyride",
+      "title": "Jetpack Joyride",
+      "category": "Arcade",
+      "description": "Locally hosted game imported from the 3kh0 assets collection.",
+      "url": "/games/jetpack-joyride/index.html",
+      "source_url": "https://gitlab.com/3kh0/3kh0-assets",
+      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
+      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
+      "published": true
+    },
+    {
+      "slug": "motox3m",
+      "title": "Moto X3M",
+      "category": "Racing",
+      "description": "Locally hosted game imported from the 3kh0 assets collection.",
+      "url": "/games/motox3m/index.html",
+      "source_url": "https://gitlab.com/3kh0/3kh0-assets",
+      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
+      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
+      "published": true
+    },
+    {
+      "slug": "monster-tracks",
+      "title": "Monster Tracks",
+      "category": "Racing",
+      "description": "Locally hosted game imported from the 3kh0 assets collection.",
+      "url": "/games/monster-tracks/index.html",
+      "source_url": "https://gitlab.com/3kh0/3kh0-assets",
+      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
+      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
+      "published": true
+    },
+    {
+      "slug": "ovo",
+      "title": "OvO",
+      "category": "Platformer",
+      "description": "Locally hosted game imported from the 3kh0 assets collection.",
+      "url": "/games/ovo/index.html",
+      "source_url": "https://gitlab.com/3kh0/3kh0-assets",
+      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
+      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
+      "published": true
+    },
+    {
+      "slug": "rooftop-snipers",
+      "title": "Rooftop Snipers",
+      "category": "Action",
+      "description": "Locally hosted game imported from the 3kh0 assets collection.",
+      "url": "/games/rooftop-snipers/index.html",
+      "source_url": "https://gitlab.com/3kh0/3kh0-assets",
+      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
+      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
+      "published": true
+    },
+    {
+      "slug": "slope",
+      "title": "Slope",
+      "category": "Arcade",
+      "description": "Locally hosted game imported from the 3kh0 assets collection.",
+      "url": "/games/slope/index.html",
+      "source_url": "https://gitlab.com/3kh0/3kh0-assets",
+      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
+      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
+      "published": true
+    },
+    {
+      "slug": "yohoho",
+      "title": "Yohoho.io",
+      "category": "Multiplayer",
+      "description": "Locally hosted game imported from the 3kh0 assets collection.",
+      "url": "/games/yohoho/index.html",
+      "source_url": "https://gitlab.com/3kh0/3kh0-assets",
+      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
+      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
+      "published": true
+    },
+    {
+      "slug": "eaglerfaithful",
+      "title": "Eaglercraft",
+      "category": "Multiplayer",
+      "description": "Locally hosted game imported from the 3kh0 assets collection.",
+      "url": "/games/eaglerfaithful/index.html",
+      "source_url": "https://gitlab.com/3kh0/3kh0-assets",
+      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
+      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
+      "published": true
     }
   ]
 }
