@@ -245,7 +245,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add catalog/games.json
-          for folder in bitlife geodash happywheels jetpack-joyride motox3m motox3m-pool motox3m-spooky motox3m-winter google-snake draw-the-hill chrome-dino eggycar stack snowrider3d temple-run-2 monster-tracks ovo rooftop-snipers slope yohoho eaglerfaithful polytrack; do
+          for folder in bitlife geodash happywheels jetpack-joyride motox3m motox3m-pool motox3m-spooky motox3m-winter motox3m2 google-snake draw-the-hill chrome-dino eggycar stack snowrider3d temple-run-2 monster-tracks ovo rooftop-snipers slope yohoho eaglerfaithful polytrack; do
             if [ -d "games/$folder" ]; then git add "games/$folder"; fi
           done
           git commit -m "Add requested locally hosted 3kh0 games" || echo "No catalogue or game changes to commit."
