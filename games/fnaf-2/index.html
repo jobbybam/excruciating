@@ -129,11 +129,39 @@
             margin: 1vh 0;
             font-size: 1.4vw;
         }
+
+        #mobile-ctrl {
+            display: none;
+            position: fixed;
+            right: max(18px, env(safe-area-inset-right));
+            bottom: max(18px, env(safe-area-inset-bottom));
+            z-index: 100000;
+            min-width: 88px;
+            min-height: 64px;
+            padding: 12px 18px;
+            border: 2px solid rgba(255,255,255,.8);
+            border-radius: 14px;
+            background: rgba(15,15,15,.82);
+            color: #fff;
+            font: 700 16px/1 system-ui, sans-serif;
+            letter-spacing: .08em;
+            touch-action: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        #mobile-ctrl:active, #mobile-ctrl.is-pressed {
+            background: rgba(255,255,255,.28);
+            border-color: #fff;
+            transform: scale(.97);
+        }
+        @media (hover: none), (pointer: coarse) {
+            #mobile-ctrl { display: block; }
+        }
     </style>
 </head>
 
 <body>
-    <canvas id="MMFCanvas" width="1024" height="768"> Your browser does not support Canvas, Please try again.</canvas>
+    <button id="mobile-ctrl" type="button" aria-label="Hold Control key">CTRL</button>\n    <canvas id="MMFCanvas" width="1024" height="768"> Your browser does not support Canvas, Please try again.</canvas>
     <div class="selection" id="selection">
         <img id="title" src="resources/title.png">
         <img id="animatronic" src="resources/animatronic.png">
@@ -152,7 +180,43 @@
 </body>
 <!--Made by irv77-->
 <script>
-    const parts = 20;
+
+    // Mobile CTRL control: hold to send the same Control key event as a keyboard.
+    (() => {
+        const button = document.getElementById('mobile-ctrl');
+        if (!button) return;
+        let held = false;
+        function send(type) {
+            const event = new KeyboardEvent(type, {
+                key: 'Control', code: 'ControlLeft', location: KeyboardEvent.DOM_KEY_LOCATION_LEFT,
+                bubbles: true, cancelable: true
+            });
+            try {
+                Object.defineProperty(event, 'keyCode', { get: () => 17 });
+                Object.defineProperty(event, 'which', { get: () => 17 });
+            } catch (_) {}
+            document.dispatchEvent(event);
+        }
+        function release() {
+            if (!held) return;
+            held = false;
+            button.classList.remove('is-pressed');
+            send('keyup');
+        }
+        button.addEventListener('pointerdown', event => {
+            event.preventDefault();
+            if (held) return;
+            held = true;
+            button.classList.add('is-pressed');
+            try { button.setPointerCapture(event.pointerId); } catch (_) {}
+            send('keydown');
+        });
+        ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(type => button.addEventListener(type, release));
+        window.addEventListener('blur', release);
+        document.addEventListener('visibilitychange', () => { if (document.hidden) release(); });
+        document.addEventListener('contextmenu', event => { if (event.target === button) event.preventDefault(); });
+    })();
+\n    const parts = 20;
     let gametitle, runtimecanvas
     gametitle = document.title;
     runtimecanvas = "resources/FiveNights2NOHACKS.cch";
