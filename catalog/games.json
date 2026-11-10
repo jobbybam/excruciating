@@ -1,6 +1,6 @@
 {
-  "version": 11,
-  "source": "Only locally hosted game files are listed. External destinations are not published as games.",
+  "version": 12,
+  "source": "Locally hosted games plus explicitly identified official external Web Players.",
   "attribution": "Each locally hosted title retains its source-specific attribution and licence/hosting notice.",
   "games": [
     {
@@ -203,6 +203,18 @@
       "source_url": "https://github.com/xtreemze/Ballistic",
       "license": "GNU AGPL-3.0; upstream source and licence retained in games/ballistic/SOURCE and games/ballistic/LICENSE",
       "attribution": "Ballistic by Carlos Velasco (xtreemze). Unofficial self-hosted build; source and licence included.",
+      "published": true
+    },
+    {
+      "slug": "undertale-10th-anniversary-sans",
+      "title": "Undertale 10th Anniversary: Sans Fight",
+      "category": "Action",
+      "description": "The official Undertale 10th Anniversary Sans battle. Opens the official browser Web Player.",
+      "url": "https://ut10-battle.undertale.com",
+      "external": true,
+      "source_url": "https://undertale.com/10/",
+      "license": "Official Web Player linked externally; game files are not mirrored or rehosted.",
+      "attribution": "UNDERTALE © Toby Fox. Official 10th Anniversary battle.",
       "published": true
     }
   ]
