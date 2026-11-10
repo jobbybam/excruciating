@@ -1,5 +1,5 @@
 {
-  "version": 13,
+  "version": 14,
   "source": "Locally hosted games only.",
   "attribution": "Each locally hosted title retains its source-specific attribution and licence/hosting notice.",
   "games": [
@@ -193,17 +193,6 @@
       "attribution": "© Flipline Studios. Official Standard Version supplied for website hosting.",
       "published": true,
       "thumbnail": "/games/papas-pizzeria/thumbnail.jpg"
-    },
-    {
-      "slug": "ballistic",
-      "title": "Ballistic",
-      "category": "Action",
-      "description": "Self-hosted first-person 3D physics shooter with desktop and touch controls.",
-      "url": "/games/ballistic/index.html",
-      "source_url": "https://github.com/xtreemze/Ballistic",
-      "license": "GNU AGPL-3.0; upstream source and licence retained in games/ballistic/SOURCE and games/ballistic/LICENSE",
-      "attribution": "Ballistic by Carlos Velasco (xtreemze). Unofficial self-hosted build; source and licence included.",
-      "published": true
     }
   ]
 }
