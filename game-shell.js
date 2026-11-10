@@ -46,7 +46,8 @@
   back.innerHTML = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18 9 12l6-6M9 12h11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Games</span>';
   document.body.append(back);
 
-  const slug = location.pathname.match(/^\\/games\\/([^/]+)/)?.[1];
+  const pathParts = location.pathname.split("/").filter(Boolean);
+  const slug = pathParts[0] === "games" ? pathParts[1] : null;
   if (slug) {
     fetch("/catalog/games.json", { cache: "no-store" })
       .then(response => response.ok ? response.json() : null)
