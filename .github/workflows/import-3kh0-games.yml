@@ -114,6 +114,9 @@ jobs:
                   if folder.startswith("motox3m"):
                       content = re.sub(r'<script\b[^>]*(?:gamebridge\.js|pk-sdk\.js|imasdk\.googleapis\.com)[^>]*>.*?</script\s*>', '', content, flags=re.I|re.S)
                   content = re.sub(r'<script\b[^>]*src=["\']/js/main\.js["\'][^>]*>\s*</script\s*>', '', content, flags=re.I)
+                  if folder == "snowrider3d":
+                      content = content.replace("../images/", "images/")
+                      content = re.sub(r'<script\b[^>]*>[\s\S]*?</script\s*>', lambda match: "" if "o.s.src=o.f(" in match.group(0) else match.group(0), content, flags=re.I)
                   html.write_text(content, encoding="utf-8")
               index_page = dest / "index.html"
               page_html = index_page.read_text(encoding="utf-8")
