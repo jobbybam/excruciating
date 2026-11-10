@@ -226,7 +226,11 @@ jobs:
                           return "" if "pokisdk.displayad" in block or "pokisdk.destroyad" in block else match.group(0)
                       content = re.sub(r'<script\b[^>]*>[\s\S]*?</script\s*>', strip_poki_ad_helpers, content, flags=re.I)
                       stub = '<script>window.PokiSDK=window.PokiSDK||new Proxy({}, {get:(_,key)=>key==="rewardedBreak"?()=>Promise.resolve(false):()=>Promise.resolve()});</script>'
-                      content = content.replace("</head>", stub + "</head>", 1)
+                      first_script = re.search(r'<script\b[^>]+src=', content, flags=re.I)
+                      if first_script:
+                          content = content[:first_script.start()] + stub + content[first_script.start():]
+                      else:
+                          content = content.replace("</head>", stub + "</head>", 1)
                   html.write_text(content, encoding="utf-8")
               if folder == "monkey-mart":
                   for sdk_file in dest.glob("poki-sdk*.js"):
