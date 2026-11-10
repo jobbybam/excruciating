@@ -7,6 +7,9 @@ on:
       - ".github/workflows/import-3kh0-games.yml"
 permissions:
   contents: write
+concurrency:
+  group: excruciating-game-imports
+  cancel-in-progress: false
 jobs:
   import:
     runs-on: ubuntu-latest
@@ -75,8 +78,11 @@ jobs:
                   print(f"No root index.html; skipping: {folder}")
                   continue
               dest = target / folder
-              if dest.exists(): shutil.rmtree(dest)
-              shutil.copytree(src, dest, ignore=shutil.ignore_patterns(".git", ".github", "node_modules"))
+              if not (dest / "index.html").is_file():
+                  if dest.exists(): shutil.rmtree(dest)
+                  shutil.copytree(src, dest, ignore=shutil.ignore_patterns(".git", ".github", "node_modules"))
+              else:
+                  print(f"Keeping existing locally hosted game: {title}")
               files = [p for p in dest.rglob("*") if p.is_file()]
               oversized = [p for p in files if p.stat().st_size > 25 * 1024 * 1024]
               if oversized: raise SystemExit(f"{title}: file exceeds Cloudflare Pages 25 MiB limit: {oversized[0]}")
@@ -119,8 +125,11 @@ jobs:
           poly_dest = target / "polytrack"
           if not (poly_source / "index.html").is_file():
               raise SystemExit("PolyTrack source is missing its root index.html.")
-          if poly_dest.exists(): shutil.rmtree(poly_dest)
-          shutil.copytree(poly_source, poly_dest, ignore=shutil.ignore_patterns(".git", ".github", "node_modules"))
+          if not (poly_dest / "index.html").is_file():
+              if poly_dest.exists(): shutil.rmtree(poly_dest)
+              shutil.copytree(poly_source, poly_dest, ignore=shutil.ignore_patterns(".git", ".github", "node_modules"))
+          else:
+              print("Keeping existing locally hosted game: PolyTrack")
           oversized = [p for p in poly_dest.rglob("*") if p.is_file() and p.stat().st_size > 25 * 1024 * 1024]
           if oversized: raise SystemExit(f"PolyTrack file exceeds Cloudflare Pages 25 MiB limit: {oversized[0]}")
           poly_index = poly_dest / "index.html"
@@ -174,7 +183,7 @@ jobs:
           for folder in bitlife geodash happywheels jetpack-joyride motox3m monster-tracks ovo rooftop-snipers slope yohoho eaglerfaithful polytrack; do
             if [ -d "games/$folder" ]; then git add "games/$folder"; fi
           done
-          git commit -m "Add requested locally hosted 3kh0 games"
+          git commit -m "Add requested locally hosted 3kh0 games" || echo "No catalogue or game changes to commit."
           git fetch origin main
           git rebase origin/main
           git push
