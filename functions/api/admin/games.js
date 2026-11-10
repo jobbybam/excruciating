@@ -15,8 +15,8 @@ export async function onRequestGet({ request, env }) {
   const merged = catalogue.map(game => ({...game,...(bySlug.get(game.slug) || {})}));
   const known = new Set(catalogue.map(game => game.slug));
   for (const row of rows.results || []) if (!known.has(row.slug)) merged.push(row);
-  const rows=await env.DB.prepare("SELECT slug,position FROM featured_games ORDER BY position,created_at").all();
-  const featured=new Map((rows.results||[]).map(x=>[x.slug,Number(x.position)]));
+  const featuredRows=await env.DB.prepare("SELECT slug,position FROM featured_games ORDER BY position,created_at").all();
+  const featured=new Map((featuredRows.results||[]).map(x=>[x.slug,Number(x.position)]));
   return json({games:merged.map(g=>({...g,featured:featured.has(g.slug),featured_position:featured.get(g.slug)??null}))});
 }
 export async function onRequestPost({ request, env }) {
