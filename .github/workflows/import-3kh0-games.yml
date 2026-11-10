@@ -25,6 +25,9 @@ jobs:
             games/happywheels
             games/jetpack-joyride
             games/motox3m
+            games/motox3m-pool
+            games/motox3m-spooky
+            games/motox3m-winter
             games/monster-tracks
             games/ovo
             games/rooftop-snipers
@@ -94,8 +97,8 @@ jobs:
                   except UnicodeDecodeError: continue
                   content = content.replace(f"https://raw.githack.com/3kh0/3kh0-assets/main/{folder}/", f"/games/{folder}/")
                   content = content.replace(f"https://raw.githubusercontent.com/3kh0/3kh0-assets/main/{folder}/", f"/games/{folder}/")
-              if folder.startswith("motox3m"):
-                  content = re.sub(r'<script\\b[^>]*(?:gamebridge\\.js|pk-sdk\\.js|imasdk\\.googleapis\\.com)[^>]*>.*?</script\\s*>', '', content, flags=re.I|re.S)
+                  if folder.startswith("motox3m"):
+                      content = re.sub(r'<script\b[^>]*(?:gamebridge\.js|pk-sdk\.js|imasdk\.googleapis\.com)[^>]*>.*?</script\s*>', '', content, flags=re.I|re.S)
                   html.write_text(content, encoding="utf-8")
               index_page = dest / "index.html"
               page_html = index_page.read_text(encoding="utf-8")
@@ -190,7 +193,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add catalog/games.json
-          for folder in bitlife geodash happywheels jetpack-joyride motox3m monster-tracks ovo rooftop-snipers slope yohoho eaglerfaithful polytrack; do
+          for folder in bitlife geodash happywheels jetpack-joyride motox3m motox3m-pool motox3m-spooky motox3m-winter monster-tracks ovo rooftop-snipers slope yohoho eaglerfaithful polytrack; do
             if [ -d "games/$folder" ]; then git add "games/$folder"; fi
           done
           git commit -m "Add requested locally hosted 3kh0 games" || echo "No catalogue or game changes to commit."
