@@ -153,10 +153,9 @@ async function listFiles(directory, relative = "") {
 async function installGameShell() {
   const cataloguePath = path.join(OUT_DIR, "catalog", "games.json");
   const catalogue = JSON.parse(await readFile(cataloguePath, "utf8"));
-  const gamesRoot = path.join(OUT_DIR, "games");
   for (const game of catalogue.games ?? []) {
     if (game.published === false || !game.url || !game.url.startsWith("/games/")) continue;
-    const gameFile = path.join(OUT_DIR, game.url.replace(/^\//, ""));
+    const gameFile = path.join(OUT_DIR, game.url.replace(/^\\//, ""));
     let html;
     try {
       html = await readFile(gameFile, "utf8");
@@ -167,11 +166,13 @@ async function installGameShell() {
     const additions = [
       '<link rel="icon" type="image/svg+xml" href="/favicon.svg">',
       '<script src="/game-shell.js" defer></script>'
-    ].join("\\n    ");
-    if (/<\\/head>/i.test(html)) {
-      html = html.replace(/<\\/head>/i, `    ${additions}\\n</head>`);
+    ].join("\n    ");
+    const headEnd = html.toLowerCase().lastIndexOf("</head>");
+    if (headEnd >= 0) {
+      html = html.slice(0, headEnd) + "    " + additions + "\n" + html.slice(headEnd);
     } else {
-      html = html.replace(/<body\\b/i, `${additions}\\n<body`);
+      const bodyStart = html.toLowerCase().indexOf("<body");
+      if (bodyStart >= 0) html = html.slice(0, bodyStart) + additions + "\n" + html.slice(bodyStart);
     }
     await writeFile(gameFile, html, "utf8");
   }
