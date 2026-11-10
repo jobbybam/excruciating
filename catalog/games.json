@@ -1,5 +1,5 @@
 {
-  "version": 25,
+  "version": 26,
   "source": "Locally hosted games; Soundboard is an external site link.",
   "attribution": "Each locally hosted title retains its source-specific attribution and licence/hosting notice.",
   "games": [
@@ -474,7 +474,7 @@
       "url": "/games/bad-time-simulator/index.html",
       "thumbnail": "/games/bad-time-simulator/icon-256.png",
       "source_url": "https://github.com/FlafyDev/bad-time-simulator-compiled",
-      "license": "Redistribution rights not independently verified; see REDISTRIBUTION-NOTE.txt.",
+      "license": "Permission reported by site owner; see REDISTRIBUTION-NOTE.txt.",
       "attribution": "Compiled build by FlafyDev; original project by Jcw87. Unofficial fan project.",
       "published": true
     },
@@ -527,4 +527,4 @@
       "published": true
     }
   ]
-}\n
+}
