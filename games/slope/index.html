@@ -136,6 +136,15 @@
           Object.defineProperty(event, "which", { get: () => legacyCode });
           Object.defineProperty(event, "charCode", { get: () => 0 });
           document.dispatchEvent(event);
+          // Also emit the matching arrow key for builds that steer with arrows.
+          const arrow = key === "a" ? "ArrowLeft" : "ArrowRight";
+          const arrowEvent = new KeyboardEvent(type, {
+            key: arrow, code: arrow, bubbles: true, cancelable: true
+          });
+          const arrowCode = key === "a" ? 37 : 39;
+          Object.defineProperty(arrowEvent, "keyCode", { get: () => arrowCode });
+          Object.defineProperty(arrowEvent, "which", { get: () => arrowCode });
+          document.dispatchEvent(arrowEvent);
         };
         const release = (button) => {
           const key = button.dataset.key;
