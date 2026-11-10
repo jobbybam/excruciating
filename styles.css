@@ -108,3 +108,80 @@ footer{border-top:1px solid var(--line);padding:22px clamp(20px,5vw,76px);font-s
   .player-toolbar{margin-bottom:5px;}
   .game-frame-wrap{height:calc(100dvh - 54px);min-height:0;}
 }
+
+
+/* iPad and tablet layout: retain the desktop design, but give touch layouts
+   more room and keep the player within Safari's visible viewport. */
+@media (min-width: 621px) and (max-width: 1024px) {
+  .topbar {
+    height: 68px;
+    gap: 18px;
+    padding-inline: clamp(20px, 3.5vw, 36px);
+  }
+  .search-wrap {
+    width: min(48vw, 420px);
+  }
+  .shell {
+    padding: 26px clamp(22px, 4vw, 42px) 64px;
+  }
+  .categories {
+    gap: 9px;
+    padding-bottom: 22px;
+    -webkit-overflow-scrolling: touch;
+    scroll-padding-inline: 12px;
+  }
+  .category {
+    min-height: 40px;
+    padding: 10px 15px;
+    touch-action: manipulation;
+  }
+  .game-grid {
+    grid-template-columns: repeat(auto-fill, minmax(clamp(136px, 18vw, 174px), 1fr));
+    gap: 23px 15px;
+  }
+  .game-card {
+    -webkit-tap-highlight-color: transparent;
+  }
+  .player-page {
+    padding: 18px clamp(16px, 3vw, 32px) 36px;
+  }
+  .player-toolbar {
+    gap: 10px;
+    margin-bottom: 13px;
+  }
+  .toolbar-button {
+    min-height: 42px;
+    padding: 10px 14px;
+    touch-action: manipulation;
+  }
+  .game-frame-wrap {
+    aspect-ratio: 16 / 10;
+    min-height: min(360px, 44svh);
+    max-height: calc(100svh - 148px);
+  }
+  .chat-panel {
+    right: max(18px, env(safe-area-inset-right));
+    bottom: max(18px, env(safe-area-inset-bottom));
+    height: min(560px, calc(100svh - 48px));
+  }
+  .admin-view {
+    padding-inline: clamp(22px, 4vw, 42px);
+  }
+}
+
+@media (min-width: 621px) and (max-width: 1024px) and (orientation: portrait) {
+  .game-frame-wrap {
+    aspect-ratio: 4 / 3;
+    min-height: min(340px, 42svh);
+    max-height: calc(100svh - 160px);
+  }
+}
+
+@supports (padding: max(0px)) {
+  @media (min-width: 621px) and (max-width: 1024px) {
+    .topbar {
+      padding-left: max(clamp(20px, 3.5vw, 36px), env(safe-area-inset-left));
+      padding-right: max(clamp(20px, 3.5vw, 36px), env(safe-area-inset-right));
+    }
+  }
+}
