@@ -11,8 +11,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: import-requested-games
-  cancel-in-progress: true
+  group: excruciating-game-imports
+  cancel-in-progress: false
 
 jobs:
   import:
@@ -21,6 +21,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            catalog/games.json
+            games/bad-time-simulator
+            games/fnaf-1
+            games/fnaf-2
+            games/fnaf-3
+            games/fnaf-4
+          sparse-checkout-cone-mode: false
       - name: Import Bad Time Simulator and FNAF 1-4
         shell: bash
         run: |
