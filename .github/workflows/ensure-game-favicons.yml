@@ -69,9 +69,10 @@ jobs:
                   "img/og-icon.png", "icons/icon-256.png", "icons/icon-512.png", "favicon.svg"
               ]
               chosen = next((folder / name for name in native_icons if (folder / name).is_file()), None)
-              if chosen is None:
+              moto_labels = {"motox3m": "M3", "motox3m2": "M2", "motox3m-pool": "MP", "motox3m-spooky": "MS", "motox3m-winter": "MW"}
+              if chosen is None or (chosen.name == "favicon.svg" and folder.name in moto_labels):
                   icon = folder / "favicon.svg"
-                  label = re.sub(r"[^A-Za-z0-9]", "", folder.name)[:2].upper() or "G"
+                  label = moto_labels.get(folder.name, re.sub(r"[^A-Za-z0-9]", "", folder.name)[:2].upper() or "G")
                   digest = hashlib.sha256(folder.name.encode("utf-8")).digest()
                   hue = int.from_bytes(digest[:2], "big") % 360
                   svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
