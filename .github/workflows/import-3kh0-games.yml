@@ -28,6 +28,7 @@ jobs:
             games/motox3m-pool
             games/motox3m-spooky
             games/motox3m-winter
+            games/motox3m2
             games/google-snake
             games/draw-the-hill
             games/chrome-dino
@@ -49,7 +50,7 @@ jobs:
           set -euo pipefail
           git clone --depth 1 --filter=blob:none --no-checkout https://gitlab.com/3kh0/3kh0-assets.git /tmp/3kh0-assets
           git -C /tmp/3kh0-assets sparse-checkout init --cone
-          git -C /tmp/3kh0-assets sparse-checkout set bitlife geodash happywheels jetpack-joyride motox3m motox3m-pool motox3m-spooky motox3m-winter google-snake draw-the-hill chrome-dino eggycar stack snowrider3d temple-run-2 monster-tracks ovo rooftop-snipers slope yohoho eaglerfaithful
+          git -C /tmp/3kh0-assets sparse-checkout set bitlife geodash happywheels jetpack-joyride motox3m motox3m-pool motox3m-spooky motox3m-winter motox3m2 google-snake draw-the-hill chrome-dino eggycar stack snowrider3d temple-run-2 monster-tracks ovo rooftop-snipers slope yohoho eaglerfaithful
           git -C /tmp/3kh0-assets checkout
       - name: Clone the permitted PolyTrack reupload source
         run: git clone --depth 1 https://github.com/itjey/polytrack.git /tmp/polytrack
@@ -71,6 +72,7 @@ jobs:
             ("motox3m-pool", "Moto X3M Pool Party", "Racing"),
             ("motox3m-spooky", "Moto X3M Spooky Land", "Racing"),
             ("motox3m-winter", "Moto X3M Winter", "Racing"),
+            ("motox3m2", "Moto X3M 2", "Racing"),
             ("google-snake", "Google Snake", "Arcade"),
             ("draw-the-hill", "Draw the Hill", "Arcade"),
             ("chrome-dino", "Chrome Dino", "Arcade"),
@@ -112,7 +114,22 @@ jobs:
                   content = content.replace(f"https://raw.githack.com/3kh0/3kh0-assets/main/{folder}/", f"/games/{folder}/")
                   content = content.replace(f"https://raw.githubusercontent.com/3kh0/3kh0-assets/main/{folder}/", f"/games/{folder}/")
                   if folder.startswith("motox3m"):
-                      content = re.sub(r'<script\b[^>]*(?:gamebridge\.js|pk-sdk\.js|imasdk\.googleapis\.com)[^>]*>.*?</script\s*>', '', content, flags=re.I|re.S)
+                      def strip_moto_script(match):
+                          block = match.group(0)
+                          lower = block.lower()
+                          if "window.idasyncinit" in lower or "cdn.y8.com/api/sdk.js" in lower:
+                              return '''<script>
+          window.ID = window.ID || {Event:{subscribe:function(){}},ads:{init:function(){}},init:function(){}};
+          function myDispatchEvent(name){var target=document.getElementById("content");if(target)target.dispatchEvent(new Event(name));}
+          function showNextAd(){}
+          function pauseGame(){}
+          function resumeGame(){}
+          window.addEventListener("load",function(){myDispatchEvent("sdk_inited");});
+          </script>'''
+                          if any(token in lower for token in ("gamebridge.js","pk-sdk.js","imasdk.googleapis.com","adsbygoogle.js","gamebreakbeta.js")):
+                              return ""
+                          return block
+                      content = re.sub(r'<script\b[^>]*>[\s\S]*?</script\s*>', strip_moto_script, content, flags=re.I)
                   content = re.sub(r'<script\b[^>]*src=["\']/js/main\.js["\'][^>]*>\s*</script\s*>', '', content, flags=re.I)
                   if folder == "snowrider3d":
                       content = content.replace("../images/", "images/")
@@ -127,6 +144,22 @@ jobs:
               if "excruciating-3kh0-credit" not in page_html:
                   page_html = page_html.replace("</body>", credit + chr(10) + "</body>")
               index_page.write_text(page_html, encoding="utf-8")
+              # Keep every imported page deployable with a local favicon immediately.
+              icon = dest / "favicon.svg"
+              if not icon.exists():
+                  label = re.sub(r"[^A-Za-z0-9]", "", folder)[:2].upper() or "G"
+                  icon.write_text(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#171717"/><text x="32" y="42" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#fff">{label}</text></svg>\n', encoding="utf-8")
+              page_html = index_page.read_text(encoding="utf-8")
+              icon_match = re.search(r"""<link\b[^>]*\brel=["'](?:shortcut\s+)?icon["'][^>]*\bhref=["']([^"']+)["']""", page_html, re.I)
+              icon_valid = bool(icon_match and not icon_match.group(1).startswith("http") and (dest / icon_match.group(1).removeprefix("./")).is_file())
+              if not icon_valid:
+                  page_html = re.sub(r"""<link\b[^>]*\brel=["'](?:shortcut\s+)?icon["'][^>]*>""", "", page_html, flags=re.I)
+                  icon_link = '<link rel="icon" type="image/svg+xml" href="./favicon.svg">'
+                  if re.search(r"<head\b[^>]*>", page_html, re.I):
+                      page_html = re.sub(r"(<head\b[^>]*>)", r"\1\n  " + icon_link, page_html, count=1, flags=re.I)
+                  else:
+                      page_html = icon_link + "\n" + page_html
+                  index_page.write_text(page_html, encoding="utf-8")
               attribution = chr(10).join([
                   "# Attribution",
                   "",
@@ -137,9 +170,10 @@ jobs:
               ])
               (dest / "ATTRIBUTION.md").write_text(attribution, encoding="utf-8")
               if folder.startswith("motox3m"):
-                  for sdk in ("gamebridge.js", "pk-sdk.js"):
-                      if (dest / sdk).exists(): (dest / sdk).unlink()
-              thumbnail = next((f"/games/{folder}/{name}" for name in ("splash.jpg", "thumbnail.png", "thumb.png", "favicon.png", "favicon.ico", "icon-256.png", "eggy-car.png", "stack.png", "img/og-icon.png", "img/snake.png", "icons/icon-512.png") if (dest / name).is_file()), f"/games/{folder}/favicon.svg")
+                  for sdk in ("gamebridge.js", "pk-sdk.js", "gameBreakBeta.js"):
+                      for sdk_path in dest.rglob(sdk):
+                          sdk_path.unlink()
+              thumbnail = next((f"/games/{folder}/{name}" for name in ("splash.jpg", "thumbnail.png", "thumb.png", "favicon.png", "favicon.ico", "icon-256.png", "eggy-car.png", "stack.png", "assets/atlases/x1/cars_game.png", "img/og-icon.png", "img/snake.png", "icons/icon-512.png") if (dest / name).is_file()), f"/games/{folder}/favicon.svg")
               entries[folder] = {
                 "slug":folder,"title":title,"category":category,
                 "description":"Locally hosted game imported from the 3kh0 assets collection.",
