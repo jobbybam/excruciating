@@ -36,7 +36,8 @@ jobs:
             ("ovo", "OvO", "Platformer"),
             ("rooftop-snipers", "Rooftop Snipers", "Action"),
             ("slope", "Slope", "Arcade"),
-            ("soundboard", "Soundboard", "Utility"),
+            ("yohoho", "Yohoho.io", "Multiplayer"),
+            ("eaglerfaithful", "Eaglercraft", "Multiplayer"),
           ]
           catalogue_path = Path("catalog/games.json")
           catalogue = json.loads(catalogue_path.read_text(encoding="utf-8"))
