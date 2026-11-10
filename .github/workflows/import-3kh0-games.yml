@@ -219,10 +219,20 @@ jobs:
                   if folder == "snowrider3d":
                       content = content.replace("../images/", "images/")
                       content = re.sub(r'<script\b[^>]*>[\s\S]*?</script\s*>', lambda match: "" if "o.s.src=o.f(" in match.group(0) else match.group(0), content, flags=re.I)
+                  if re.search(r'<script[^>]+src=["\'][^"\']*poki-sdk[^"\']*\.js["\'][^>]*>', content, flags=re.I):
+                      content = re.sub(r'<script[^>]+src=["\'][^"\']*poki-sdk[^"\']*\.js["\'][^>]*>\s*</script\s*>', '', content, flags=re.I)
+                      def strip_poki_ad_helpers(match):
+                          block = match.group(0).lower()
+                          return "" if "pokisdk.displayad" in block or "pokisdk.destroyad" in block else match.group(0)
+                      content = re.sub(r'<script\b[^>]*>[\s\S]*?</script\s*>', strip_poki_ad_helpers, content, flags=re.I)
+                      stub = '<script>window.PokiSDK=window.PokiSDK||new Proxy({}, {get:(_,key)=>key==="rewardedBreak"?()=>Promise.resolve(false):()=>Promise.resolve()});</script>'
+                      content = content.replace("</head>", stub + "</head>", 1)
                   html.write_text(content, encoding="utf-8")
               if folder == "monkey-mart":
                   for sdk_file in dest.glob("poki-sdk*.js"):
                       sdk_file.unlink()
+              for sdk_file in dest.glob("poki-sdk*.js"):
+                  sdk_file.unlink()
               index_page = dest / "index.html"
               page_html = index_page.read_text(encoding="utf-8")
               credit = """
