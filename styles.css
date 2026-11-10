@@ -265,3 +265,21 @@ html,body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans
 @media(max-width:620px){.topbar{gap:8px;padding-inline:12px}.topbar .admin-toggle{padding:8px 9px;font-size:10px;min-height:36px}.chat-login-card{padding:20px}.chat-account-actions{gap:2px}}
 
 .thumbnail-editor-preview{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:4px 0 12px}.thumbnail-editor-preview img{width:160px;height:90px;object-fit:cover;border-radius:9px;border:1px solid var(--border,#333)}.thumbnail-editor-preview small{color:var(--muted,#999)}.thumbnail-editor-preview img[hidden]{display:none}
+
+
+/* Changelog */
+.public-changelog{max-width:1000px;margin:42px auto 0;padding:0 clamp(18px,5vw,56px) 30px}
+.public-changelog .section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px}
+.public-changelog h2{font-size:16px;letter-spacing:-.3px;margin:0}
+.public-changelog-list{display:grid;gap:0}
+.changelog-entry{padding:14px 0;border-top:1px solid var(--line)}
+.changelog-entry-heading{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.changelog-entry-heading strong{font-size:12px;font-weight:600}
+.changelog-entry time{font-size:10px;color:#777}
+.changelog-kind{font-size:9px;letter-spacing:.7px;text-transform:uppercase;color:#aaa;border:1px solid #333;border-radius:4px;padding:3px 5px}
+.changelog-entry p{margin:7px 0 0;color:#999;font-size:11px;line-height:1.55;white-space:pre-wrap}
+.changelog-admin-entry{align-items:flex-start}
+.changelog-admin-entry .admin-row-actions{flex-shrink:0}
+#changelog-form textarea{width:100%;min-width:0;border:1px solid #303030;border-radius:6px;background:#090909;color:#eee;padding:10px;font:12px/1.5 inherit;resize:vertical;outline:none}
+#changelog-form textarea:focus{border-color:#777}
+@media(max-width:620px){.public-changelog{padding-left:18px;padding-right:18px}.changelog-admin-entry{flex-wrap:wrap}}
