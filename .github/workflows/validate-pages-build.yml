@@ -123,7 +123,7 @@ jobs:
           game_pages = list((dist / "games").glob("*/index.html"))
           for page in game_pages:
               html = page.read_text(encoding="utf-8")
-              icon = re.search(r'<link\\b[^>]*\\brel=["\\'](?:shortcut\\s+)?icon["\\'][^>]*\\bhref=["\\']([^"\\']+)["\\']', html, re.I)
+              icon = re.search(r'<link\b[^>]*\brel=["\'](?:shortcut\s+)?icon["\'][^>]*\bhref=["\']([^"\']+)["\']', html, re.I)
               if not icon:
                   raise SystemExit(f"Missing favicon link in {page}")
               href = icon.group(1)
