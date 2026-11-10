@@ -66,7 +66,7 @@ function buildChangelogEntry(entry,admin=false){
 }
 async function loadPublicChangelog(){
  const section=$("#public-changelog"),list=$("#public-changelog-list");if(!section||!list)return;
- try{const data=await api("/api/changelog");const entries=data.entries||[];list.replaceChildren();for(const entry of entries.slice(0,12))list.append(buildChangelogEntry(entry));section.hidden=entries.length===0;}
+ try{const data=await api("/api/changelog");const entries=data.entries||[];list.replaceChildren();for(const entry of entries.slice(0,12))list.append(buildChangelogEntry(entry));if(!entries.length){const empty=document.createElement("p");empty.className="chat-muted";empty.textContent="No updates yet.";list.append(empty);}section.hidden=false;}
  catch(error){console.warn("Public changelog unavailable.",error);section.hidden=true;}
 }
 async function refreshChangelog(){
