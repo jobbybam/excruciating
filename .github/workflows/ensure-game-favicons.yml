@@ -41,6 +41,10 @@ jobs:
             games/*/img/og-icon.png
             games/*/icons/icon-256.png
             games/*/icons/icon-512.png
+            games/google-snake/img/snake.png
+            games/draw-the-hill/icons/icon-512.png
+            games/stack/stack.png
+            games/temple-run-2/img/og-icon.png
           sparse-checkout-cone-mode: false
       - name: Create a favicon for every game page missing one
         shell: bash
@@ -60,9 +64,9 @@ jobs:
                   continue
 
               native_icons = [
-                  "favicon.ico", "favicon.png", "favicon.svg", "icon.png", "icon-256.png",
+                  "favicon.ico", "favicon.png", "icon.png", "icon-256.png",
                   "stack.png", "img/favicon.ico", "img/favicon.png", "img/snake.png",
-                  "img/og-icon.png", "icons/icon-256.png", "icons/icon-512.png"
+                  "img/og-icon.png", "icons/icon-256.png", "icons/icon-512.png", "favicon.svg"
               ]
               chosen = next((folder / name for name in native_icons if (folder / name).is_file()), None)
               if chosen is None:
