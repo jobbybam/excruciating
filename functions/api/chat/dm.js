@@ -20,7 +20,7 @@ export async function onRequestGet({request,env}){
   (SELECT COUNT(*) FROM direct_messages d WHERE d.sender_id=u.id AND d.recipient_id=? AND d.read_at IS NULL) AS unread_count,
   (SELECT message FROM direct_messages d WHERE (d.sender_id=u.id AND d.recipient_id=?) OR (d.sender_id=? AND d.recipient_id=u.id) ORDER BY d.id DESC LIMIT 1) AS last_message,
   (SELECT created_at FROM direct_messages d WHERE (d.sender_id=u.id AND d.recipient_id=?) OR (d.sender_id=? AND d.recipient_id=u.id) ORDER BY d.id DESC LIMIT 1) AS last_message_at
-  FROM chat_users u WHERE u.id<>? ORDER BY COALESCE(last_message_at,'') DESC,u.username COLLATE NOCASE`).bind(user.id,user.id,user.id,user.id,user.id,user.id).all();
+  FROM chat_users u WHERE u.id<>? ORDER BY u.username COLLATE NOCASE`).bind(user.id,user.id,user.id,user.id,user.id,user.id).all();
  let messages=[];
  if(Number.isSafeInteger(peerId)&&peerId>0){
   const peer=await env.DB.prepare("SELECT id FROM chat_users WHERE id=?").bind(peerId).first();
