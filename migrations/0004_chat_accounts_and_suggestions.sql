@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS game_suggestions (
   url TEXT NOT NULL DEFAULT '',
   notes TEXT NOT NULL DEFAULT '',
   ip_hash TEXT NOT NULL,
-  status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','reviewed')),
+  status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','approved','rejected')),
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   reviewed_at TEXT
 );
