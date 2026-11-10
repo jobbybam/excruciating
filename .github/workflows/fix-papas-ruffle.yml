@@ -7,48 +7,58 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
-concurrency:
-  group: excruciating-game-imports
-  cancel-in-progress: false
 jobs:
   fix:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Fix Ruffle player API on every hosted Papa's game
+      - name: Fix and validate Ruffle on every hosted Papa's game
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
           pages = sorted(Path("games").glob("papas-*/index.html"))
-          if not pages:
-              raise SystemExit("No locally hosted Papa's game pages found.")
-          changed = 0
+          if len(pages) != 14:
+              raise SystemExit(f"Expected 14 Papa's game pages, found {len(pages)}")
           for page in pages:
-              text = page.read_text(encoding="utf-8")
-              updated = text.replace(
-                  "await player.load(new URL(\"./game.swf\", window.location.href).href);",
-                  "await player.ruffle().load(new URL(\"./game.swf\", window.location.href).href);"
+              html = page.read_text(encoding="utf-8")
+              html = html.replace(
+                  'await player.ruffle().load(new URL("./game.swf", window.location.href).href);',
+                  'await player.load({ url: new URL("./game.swf", window.location.href).href });'
               )
-              updated = updated.replace(
-                  'message.textContent = "The game could not start: " + (error && error.message ? error.message : "Ruffle could not load the local game or WebAssembly runtime.");',
-                  'message.textContent = "The game could not start: " + (error && error.message ? error.message : "Ruffle could not load the local game or WebAssembly runtime.");'
+              html = html.replace(
+                  'await player.load(new URL("./game.swf", window.location.href).href);',
+                  'await player.load({ url: new URL("./game.swf", window.location.href).href });'
               )
-              if "player.ruffle().load(" not in updated:
-                  raise SystemExit(f"Ruffle API update failed for {page}")
-              page.write_text(updated, encoding="utf-8")
-              if updated != text: changed += 1
-          print(f"Verified {len(pages)} Papa's games; updated {changed} pages.")
+              if 'await player.load({ url: new URL("./game.swf", window.location.href).href });' not in html:
+                  raise SystemExit(f"Unsupported or missing Ruffle load call in {page}")
+              if 'publicPath: new URL("/games/ruffle/", window.location.origin).href' not in html:
+                  raise SystemExit(f"Ruffle publicPath is incorrect in {page}")
+              page.write_text(html, encoding="utf-8")
+          ruffle = Path("games/ruffle")
+          js = ruffle / "ruffle.js"
+          if not js.is_file() or js.stat().st_size < 100000:
+              raise SystemExit("Missing or invalid local ruffle.js")
+          import re
+          js_text = js.read_text(encoding="utf-8")
+          wasm_names = set(re.findall(r'[0-9a-f]{20}\\.wasm', js_text))
+          if not wasm_names:
+              raise SystemExit("Could not determine Ruffle WASM filenames from ruffle.js")
+          for name in wasm_names:
+              wasm = ruffle / name
+              if not wasm.is_file() or wasm.stat().st_size < 1024:
+                  raise SystemExit(f"Missing local Ruffle WASM file: {name}")
+          print(f"Validated {len(pages)} Papa's pages and {len(wasm_names)} local Ruffle WASM binaries.")
           PY
-      - name: Commit changes
+      - name: Commit and push fixes
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add games/papas-*/index.html
-          git commit -m "Fix Ruffle player API for Papa's games" || echo "No changes required."
+          git commit -m "Fix Papa's games Ruffle loading" || echo "No changes required."
           git fetch origin main
           git rebase origin/main
           git push
