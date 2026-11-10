@@ -7,6 +7,13 @@ on:
       - ".github/workflows/ensure-game-favicons.yml"
       - "games/**/index.html"
   workflow_dispatch:
+  workflow_run:
+    workflows:
+      - Import requested local games
+      - Import uploaded EaglercraftX 1.8 build
+      - Import selected 3kh0 games
+      - Import games
+    types: [completed]
 
 permissions:
   contents: write
