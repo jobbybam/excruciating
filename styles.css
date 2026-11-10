@@ -285,3 +285,28 @@ html,body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans
 @media(max-width:620px){.public-changelog{padding-left:18px;padding-right:18px}.changelog-admin-entry{flex-wrap:wrap}}
 
 #featured-section{margin-bottom:34px}#featured-section .section-heading{margin-bottom:14px}
+
+/* Wider two-pane community chat with a registered-user DM inbox */
+.chat-panel{width:min(650px,calc(100vw - 32px));height:min(620px,calc(100vh - 110px));}
+.chat-mode-tabs{display:flex;gap:7px;padding:12px 0;border-bottom:1px solid var(--line);}
+.chat-mode-tab{border:1px solid #303030;border-radius:8px;background:#151515;color:#aaa;padding:8px 12px;font-size:11px;cursor:pointer}
+.chat-mode-tab.active{background:#eee;color:#111;border-color:#eee}
+.chat-mode-tab span{display:inline-grid;place-items:center;min-width:17px;height:17px;margin-left:4px;border-radius:20px;background:#333;color:#fff;font-size:9px;padding:0 4px}
+.chat-mode-tab.active span{background:#222;color:#fff}
+.chat-view{display:flex;flex:1;min-height:0;flex-direction:column}
+.chat-dm-view{display:grid;grid-template-columns:minmax(145px, .72fr) minmax(0,1.5fr);gap:0;flex:1;min-height:0}
+.dm-user-list-wrap{min-height:0;overflow:hidden;border-right:1px solid #292929;padding-right:10px;display:flex;flex-direction:column}
+.dm-user-list-heading{padding:12px 6px 8px;color:#777;font-size:9px;letter-spacing:1.2px;font-weight:700}
+.dm-user-list{overflow:auto;min-height:0}
+.dm-user{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;border:0;border-radius:8px;background:transparent;color:#ddd;padding:10px 8px;cursor:pointer}
+.dm-user:hover,.dm-user.active{background:#202020}
+.dm-user strong{font-size:11px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dm-user small{display:block;color:#777;font-size:9px;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:135px}
+.dm-user-unread{flex:none;min-width:17px;height:17px;display:grid;place-items:center;padding:0 4px;border-radius:20px;background:#eee;color:#111;font-size:9px;font-weight:800}
+.dm-conversation{display:flex;flex-direction:column;min-width:0;min-height:0;padding-left:12px}
+.dm-conversation-heading{padding:12px 2px 9px;border-bottom:1px solid #242424;font-size:12px;font-weight:700}
+.dm-conversation .chat-messages{padding:8px 0}
+.dm-message-own .chat-message-meta strong{color:#b6d8ff}
+.dm-message-own p{color:#eee}
+.chat-status{flex:none}
+@media(max-width:620px){.chat-panel{width:calc(100vw - 20px);right:10px;bottom:65px;height:min(640px,calc(100dvh - 85px));padding:12px}.chat-dm-view{grid-template-columns:minmax(105px,.72fr) minmax(0,1.4fr)}.dm-user-list-wrap{padding-right:6px}.dm-conversation{padding-left:8px}.dm-user{padding:9px 5px}.dm-user small{max-width:90px}}
