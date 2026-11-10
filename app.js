@@ -81,8 +81,8 @@ $("#changelog-form").addEventListener("submit",async event=>{
  try{
   if(editingChangelogId)await api("/api/admin/changelog?id="+editingChangelogId,{method:"PATCH",body:JSON.stringify(payload)});
   else await api("/api/admin/changelog",{method:"POST",body:JSON.stringify(payload)});
-  status.textContent=editingChangelogId?"Changelog entry updated.":"Changelog entry published.";
-  resetChangelogForm();await refreshChangelog();await loadPublicChangelog();
+  const message=editingChangelogId?"Changelog entry updated.":"Changelog entry published.";
+  resetChangelogForm();status.textContent=message;await refreshChangelog();await loadPublicChangelog();
  }catch(error){status.textContent=error.message;}
 });
 $("#changelog-cancel").addEventListener("click",resetChangelogForm);
