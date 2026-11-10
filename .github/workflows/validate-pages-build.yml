@@ -103,6 +103,17 @@ jobs:
           if not referenced or not referenced.issubset(available):
               raise SystemExit(f"Ruffle WASM mismatch. Referenced={sorted(referenced)}, available={sorted(available)}")
 
+          chunk_map = re.search(r'"core\.ruffle\."\+\{([^}]+)\}\[e\]\+"\.js"', ruffle_js)
+          if not chunk_map:
+              raise SystemExit("Ruffle loader does not declare its local core chunks.")
+          chunk_hashes = re.findall(r'\d+:"([a-f0-9]+)"', chunk_map.group(1))
+          if not chunk_hashes:
+              raise SystemExit("Ruffle loader core chunk map is empty.")
+          for digest in chunk_hashes:
+              chunk = dist / "games/ruffle" / f"core.ruffle.{digest}.js"
+              if not chunk.is_file():
+                  raise SystemExit(f"Missing local Ruffle core chunk: {chunk.name}")
+
           headers = (dist / "_headers").read_text(encoding="utf-8")
           if "Content-Type: application/wasm" not in headers:
               raise SystemExit("Missing Ruffle WebAssembly MIME header in Pages output.")
@@ -114,6 +125,15 @@ jobs:
               html = page.read_text(encoding="utf-8")
               if '/games/ruffle/ruffle.js' not in html or 'new URL("/games/ruffle/"' not in html:
                   raise SystemExit(f"Incorrect local Ruffle paths in {page}")
+
+          for slug in ("motox3m", "motox3m-pool", "motox3m-spooky", "motox3m-winter"):
+              page = dist / "games" / slug / "index.html"
+              html = page.read_text(encoding="utf-8")
+              if re.search(r"gamebridge|pk-sdk|imasdk\\.googleapis", html, re.I):
+                  raise SystemExit(f"Ad SDK reference remains in {page}")
+          snowrider = (dist / "games/snowrider3d/index.html").read_text(encoding="utf-8")
+          if "o.s.src=o.f(" in snowrider or "../images/" in snowrider:
+              raise SystemExit("Snow Rider still contains its external script injection or broken image paths.")
 
           print(f"Verified {checked} oversized Deltarune source chunks rebuild byte-for-byte.")
           print(f"Verified {len(wasm_files)} Ruffle WASM files and all {len(papa_pages)} Papa wrappers.")
