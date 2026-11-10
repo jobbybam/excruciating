@@ -48,11 +48,12 @@ function render(){
 function openGame(game){
   if(!game||!game.slug)return;
   if(game.external&&game.url){window.open(game.url,"_blank","noopener,noreferrer");return;}
-  home.hidden=true;player.hidden=false;$("#search-wrap").hidden=true;$("#chat-toggle").hidden=true;playerTitle.textContent=game.title;
+  home.hidden=true;player.hidden=false;$("#search-wrap").hidden=true;$("#chat-toggle").hidden=true;playerTitle.textContent=game.title;document.title=game.title.toUpperCase();
   placeholder.hidden=true;frame.hidden=false;frame.dataset.gameUrl=game.url||game.launch_url||("/games/"+encodeURIComponent(game.slug)+"/index.html");frame.src=frame.dataset.gameUrl;
   history.pushState({game:game.slug},"","#play/"+encodeURIComponent(game.slug));
 }
 function closeGame(){
+  document.title="excruciating";
   frame.src="about:blank";frame.dataset.gameUrl="";frame.hidden=true;placeholder.hidden=false;player.hidden=true;
   $("#search-wrap").hidden=isAdminRoute;$("#chat-toggle").hidden=isAdminRoute;home.hidden=isAdminRoute;
   if(location.hash.startsWith("#play/"))history.pushState({},"",location.pathname+location.search);
