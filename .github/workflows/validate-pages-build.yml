@@ -120,6 +120,19 @@ jobs:
           if "Content-Type: application/wasm" not in headers:
               raise SystemExit("Missing Ruffle WebAssembly MIME header in Pages output.")
 
+          game_pages = list((dist / "games").glob("*/index.html"))
+          for page in game_pages:
+              html = page.read_text(encoding="utf-8")
+              icon = re.search(r'<link\\b[^>]*\\brel=["\\'](?:shortcut\\s+)?icon["\\'][^>]*\\bhref=["\\']([^"\\']+)["\\']', html, re.I)
+              if not icon:
+                  raise SystemExit(f"Missing favicon link in {page}")
+              href = icon.group(1)
+              if href.startswith("http"):
+                  raise SystemExit(f"External favicon is not allowed for {page}: {href}")
+              icon_path = (dist / href.lstrip("/")) if href.startswith("/") else (page.parent / href)
+              if not icon_path.is_file():
+                  raise SystemExit(f"Favicon target does not exist for {page}: {href}")
+
           papa_pages = list((dist / "games").glob("papas-*/index.html"))
           if len(papa_pages) != 14:
               raise SystemExit(f"Expected 14 Papa game wrappers, found {len(papa_pages)}")
@@ -138,6 +151,7 @@ jobs:
               raise SystemExit("Snow Rider still contains its external script injection or broken image paths.")
 
           print(f"Verified {checked} oversized Deltarune source chunks rebuild byte-for-byte.")
+          print(f"Verified local favicons for {len(game_pages)} game pages.")
           print(f"Verified {len(wasm_files)} Ruffle WASM files and all {len(papa_pages)} Papa wrappers.")
           print("All Pages output assets meet the 25 MiB limit.")
           PY
