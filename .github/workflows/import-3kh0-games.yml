@@ -213,5 +213,21 @@ jobs:
           done
           git commit -m "Add requested locally hosted 3kh0 games" || echo "No catalogue or game changes to commit."
           git fetch origin main
-          git rebase origin/main
+          if ! git rebase origin/main; then
+            conflicts="$(git diff --name-only --diff-filter=U)"
+            for path in $conflicts; do
+              case "$path" in
+                games/*/index.html)
+                  git checkout --theirs -- "$path"
+                  git add "$path"
+                  ;;
+                *)
+                  echo "Unexpected import conflict: $path"
+                  git rebase --abort
+                  exit 1
+                  ;;
+              esac
+            done
+            GIT_EDITOR=true git rebase --continue
+          fi
           git push
