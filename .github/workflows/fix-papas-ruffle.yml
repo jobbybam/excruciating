@@ -32,7 +32,7 @@ jobs:
                   "await player.ruffle().load(new URL(\"./game.swf\", window.location.href).href);"
               )
               updated = updated.replace(
-                  'message.textContent = "The game could not start. Ruffle failed to load its local game or WebAssembly files. Reload the page or check the deployment."; ',
+                  'message.textContent = "The game could not start: " + (error && error.message ? error.message : "Ruffle could not load the local game or WebAssembly runtime.");',
                   'message.textContent = "The game could not start: " + (error && error.message ? error.message : "Ruffle could not load the local game or WebAssembly runtime.");'
               )
               if "player.ruffle().load(" not in updated:
