@@ -1,6 +1,6 @@
 {
-  "version": 23,
-  "source": "Locally hosted selected 3kh0 games from GitLab.",
+  "version": 24,
+  "source": "Locally hosted games; Soundboard is an external site link.",
   "attribution": "Each locally hosted title retains its source-specific attribution and licence/hosting notice.",
   "games": [
     {
@@ -455,6 +455,15 @@
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
       "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
+      "published": true
+    },
+    {
+      "slug": "soundboard",
+      "title": "Soundboard",
+      "category": "Soundboard",
+      "description": "Open SoundButtonsSpace.",
+      "url": "https://soundbuttonsspace.org",
+      "external": true,
       "published": true
     }
   ]
