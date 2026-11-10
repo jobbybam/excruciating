@@ -69,9 +69,9 @@ jobs:
               raise SystemExit("Ruffle loader was not copied")
           js_text = js.read_text(encoding="utf-8")
 
-          chunk_map = re.search(r'"core\\.ruffle\\."\\+\\{([^}]+)\\}\\[e\\]\\+"\\.js"', js_text)
+          chunk_map = re.search(r'"core\.ruffle\."\+\{([^}]+)\}\[e\]\+"\.js"', js_text)
           if chunk_map:
-              hashes = re.findall(r'\\d+:"([a-f0-9]+)"', chunk_map.group(1))
+              hashes = re.findall(r'\d+:"([a-f0-9]+)"', chunk_map.group(1))
               chunks = [f"core.ruffle.{value}.js" for value in hashes]
           else:
               chunks = [p.name for p in target.glob("core.ruffle.*.js")]
@@ -81,7 +81,7 @@ jobs:
               if not (target / name).is_file():
                   raise SystemExit(f"Ruffle core chunk is missing: {name}")
 
-          wasm_names = sorted(set(re.findall(r'[a-f0-9]{20}\\.wasm', js_text)))
+          wasm_names = sorted(set(re.findall(r'[a-f0-9]{20}\.wasm', js_text)))
           if not wasm_names:
               raise SystemExit("No local WASM assets were referenced by ruffle.js")
           for name in wasm_names:
