@@ -40,7 +40,7 @@ jobs:
                   raise SystemExit("Expected exactly one eaglercraft1-8.html in the uploaded archive")
               html = z.read(candidates[0]).decode("utf-8")
 
-          script_re = re.compile(r'(<script\\b[^>]*>)(.*?)(</script\\s*>)', re.I | re.S)
+          script_re = re.compile(r'(<script\b[^>]*>)(.*?)(</script\s*>)', re.I | re.S)
           index = 0
           def externalize(match):
               global index
@@ -52,7 +52,7 @@ jobs:
               index += 1
               name = f"client-{index}.js"
               Path("games/eaglercraft", name).write_text(body, encoding="utf-8")
-              opening = re.sub(r'\\s+src=(["\']).*?\\1', "", match.group(1), flags=re.I)
+              opening = re.sub(r'\s+src=(["\']).*?\1', "", match.group(1), flags=re.I)
               return f'{opening[:-1]} src="./{name}"></script>'
 
           html = script_re.sub(externalize, html)
@@ -83,7 +83,7 @@ jobs:
           data["games"] = games
           data["version"] = int(data.get("version", 0)) + 1
           data["source"] = "Locally hosted games and explicitly labelled external site links."
-          path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\\n", encoding="utf-8")
+          path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
           archive.unlink()
           PY
       - name: Validate Eaglercraft assets
