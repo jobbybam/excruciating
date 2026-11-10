@@ -40,11 +40,10 @@ jobs:
           js = ruffle / "ruffle.js"
           if not js.is_file() or js.stat().st_size < 100000:
               raise SystemExit("Missing or invalid local ruffle.js")
-          import re
           js_text = js.read_text(encoding="utf-8")
-          wasm_names = set(re.findall(r'[0-9a-f]{20}\\.wasm', js_text))
-          if not wasm_names:
-              raise SystemExit("Could not determine Ruffle WASM filenames from ruffle.js")
+          wasm_names = ["878d548199cddef07035.wasm", "172de42e6619eac8f371.wasm"]
+          if not all(name in js_text for name in wasm_names):
+              raise SystemExit("Ruffle JS references unexpected or missing WASM files")
           for name in wasm_names:
               wasm = ruffle / name
               if not wasm.is_file() or wasm.stat().st_size < 1024:
