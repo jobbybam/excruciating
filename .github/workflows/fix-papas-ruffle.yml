@@ -111,6 +111,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add games/ruffle
+          if git diff --cached --quiet; then
+            echo "The complete Ruffle runtime is already present."
+            exit 0
+          fi
           git commit -m "Restore missing Ruffle core chunks for Papa games"
           git fetch origin main
           git rebase origin/main
