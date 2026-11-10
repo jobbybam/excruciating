@@ -51,8 +51,14 @@ jobs:
               if not page.is_file():
                   continue
 
-              icon = folder / "favicon.svg"
-              if not icon.exists():
+              native_icons = [
+                  "favicon.ico", "favicon.png", "favicon.svg", "icon.png", "icon-256.png",
+                  "stack.png", "img/favicon.ico", "img/favicon.png", "img/snake.png",
+                  "img/og-icon.png", "icons/icon-256.png", "icons/icon-512.png"
+              ]
+              chosen = next((folder / name for name in native_icons if (folder / name).is_file()), None)
+              if chosen is None:
+                  icon = folder / "favicon.svg"
                   label = re.sub(r"[^A-Za-z0-9]", "", folder.name)[:2].upper() or "G"
                   digest = hashlib.sha256(folder.name.encode("utf-8")).digest()
                   hue = int.from_bytes(digest[:2], "big") % 360
@@ -61,16 +67,21 @@ jobs:
             <path d="M8 8h48v48H8z" fill="none" stroke="hsl({hue} 45% 68%)" stroke-opacity=".35" stroke-width="2"/>
             <text x="32" y="42" text-anchor="middle" font-family="Arial,sans-serif" font-size="{25 if len(label) == 2 else 34}" font-weight="700" fill="#fff">{label}</text>
           </svg>'''
-                  icon.write_text(svg + "\n", encoding="utf-8")
-                  changed.append(str(icon))
+                  if not icon.exists():
+                      icon.write_text(svg + "\n", encoding="utf-8")
+                      changed.append(str(icon))
+                  chosen = icon
 
+              suffix = chosen.suffix.lower()
+              mime = {".ico": "image/x-icon", ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".svg": "image/svg+xml"}.get(suffix, "image/x-icon")
+              href = "./" + chosen.relative_to(folder).as_posix()
               html = page.read_text(encoding="utf-8")
-              link = '<link rel="icon" type="image/svg+xml" href="./favicon.svg">'
-              if link not in html:
-                  if re.search(r'<head\b[^>]*>', html, re.I):
-                      html = re.sub(r'(<head\b[^>]*>)', r'\1\n  ' + link, html, count=1, flags=re.I)
-                  else:
-                      html = link + "\n" + html
+              html = re.sub(r'<link\\b[^>]*\\brel\\s*=\\s*["\\'](?:shortcut\\s+)?icon["\\'][^>]*>', '', html, flags=re.I)
+              link = f'<link rel="icon" type="{mime}" href="{href}">'
+              if re.search(r'<head\\b[^>]*>', html, re.I):
+                  html = re.sub(r'(<head\\b[^>]*>)', r'\\1\\n  ' + link, html, count=1, flags=re.I)
+              else:
+                  html = link + "\\n" + html
               page.write_text(html, encoding="utf-8")
               changed.append(str(page))
 
