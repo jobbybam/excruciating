@@ -38,6 +38,21 @@
     }
   `;
   document.head.append(styles);
+  const loaderStyle=document.createElement("style");
+  loaderStyle.textContent='#excruciating-loader{position:fixed;inset:0;z-index:2147483646;display:grid;place-items:center;background:#080808;color:#f5f5f5;font-family:system-ui,sans-serif;transition:opacity .35s ease,visibility .35s ease}#excruciating-loader.is-done{opacity:0;visibility:hidden;pointer-events:none}#excruciating-loader .inner{width:min(300px,calc(100vw - 52px));text-align:center}#excruciating-loader .brand{font-size:23px;font-weight:850;letter-spacing:-1px;margin-bottom:23px}#excruciating-loader .brand b{margin-right:7px}#excruciating-loader .track{height:3px;border-radius:9px;background:#242424;overflow:hidden}#excruciating-loader .fill{height:100%;width:4%;background:#fff;transition:width .2s ease}#excruciating-loader .status{margin-top:11px;color:#777;font-size:10px;letter-spacing:.5px}';
+  document.head.append(loaderStyle);
+  function showLoadingScreen(){
+    if(document.getElementById("excruciating-loader"))return;
+    const overlay=document.createElement("div");overlay.id="excruciating-loader";
+    overlay.innerHTML='<div class="inner"><div class="brand"><b>&gt;</b>excruciating</div><div class="track" role="progressbar" aria-label="Loading game" aria-valuemin="0" aria-valuemax="100" aria-valuenow="4"><div class="fill"></div></div><div class="status">LOADING GAME</div></div>';
+    (document.body||document.documentElement).append(overlay);
+    const fill=overlay.querySelector(".fill"),track=overlay.querySelector(".track");let progress=4;
+    const timer=setInterval(()=>{progress=Math.min(92,progress+(progress<65?3:1));fill.style.width=progress+"%";track.setAttribute("aria-valuenow",String(progress));},180);
+    const finish=()=>{clearInterval(timer);fill.style.width="100%";track.setAttribute("aria-valuenow","100");overlay.classList.add("is-done");setTimeout(()=>overlay.remove(),420);};
+    window.addEventListener("load",finish,{once:true});if(document.readyState==="complete")finish();
+    setTimeout(()=>{if(document.readyState==="complete")finish();},12000);
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",showLoadingScreen,{once:true});else showLoadingScreen();
 
   const back = document.createElement("a");
   back.id = "excruciating-games-back";
