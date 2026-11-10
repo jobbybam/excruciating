@@ -20,8 +20,9 @@ Game Bootstrapper
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" async href="app-store-interstitial.css" />
 
-    <script src="scripts/extra.min.js"></script>
     <script>window.PokiSDK=window.PokiSDK||new Proxy({}, {get:(_,key)=>key==="rewardedBreak"?()=>Promise.resolve(false):()=>Promise.resolve()});</script>
+    <script src="scripts/extra.min.js"></script>
+    
   </head>
   <body>
     <script src="scripts/bootstrap.min.js"></script>
