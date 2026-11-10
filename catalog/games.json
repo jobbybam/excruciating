@@ -1,5 +1,5 @@
 {
-  "version": 27,
+  "version": 28,
   "source": "Locally hosted selected 3kh0 games from GitLab.",
   "attribution": "Each locally hosted title retains its source-specific attribution and licence/hosting notice.",
   "games": [
@@ -905,6 +905,18 @@
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/idle-shark/index.html",
       "thumbnail": "/games/idle-shark/favicon.png",
+      "source_url": "https://gitlab.com/3kh0/3kh0-assets",
+      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
+      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
+      "published": true
+    },
+    {
+      "slug": "monkey-mart",
+      "title": "Monkey Mart",
+      "category": "Simulation",
+      "description": "Locally hosted game imported from the 3kh0 assets collection.",
+      "url": "/games/monkey-mart/index.html",
+      "thumbnail": "/games/monkey-mart/favicon.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
       "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
