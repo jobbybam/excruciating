@@ -162,7 +162,7 @@ async function installGameShell() {
     if (html.includes("/game-shell.js")) continue;
     const additions = [
       '<link rel="icon" type="image/svg+xml" href="/favicon.svg">',
-      '<script src="/game-shell.js"></script>'
+      '<script src="/game-shell.js" defer></script>'
     ].join(newline + "    ");
     const headEnd = html.toLowerCase().lastIndexOf("</head>");
     if (headEnd >= 0) {
