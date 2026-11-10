@@ -1,0 +1,111 @@
+name: Import uploaded EaglercraftX 1.8 build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "eaglercraft-import.zip"
+      - ".github/workflows/import-eaglercraft-upload.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: import-eaglercraft-upload
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Prepare the uploaded offline client for Pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s eaglercraft-import.zip
+          mkdir -p games/eaglercraft
+          python3 - <<'PY'
+          from pathlib import Path
+          import zipfile, re, json
+
+          archive = Path("eaglercraft-import.zip")
+          with zipfile.ZipFile(archive) as z:
+              names = z.namelist()
+              candidates = [n for n in names if n.lower().endswith(".html") and Path(n).name.lower() == "eaglercraft1-8.html"]
+              if len(candidates) != 1:
+                  raise SystemExit("Expected exactly one eaglercraft1-8.html in the uploaded archive")
+              html = z.read(candidates[0]).decode("utf-8")
+
+          script_re = re.compile(r'(<script\\b[^>]*>)(.*?)(</script\\s*>)', re.I | re.S)
+          index = 0
+          def externalize(match):
+              global index
+              body = match.group(2)
+              # Keep the tiny boot-options script inline; externalize the two
+              # large compiled client scripts so no Pages asset exceeds 25 MiB.
+              if len(body.encode("utf-8")) < 500_000:
+                  return match.group(0)
+              index += 1
+              name = f"client-{index}.js"
+              Path("games/eaglercraft", name).write_text(body, encoding="utf-8")
+              opening = re.sub(r'\\s+src=(["\']).*?\\1', "", match.group(1), flags=re.I)
+              return f'{opening[:-1]} src="./{name}"></script>'
+
+          html = script_re.sub(externalize, html)
+          if index < 2:
+              raise SystemExit(f"Expected to externalize 2 large scripts; found {index}")
+          Path("games/eaglercraft/index.html").write_text(html, encoding="utf-8")
+          Path("games/eaglercraft/favicon.svg").write_text(
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#17212b"/><text x="32" y="43" text-anchor="middle" font-size="38" font-family="Arial" font-weight="700" fill="#fff">E</text></svg>',
+            encoding="utf-8"
+          )
+
+          path = Path("catalog/games.json")
+          data = json.loads(path.read_text(encoding="utf-8"))
+          games = [g for g in data.get("games", []) if g.get("slug") != "eaglerfaithful"]
+          games = [g for g in games if g.get("slug") != "eaglercraft"]
+          games.append({
+            "slug": "eaglercraft",
+            "title": "Eaglercraft 1.8",
+            "category": "Multiplayer",
+            "description": "Locally hosted EaglercraftX 1.8 offline client.",
+            "url": "/games/eaglercraft/index.html",
+            "thumbnail": "/games/eaglercraft/favicon.svg",
+            "source_url": "https://gitlab.com/lax1dude/eaglercraftx-1.8/",
+            "license": "Community client build; preserve upstream notices and comply with upstream terms.",
+            "attribution": "EaglercraftX community build. Minecraft is a trademark of Mojang/Microsoft; this is unofficial.",
+            "published": True
+          })
+          data["games"] = games
+          data["version"] = int(data.get("version", 0)) + 1
+          data["source"] = "Locally hosted games and explicitly labelled external site links."
+          path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\\n", encoding="utf-8")
+          archive.unlink()
+          PY
+      - name: Validate Eaglercraft assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s games/eaglercraft/index.html
+          test -s games/eaglercraft/client-1.js
+          test -s games/eaglercraft/client-2.js
+          for file in games/eaglercraft/*; do
+            size="$(stat -c%s "$file")"
+            if [ "$size" -gt 26214400 ]; then
+              echo "Pages asset exceeds 25 MiB: $file ($size bytes)"
+              exit 1
+            fi
+          done
+      - name: Commit Eaglercraft build
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A eaglercraft-import.zip games/eaglercraft catalog/games.json
+          git commit -m "Add locally hosted EaglercraftX 1.8"
+          git push origin main
