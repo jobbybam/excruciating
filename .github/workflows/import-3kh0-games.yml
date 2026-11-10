@@ -28,6 +28,7 @@ jobs:
             games/slope
             games/yohoho
             games/eaglerfaithful
+            games/polytrack
           sparse-checkout-cone-mode: false
       - name: Clone only the requested 3kh0 GitLab game folders
         shell: bash
@@ -37,6 +38,8 @@ jobs:
           git -C /tmp/3kh0-assets sparse-checkout init --cone
           git -C /tmp/3kh0-assets sparse-checkout set bitlife geodash happywheels jetpack-joyride motox3m monster-tracks ovo rooftop-snipers slope yohoho eaglerfaithful
           git -C /tmp/3kh0-assets checkout
+      - name: Clone the permitted PolyTrack reupload source
+        run: git clone --depth 1 https://github.com/itjey/polytrack.git /tmp/polytrack
       - name: Import only requested game folders
         shell: bash
         run: |
@@ -93,7 +96,42 @@ jobs:
                 "published":True
               }
               imported.append(title)
-          if not imported: raise SystemExit("None of the requested folders were found in the GitLab repository; nothing was committed.")
+          # PolyTrack is not in 3kh0; its creator's terms expressly permit non-commercial reuploads when the required notices and official link are preserved.
+          poly_source = Path("/tmp/polytrack")
+          poly_dest = target / "polytrack"
+          if not (poly_source / "index.html").is_file():
+              raise SystemExit("PolyTrack source is missing its root index.html.")
+          if poly_dest.exists(): shutil.rmtree(poly_dest)
+          shutil.copytree(poly_source, poly_dest, ignore=shutil.ignore_patterns(".git", ".github", "node_modules"))
+          oversized = [p for p in poly_dest.rglob("*") if p.is_file() and p.stat().st_size > 25 * 1024 * 1024]
+          if oversized: raise SystemExit(f"PolyTrack file exceeds Cloudflare Pages 25 MiB limit: {oversized[0]}")
+          poly_index = poly_dest / "index.html"
+          poly_html = poly_index.read_text(encoding="utf-8")
+          config = '<script>window.polytrackModConfiguration = { unblocked: true };</script>'
+          if "polytrackModConfiguration" not in poly_html:
+              poly_html = poly_html.replace("</head>", "  " + config + "\\n</head>")
+          notice = """
+          <div id="excruciating-polytrack-notice">Unofficial, non-commercial PolyTrack reupload by Excruciating. Not affiliated with or endorsed by Kodub.com, CrazyGames, Poki or itch.io. Original game by Kodub. <a href="https://www.crazygames.com/game/polytrack" target="_blank" rel="noopener noreferrer">Official PolyTrack on CrazyGames</a>.</div>
+          <style>#excruciating-polytrack-notice{position:fixed;left:0;right:0;bottom:0;z-index:99999;padding:6px 10px;background:rgba(0,0,0,.78);color:#fff;font:12px/1.4 system-ui,sans-serif;text-align:center}#excruciating-polytrack-notice a{color:#fff;text-decoration:underline}</style>
+          """
+          if "excruciating-polytrack-notice" not in poly_html:
+              poly_html = poly_html.replace("</body>", notice + "\\n</body>")
+          poly_index.write_text(poly_html, encoding="utf-8")
+          (poly_dest / "ATTRIBUTION.md").write_text(
+              "# PolyTrack\\n\\nOriginal game © Kodub. This is an unofficial, non-commercial reupload.\\n\\nThe reupload follows Kodub's terms: preserve the in-game unrecognized-domain notice and outbound links, show the unofficial notice, credit Kodub, and link to the official CrazyGames game page.\\n\\nTerms: https://www.kodub.com/terms/polytrack\\nSource used for this local copy: https://github.com/itjey/polytrack\\n",
+              encoding="utf-8"
+          )
+          entries["polytrack"] = {
+            "slug":"polytrack","title":"PolyTrack","category":"Racing",
+            "description":"Locally hosted non-commercial PolyTrack reupload with Kodub's required notices and official link.",
+            "url":"/games/polytrack/index.html",
+            "source_url":"https://github.com/itjey/polytrack",
+            "license":"Reupload permitted subject to Kodub's PolyTrack Terms of Service.",
+            "attribution":"PolyTrack © Kodub. Unofficial non-commercial reupload; official game link and required notice are preserved.",
+            "published":True
+          }
+          imported.append("PolyTrack")
+          if not imported: raise SystemExit("No requested games were imported; nothing was committed.")
           catalogue["games"] = list(entries.values())
           catalogue["version"] = int(catalogue.get("version",1)) + 1
           catalogue["source"] = "Locally hosted selected 3kh0 games from GitLab."
@@ -107,7 +145,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add catalog/games.json
-          for folder in bitlife geodash happywheels jetpack-joyride motox3m monster-tracks ovo rooftop-snipers slope yohoho eaglerfaithful; do
+          for folder in bitlife geodash happywheels jetpack-joyride motox3m monster-tracks ovo rooftop-snipers slope yohoho eaglerfaithful polytrack; do
             if [ -d "games/$folder" ]; then git add "games/$folder"; fi
           done
           git commit -m "Add requested locally hosted 3kh0 games"
