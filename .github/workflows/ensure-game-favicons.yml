@@ -20,6 +20,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            games/*/index.html
+            games/*/favicon.svg
+          sparse-checkout-cone-mode: false
       - name: Create a favicon for every game page missing one
         shell: bash
         run: |
