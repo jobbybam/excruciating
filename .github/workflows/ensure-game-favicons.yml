@@ -11,7 +11,7 @@ on:
     workflows:
       - Import requested local games
       - Import uploaded EaglercraftX 1.8 build
-      - Import selected 3kh0 games
+      - Import requested 3kh0 games
       - Import games
     types: [completed]
 
