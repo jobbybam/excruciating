@@ -1,0 +1,54 @@
+name: Fix Papa's Games Ruffle loader
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/fix-papas-ruffle.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: excruciating-game-imports
+  cancel-in-progress: false
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix Ruffle player API on every hosted Papa's game
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          pages = sorted(Path("games").glob("papas-*/index.html"))
+          if not pages:
+              raise SystemExit("No locally hosted Papa's game pages found.")
+          changed = 0
+          for page in pages:
+              text = page.read_text(encoding="utf-8")
+              updated = text.replace(
+                  "await player.load(new URL(\"./game.swf\", window.location.href).href);",
+                  "await player.ruffle().load(new URL(\"./game.swf\", window.location.href).href);"
+              )
+              updated = updated.replace(
+                  'message.textContent = "The game could not start. Ruffle failed to load its local game or WebAssembly files. Reload the page or check the deployment."; ',
+                  'message.textContent = "The game could not start: " + (error && error.message ? error.message : "Ruffle could not load the local game or WebAssembly runtime.");'
+              )
+              if "player.ruffle().load(" not in updated:
+                  raise SystemExit(f"Ruffle API update failed for {page}")
+              page.write_text(updated, encoding="utf-8")
+              if updated != text: changed += 1
+          print(f"Verified {len(pages)} Papa's games; updated {changed} pages.")
+          PY
+      - name: Commit changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add games/papas-*/index.html
+          git commit -m "Fix Ruffle player API for Papa's games" || echo "No changes required."
+          git fetch origin main
+          git rebase origin/main
+          git push
