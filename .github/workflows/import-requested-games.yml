@@ -1,0 +1,132 @@
+name: Import requested local games
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/import-requested-games.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: import-requested-games
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Import Bad Time Simulator and FNAF 1-4
+        shell: bash
+        run: |
+          set -euo pipefail
+          tmp="$(mktemp -d)"
+          trap 'rm -rf "$tmp"' EXIT
+
+          # The user reports written permission from the Bad Time Simulator developer
+          # to mirror this compiled build. Keep the original source attribution.
+          git clone --depth 1 https://github.com/FlafyDev/bad-time-simulator-compiled.git "$tmp/bad-time"
+          mkdir -p games/bad-time-simulator
+          rsync -a --delete --exclude='.git' "$tmp/bad-time/" games/bad-time-simulator/
+          cat > games/bad-time-simulator/REDISTRIBUTION-NOTE.txt <<'EOF'
+          Bad Time Simulator compiled mirror.
+          Source: https://github.com/FlafyDev/bad-time-simulator-compiled
+          Original project: https://github.com/Jcw87/c2-sans-fight
+          The site owner reports receiving permission from the compiled build's developer to mirror this build.
+          Bad Time Simulator is an unofficial fan project and is not affiliated with Toby Fox.
+          EOF
+
+          # Only import the four requested entries; do not copy FNAF World,
+          # Sister Location, Pizzeria Simulator, UCN, or any later titles.
+          git clone --depth 1 https://github.com/irv77/hd_fnaf.git "$tmp/fnaf"
+          for n in 1 2 3 4; do
+            test -f "$tmp/fnaf/$n/index.html"
+            mkdir -p "games/fnaf-$n"
+            rsync -a --delete "$tmp/fnaf/$n/" "games/fnaf-$n/"
+            cat > "games/fnaf-$n/REDISTRIBUTION-NOTE.txt" <<EOF
+          Unofficial browser remake source: https://github.com/irv77/hd_fnaf
+          Original Five Nights at Freddy's series © Scott Cawthon.
+          This is an unofficial fan-made browser remake, not an official FNAF product.
+          The site owner reports that redistribution is permitted for this build.
+          EOF
+          done
+
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("catalog/games.json")
+          data = json.loads(path.read_text(encoding="utf-8"))
+          games = data.setdefault("games", [])
+          by_slug = {g.get("slug"): g for g in games}
+
+          def add(game):
+              by_slug[game["slug"]] = game
+
+          add({
+            "slug": "bad-time-simulator",
+            "title": "Bad Time Simulator",
+            "category": "Action",
+            "description": "Locally hosted compiled Bad Time Simulator mirror.",
+            "url": "/games/bad-time-simulator/index.html",
+            "thumbnail": "/games/bad-time-simulator/icon-256.png",
+            "source_url": "https://github.com/FlafyDev/bad-time-simulator-compiled",
+            "license": "Redistribution permission reported by site owner; see REDISTRIBUTION-NOTE.txt.",
+            "attribution": "Compiled build by FlafyDev; original project by Jcw87. Unofficial fan project.",
+            "published": True
+          })
+
+          for n in range(1, 5):
+              add({
+                "slug": f"fnaf-{n}",
+                "title": f"Five Nights at Freddy's {n}",
+                "category": "Horror",
+                "description": f"Locally hosted unofficial HTML remake of Five Nights at Freddy's {n}.",
+                "url": f"/games/fnaf-{n}/index.html",
+                "thumbnail": f"/games/fnaf-{n}/resources/title.png",
+                "source_url": "https://github.com/irv77/hd_fnaf",
+                "license": "Redistribution permission reported by site owner; see REDISTRIBUTION-NOTE.txt.",
+                "attribution": "Unofficial browser remake by irv77. Five Nights at Freddy's © Scott Cawthon.",
+                "published": True
+              })
+
+          # Soundboard is a site link, not a mirrored game.
+          add({
+            "slug": "soundboard",
+            "title": "Soundboard",
+            "category": "Soundboard",
+            "description": "Open SoundButtonsSpace.",
+            "url": "https://soundbuttonsspace.org",
+            "external": True,
+            "published": True
+          })
+
+          data["games"] = list(by_slug.values())
+          data["version"] = int(data.get("version", 0)) + 1
+          data["source"] = "Locally hosted games; Soundboard is an external site link."
+          path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\\n", encoding="utf-8")
+          PY
+      - name: Verify imported game launch pages and assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s games/bad-time-simulator/index.html
+          for n in 1 2 3 4; do
+            test -s "games/fnaf-$n/index.html"
+            test -s "games/fnaf-$n/src/Runtime.js"
+            test -s "games/fnaf-$n/src/resources.zip.part1"
+          done
+      - name: Commit imported games and catalogue
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add games/bad-time-simulator games/fnaf-1 games/fnaf-2 games/fnaf-3 games/fnaf-4 catalog/games.json
+          git commit -m "Add Bad Time Simulator and FNAF 1-4 locally"
+          git push origin main
