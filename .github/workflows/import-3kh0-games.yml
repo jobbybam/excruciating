@@ -1,0 +1,92 @@
+name: Import requested 3kh0 games
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/import-3kh0-games.yml"
+permissions:
+  contents: write
+concurrency:
+  group: excruciating-game-imports
+  cancel-in-progress: false
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Clone the 3kh0 GitLab assets repository
+        run: git clone --depth 1 https://gitlab.com/3kh0/3kh0-assets.git /tmp/3kh0-assets
+      - name: Import only requested game folders
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, shutil
+          from pathlib import Path
+          source = Path("/tmp/3kh0-assets")
+          target = Path("games")
+          requested = [
+            ("bitlife", "BitLife", "Simulation"),
+            ("geodash", "Geometry Dash", "Arcade"),
+            ("happywheels", "Happy Wheels", "Action"),
+            ("jetpack-joyride", "Jetpack Joyride", "Arcade"),
+            ("motox3m", "Moto X3M", "Racing"),
+            ("monster-tracks", "Monster Tracks", "Racing"),
+            ("ovo", "OvO", "Platformer"),
+            ("rooftop-snipers", "Rooftop Snipers", "Action"),
+            ("slope", "Slope", "Arcade"),
+            ("soundboard", "Soundboard", "Utility"),
+          ]
+          catalogue_path = Path("catalog/games.json")
+          catalogue = json.loads(catalogue_path.read_text(encoding="utf-8"))
+          entries = {g["slug"]: g for g in catalogue["games"]}
+          imported = []
+          for folder, title, category in requested:
+              src = source / folder
+              if not src.is_dir():
+                  print(f"Not in upstream GitLab tree; skipping: {folder}")
+                  continue
+              if not (src / "index.html").is_file():
+                  print(f"No root index.html; skipping: {folder}")
+                  continue
+              dest = target / folder
+              if dest.exists(): shutil.rmtree(dest)
+              shutil.copytree(src, dest, ignore=shutil.ignore_patterns(".git", ".github", "node_modules"))
+              files = [p for p in dest.rglob("*") if p.is_file()]
+              oversized = [p for p in files if p.stat().st_size > 25 * 1024 * 1024]
+              if oversized: raise SystemExit(f"{title}: file exceeds Cloudflare Pages 25 MiB limit: {oversized[0]}")
+              for html in dest.rglob("*.html"):
+                  try: content = html.read_text(encoding="utf-8")
+                  except UnicodeDecodeError: continue
+                  content = content.replace(f"https://raw.githack.com/3kh0/3kh0-assets/main/{folder}/", f"/games/{folder}/")
+                  content = content.replace(f"https://raw.githubusercontent.com/3kh0/3kh0-assets/main/{folder}/", f"/games/{folder}/")
+                  html.write_text(content, encoding="utf-8")
+              entries[folder] = {
+                "slug":folder,"title":title,"category":category,
+                "description":"Locally hosted game imported from the 3kh0 assets collection.",
+                "url":f"/games/{folder}/index.html",
+                "source_url":"https://gitlab.com/3kh0/3kh0-assets",
+                "license":"3kh0 Assets README requests attribution; third-party game rights vary by title.",
+                "attribution":"Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
+                "published":True
+              }
+              imported.append(title)
+          if not imported: raise SystemExit("None of the requested folders were found in the GitLab repository; nothing was committed.")
+          catalogue["games"] = list(entries.values())
+          catalogue["version"] = int(catalogue.get("version",1)) + 1
+          catalogue["source"] = "Locally hosted selected 3kh0 games from GitLab."
+          catalogue_path.write_text(json.dumps(catalogue,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          print("Imported:", ", ".join(imported))
+          PY
+      - name: Commit and push imported games
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add games/ catalog/games.json
+          git commit -m "Add requested locally hosted 3kh0 games"
+          git fetch origin main
+          git rebase origin/main
+          git push
