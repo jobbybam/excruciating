@@ -381,6 +381,13 @@
       #undertale-mobile-controls button[data-key="KeyZ"] { grid-column: 2; grid-row: 1; background-color: #8e252d; }
       #undertale-mobile-controls button[data-key="KeyX"] { grid-column: 1; grid-row: 2; }
       #undertale-mobile-controls button[data-key="KeyC"] { grid-column: 2; grid-row: 2; }
+      #ut-control-tools{display:none;position:fixed;top:max(10px,env(safe-area-inset-top));right:max(10px,env(safe-area-inset-right));z-index:100001;gap:6px;align-items:center;}
+      #ut-control-tools button{border:1px solid rgba(255,255,255,.5);border-radius:8px;background:rgba(16,16,20,.84);color:#fff;padding:7px 10px;font:600 11px Arial,sans-serif;backdrop-filter:blur(8px);touch-action:manipulation;}
+      #ut-control-tools button[aria-pressed="true"]{background:#fff;color:#111;}
+      #undertale-mobile-controls[hidden]{display:none!important;}
+      #undertale-mobile-controls .ut-stick,#undertale-mobile-controls .ut-actions{will-change:transform;}
+      #undertale-mobile-controls.is-moving .ut-stick,#undertale-mobile-controls.is-moving .ut-actions{outline:1px dashed rgba(255,255,255,.8);outline-offset:5px;}
+      @media(pointer:coarse) and (hover:none){#ut-control-tools{display:flex;}}
       @media (pointer: coarse) and (hover: none) {
         #undertale-mobile-controls { display: flex; }
         .output-container { display: none !important; }
@@ -1022,6 +1029,7 @@
     </script>
 	<script async type="text/javascript" src="runner.js"></script>
   
+    <div id="ut-control-tools" aria-label="Touch control options"><button id="ut-controls-tab" type="button" aria-expanded="true">Controls</button><button id="ut-controls-move" type="button" aria-pressed="false" aria-label="Move touch controls">Move</button></div>
     <div id="undertale-mobile-controls" aria-label="Undertale touch controls">
       <div class="ut-stick" id="ut-stick" role="application" aria-label="Movement joystick">
         <div class="ut-knob" id="ut-knob"></div>
@@ -1073,6 +1081,57 @@
       }
 
       let activePointer = null;
+      let moveMode = false;
+      const controlsTab = document.getElementById("ut-controls-tab");
+      const moveButton = document.getElementById("ut-controls-move");
+      controlsTab?.addEventListener("click", () => {
+        root.hidden = !root.hidden;
+        controlsTab.setAttribute("aria-expanded", String(!root.hidden));
+      });
+      moveButton?.addEventListener("click", () => {
+        moveMode = !moveMode;
+        moveButton.setAttribute("aria-pressed", String(moveMode));
+        moveButton.textContent = moveMode ? "Done" : "Move";
+        root.classList.toggle("is-moving", moveMode);
+      });
+      // Drag the stick and action cluster independently while Move is active.
+      root.addEventListener("pointerdown", event => {
+        if (!moveMode) return;
+        const group = event.target.closest(".ut-stick,.ut-actions");
+        if (!group) return;
+        event.preventDefault();
+        event.stopPropagation();
+        const key = group.classList.contains("ut-stick") ? "ut-stick-position" : "ut-actions-position";
+        const startX = event.clientX, startY = event.clientY;
+        const current = group._moveOffset || {x:0,y:0};
+        const origin = {x:current.x,y:current.y};
+        group.setPointerCapture(event.pointerId);
+        const move = e => {
+          if (!group.hasPointerCapture(e.pointerId)) return;
+          const next = {x:origin.x+e.clientX-startX,y:origin.y+e.clientY-startY};
+          group._moveOffset = next;
+          group.style.transform = "translate("+next.x+"px,"+next.y+"px)";
+          try { localStorage.setItem(key, JSON.stringify(next)); } catch (_) {}
+        };
+        const stop = () => {
+          group.removeEventListener("pointermove", move);
+          group.removeEventListener("pointerup", stop);
+          group.removeEventListener("pointercancel", stop);
+        };
+        group.addEventListener("pointermove", move);
+        group.addEventListener("pointerup", stop);
+        group.addEventListener("pointercancel", stop);
+      }, true);
+      for (const group of [stick, root.querySelector(".ut-actions")]) {
+        const key = group.classList.contains("ut-stick") ? "ut-stick-position" : "ut-actions-position";
+        try {
+          const saved = JSON.parse(localStorage.getItem(key) || "null");
+          if (saved && Number.isFinite(saved.x) && Number.isFinite(saved.y)) {
+            group._moveOffset = saved;
+            group.style.transform = "translate("+saved.x+"px,"+saved.y+"px)";
+          }
+        } catch (_) {}
+      }
       function updateStick(event) {
         const rect = stick.getBoundingClientRect();
         const cx = rect.left + rect.width / 2;
@@ -1092,18 +1151,17 @@
         knob.style.transform = "translate(" + dx + "px," + dy + "px)";
 
         const magnitude = Math.hypot(dx, dy);
-        const deadzone = max * 0.14;
-        const axisThreshold = max * 0.24;
+        const deadzone = max * 0.18;
         const directions = new Set();
         if (magnitude > deadzone) {
-          // Test both axes independently. Diagonals are intentionally allowed;
-          // holding two directions at once is how the game receives diagonals.
-          if (Math.abs(dx) > axisThreshold) {
-            directions.add(dx < 0 ? "ArrowLeft" : "ArrowRight");
-          }
-          if (Math.abs(dy) > axisThreshold) {
-            directions.add(dy < 0 ? "ArrowUp" : "ArrowDown");
-          }
+          // Undertale movement is digital: snap to one of eight directions.
+          const octant = Math.round(Math.atan2(dy, dx) / (Math.PI / 4));
+          const map = [
+            ["ArrowRight"], ["ArrowRight","ArrowDown"], ["ArrowDown"],
+            ["ArrowDown","ArrowLeft"], ["ArrowLeft"], ["ArrowLeft","ArrowUp"],
+            ["ArrowUp"], ["ArrowUp","ArrowRight"]
+          ];
+          for (const direction of map[(octant + 8) % 8]) directions.add(direction);
         }
         setDirections(directions);
       }
@@ -1113,6 +1171,7 @@
         setDirections(new Set());
       }
       stick.addEventListener("pointerdown", event => {
+        if (moveMode) return;
         event.preventDefault();
         activePointer = event.pointerId;
         stick.setPointerCapture(event.pointerId);
@@ -1133,6 +1192,7 @@
         let pointer = null;
         const code = button.dataset.key;
         button.addEventListener("pointerdown", event => {
+          if (moveMode) return;
           event.preventDefault();
           pointer = event.pointerId;
           button.setPointerCapture(event.pointerId);
