@@ -47,16 +47,16 @@ jobs:
             <path d="M8 8h48v48H8z" fill="none" stroke="hsl({hue} 45% 68%)" stroke-opacity=".35" stroke-width="2"/>
             <text x="32" y="42" text-anchor="middle" font-family="Arial,sans-serif" font-size="{25 if len(label) == 2 else 34}" font-weight="700" fill="#fff">{label}</text>
           </svg>'''
-                  icon.write_text(svg + "\\n", encoding="utf-8")
+                  icon.write_text(svg + "\n", encoding="utf-8")
                   changed.append(str(icon))
 
               html = page.read_text(encoding="utf-8")
-              if not re.search(r'<link\\b[^>]*\\brel\\s*=\\s*["\\'](?:shortcut\\s+)?icon["\\']', html, re.I):
+              if not re.search(r'<link\b[^>]*\brel\s*=\s*["\'](?:shortcut\s+)?icon["\']', html, re.I):
                   link = '<link rel="icon" type="image/svg+xml" href="./favicon.svg">'
-                  if re.search(r'<head\\b[^>]*>', html, re.I):
-                      html = re.sub(r'(<head\\b[^>]*>)', r'\\1\\n  ' + link, html, count=1, flags=re.I)
+                  if re.search(r'<head\b[^>]*>', html, re.I):
+                      html = re.sub(r'(<head\b[^>]*>)', r'\1\n  ' + link, html, count=1, flags=re.I)
                   else:
-                      html = link + "\\n" + html
+                      html = link + "\n" + html
                   page.write_text(html, encoding="utf-8")
                   changed.append(str(page))
 
