@@ -87,7 +87,7 @@ jobs:
           set -euo pipefail
           git clone --depth 1 --filter=blob:none --no-checkout https://gitlab.com/3kh0/3kh0-assets.git /tmp/3kh0-assets
           git -C /tmp/3kh0-assets sparse-checkout init --cone
-          git -C /tmp/3kh0-assets sparse-checkout set bitlife geodash happywheels jetpack-joyride motox3m motox3m-pool motox3m-spooky motox3m-winter motox3m2 google-snake draw-the-hill chrome-dino eggycar stack snowrider3d temple-run-2 monster-tracks ovo rooftop-snipers slope yohoho eaglerfaithful 99balls aquapark-slides basket-random bloonstd fruitninja hextris idle-breakout monkey-mart drive-mad drift-boss stickman-hook ctr ctr-holiday ctr-tr cookie-clicker paperio2 doodle-jump 2048-multitask flappy-bird ducklife1 ducklife2 ducklife3 tiny-fishing crossyroad bad-ice-cream om-bounce elasticman doge-miner sort-the-court the-final-earth circlo connect3 cupcake2048 idle-shark cats-drop merge-rainbow subway-surfers
+          git -C /tmp/3kh0-assets sparse-checkout set bitlife geodash happywheels jetpack-joyride motox3m motox3m-pool motox3m-spooky motox3m-winter motox3m2 google-snake draw-the-hill chrome-dino eggycar stack snowrider3d temple-run-2 monster-tracks ovo rooftop-snipers slope yohoho eaglerfaithful 99balls aquapark-slides basket-random bloonstd fruitninja hextris idle-breakout MonkeyMart drive-mad drift-boss stickman-hook ctr ctr-holiday ctr-tr cookie-clicker paperio2 doodle-jump 2048-multitask flappy-bird ducklife1 ducklife2 ducklife3 tiny-fishing crossyroad bad-ice-cream om-bounce elasticman doge-miner sort-the-court the-final-earth circlo connect3 cupcake2048 idle-shark cats-drop merge-rainbow subway-surfers
           git -C /tmp/3kh0-assets checkout
       - name: Clone the permitted PolyTrack reupload source
         run: git clone --depth 1 https://github.com/itjey/polytrack.git /tmp/polytrack
@@ -166,7 +166,8 @@ jobs:
           entries = {g["slug"]: g for g in catalogue["games"]}
           imported = []
           for folder, title, category in requested:
-              src = source / folder
+              source_folder = "MonkeyMart" if folder == "monkey-mart" else folder
+              src = source / source_folder
               if not src.is_dir():
                   print(f"Not in upstream GitLab tree; skipping: {folder}")
                   continue
@@ -189,8 +190,8 @@ jobs:
               for html in dest.rglob("*.html"):
                   try: content = html.read_text(encoding="utf-8")
                   except UnicodeDecodeError: continue
-                  content = content.replace(f"https://raw.githack.com/3kh0/3kh0-assets/main/{folder}/", f"/games/{folder}/")
-                  content = content.replace(f"https://raw.githubusercontent.com/3kh0/3kh0-assets/main/{folder}/", f"/games/{folder}/")
+                  content = content.replace(f"https://raw.githack.com/3kh0/3kh0-assets/main/{source_folder}/", f"/games/{folder}/")
+                  content = content.replace(f"https://raw.githubusercontent.com/3kh0/3kh0-assets/main/{source_folder}/", f"/games/{folder}/")
                   if folder.startswith("motox3m"):
                       def strip_moto_script(match):
                           block = match.group(0)
