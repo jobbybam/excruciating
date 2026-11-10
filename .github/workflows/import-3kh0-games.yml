@@ -109,18 +109,23 @@ jobs:
           poly_html = poly_index.read_text(encoding="utf-8")
           config = '<script>window.polytrackModConfiguration = { unblocked: true };</script>'
           if "polytrackModConfiguration" not in poly_html:
-              poly_html = poly_html.replace("</head>", "  " + config + "\\n</head>")
+              poly_html = poly_html.replace("</head>", "  " + config + chr(10) + "</head>")
           notice = """
           <div id="excruciating-polytrack-notice">Unofficial, non-commercial PolyTrack reupload by Excruciating. Not affiliated with or endorsed by Kodub.com, CrazyGames, Poki or itch.io. Original game by Kodub. <a href="https://www.crazygames.com/game/polytrack" target="_blank" rel="noopener noreferrer">Official PolyTrack on CrazyGames</a>.</div>
           <style>#excruciating-polytrack-notice{position:fixed;left:0;right:0;bottom:0;z-index:99999;padding:6px 10px;background:rgba(0,0,0,.78);color:#fff;font:12px/1.4 system-ui,sans-serif;text-align:center}#excruciating-polytrack-notice a{color:#fff;text-decoration:underline}</style>
           """
           if "excruciating-polytrack-notice" not in poly_html:
-              poly_html = poly_html.replace("</body>", notice + "\\n</body>")
+              poly_html = poly_html.replace("</body>", notice + chr(10) + "</body>")
           poly_index.write_text(poly_html, encoding="utf-8")
-          (poly_dest / "ATTRIBUTION.md").write_text(
-              "# PolyTrack\\n\\nOriginal game © Kodub. This is an unofficial, non-commercial reupload.\\n\\nThe reupload follows Kodub's terms: preserve the in-game unrecognized-domain notice and outbound links, show the unofficial notice, credit Kodub, and link to the official CrazyGames game page.\\n\\nTerms: https://www.kodub.com/terms/polytrack\\nSource used for this local copy: https://github.com/itjey/polytrack\\n",
-              encoding="utf-8"
-          )
+          (poly_dest / "ATTRIBUTION.md").write_text("""# PolyTrack
+
+Original game © Kodub. This is an unofficial, non-commercial reupload.
+
+The reupload follows Kodub's terms: preserve the in-game unrecognized-domain notice and outbound links, show the unofficial notice, credit Kodub, and link to the official CrazyGames game page.
+
+Terms: https://www.kodub.com/terms/polytrack
+Source used for this local copy: https://github.com/itjey/polytrack
+""", encoding="utf-8")
           entries["polytrack"] = {
             "slug":"polytrack","title":"PolyTrack","category":"Racing",
             "description":"Locally hosted non-commercial PolyTrack reupload with Kodub's required notices and official link.",
