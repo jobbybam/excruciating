@@ -52,7 +52,7 @@ jobs:
           Unofficial browser remake source: https://github.com/irv77/hd_fnaf
           Original Five Nights at Freddy's series © Scott Cawthon.
           This is an unofficial fan-made browser remake, not an official FNAF product.
-          The site owner reports that redistribution is permitted for this build.
+          The site owner has not independently verified redistribution permission for this build. Its appearance on other unblocked-game sites is not proof of a licence.
           EOF
           done
 
@@ -76,7 +76,7 @@ jobs:
             "url": "/games/bad-time-simulator/index.html",
             "thumbnail": "/games/bad-time-simulator/icon-256.png",
             "source_url": "https://github.com/FlafyDev/bad-time-simulator-compiled",
-            "license": "Redistribution permission reported by site owner; see REDISTRIBUTION-NOTE.txt.",
+            "license": "Redistribution rights not independently verified; see REDISTRIBUTION-NOTE.txt.",
             "attribution": "Compiled build by FlafyDev; original project by Jcw87. Unofficial fan project.",
             "published": True
           })
