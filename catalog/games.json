@@ -1,5 +1,5 @@
 {
-  "version": 15,
+  "version": 16,
   "source": "Locally hosted selected 3kh0 games from GitLab.",
   "attribution": "Each locally hosted title retains its source-specific attribution and licence/hosting notice.",
   "games": [
@@ -313,6 +313,17 @@
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
       "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
+      "published": true
+    },
+    {
+      "slug": "polytrack",
+      "title": "PolyTrack",
+      "category": "Racing",
+      "description": "Locally hosted non-commercial PolyTrack reupload with Kodub's required notices and official link.",
+      "url": "/games/polytrack/index.html",
+      "source_url": "https://github.com/itjey/polytrack",
+      "license": "Reupload permitted subject to Kodub's PolyTrack Terms of Service.",
+      "attribution": "PolyTrack © Kodub. Unofficial non-commercial reupload; official game link and required notice are preserved.",
       "published": true
     }
   ]
