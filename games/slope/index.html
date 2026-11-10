@@ -127,12 +127,11 @@
           const event = new KeyboardEvent(type, {
             key, code: "Key" + code, bubbles: true, cancelable: true
           });
-          window.dispatchEvent(event);
+          const legacyCode = key === "a" ? 65 : 68;
+          Object.defineProperty(event, "keyCode", { get: () => legacyCode });
+          Object.defineProperty(event, "which", { get: () => legacyCode });
+          Object.defineProperty(event, "charCode", { get: () => 0 });
           document.dispatchEvent(event);
-          const canvas = document.querySelector("#gameContainer canvas");
-          if (canvas) canvas.dispatchEvent(new KeyboardEvent(type, {
-            key, code: "Key" + code, bubbles: true, cancelable: true
-          }));
         };
         const release = (button) => {
           const key = button.dataset.key;
