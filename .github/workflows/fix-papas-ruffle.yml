@@ -1,63 +1,117 @@
-name: Fix Papa's Games Ruffle loader
+name: Repair Papa's Games Ruffle package
+
 on:
   push:
     branches: [main]
     paths:
       - ".github/workflows/fix-papas-ruffle.yml"
   workflow_dispatch:
+
 permissions:
   contents: write
+
+concurrency:
+  group: excruciating-game-imports
+  cancel-in-progress: false
+
 jobs:
-  fix:
+  repair:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Fix and validate Ruffle on every hosted Papa's game
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            games/ruffle
+            games/papas-*/index.html
+            games/papas-*/game.swf
+          sparse-checkout-cone-mode: false
+
+      - name: Download the complete official self-hosted Ruffle release
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --retry-delay 2 \
+            https://github.com/ruffle-rs/ruffle/releases/download/v0.7.1/ruffle-0.7.1-web-selfhosted.zip \
+            --output /tmp/ruffle-web.zip
+          mkdir -p /tmp/ruffle-web
+          unzip -q /tmp/ruffle-web.zip -d /tmp/ruffle-web
+
+      - name: Replace incomplete Ruffle files and verify every Papa game
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
+          import re, shutil
+
+          extracted = Path("/tmp/ruffle-web")
+          sources = [p for p in extracted.rglob("*") if p.is_file()]
+          loader = next((p for p in sources if p.name == "ruffle.js"), None)
+          if loader is None:
+              raise SystemExit("Official Ruffle archive did not contain ruffle.js")
+
+          target = Path("games/ruffle")
+          if target.exists():
+              shutil.rmtree(target)
+          target.mkdir(parents=True)
+
+          for source in sources:
+              name = source.name
+              if (name == "ruffle.js" or
+                  (name.startswith("core.ruffle.") and name.endswith(".js")) or
+                  name.endswith(".wasm") or name == "LICENSE.md"):
+                  shutil.copy2(source, target / name)
+
+          js = target / "ruffle.js"
+          if not js.is_file():
+              raise SystemExit("Ruffle loader was not copied")
+          js_text = js.read_text(encoding="utf-8")
+
+          chunk_map = re.search(r'"core\\.ruffle\\."\\+\\{([^}]+)\\}\\[e\\]\\+"\\.js"', js_text)
+          if chunk_map:
+              hashes = re.findall(r'\\d+:"([a-f0-9]+)"', chunk_map.group(1))
+              chunks = [f"core.ruffle.{value}.js" for value in hashes]
+          else:
+              chunks = [p.name for p in target.glob("core.ruffle.*.js")]
+          if not chunks:
+              raise SystemExit("Ruffle loader did not expose any core JavaScript chunks")
+          for name in chunks:
+              if not (target / name).is_file():
+                  raise SystemExit(f"Ruffle core chunk is missing: {name}")
+
+          wasm_names = sorted(set(re.findall(r'[a-f0-9]{20}\\.wasm', js_text)))
+          if not wasm_names:
+              raise SystemExit("No local WASM assets were referenced by ruffle.js")
+          for name in wasm_names:
+              if not (target / name).is_file():
+                  raise SystemExit(f"Ruffle WASM file is missing: {name}")
+
           pages = sorted(Path("games").glob("papas-*/index.html"))
           if len(pages) != 14:
-              raise SystemExit(f"Expected 14 Papa's game pages, found {len(pages)}")
+              raise SystemExit(f"Expected 14 Papa game pages, found {len(pages)}")
           for page in pages:
               html = page.read_text(encoding="utf-8")
-              html = html.replace(
-                  'await player.ruffle().load(new URL("./game.swf", window.location.href).href);',
-                  'await player.load({ url: new URL("./game.swf", window.location.href).href });'
-              )
-              html = html.replace(
-                  'await player.load(new URL("./game.swf", window.location.href).href);',
-                  'await player.load({ url: new URL("./game.swf", window.location.href).href });'
-              )
-              if 'await player.load({ url: new URL("./game.swf", window.location.href).href });' not in html:
-                  raise SystemExit(f"Unsupported or missing Ruffle load call in {page}")
               if 'publicPath: new URL("/games/ruffle/", window.location.origin).href' not in html:
-                  raise SystemExit(f"Ruffle publicPath is incorrect in {page}")
-              page.write_text(html, encoding="utf-8")
-          ruffle = Path("games/ruffle")
-          js = ruffle / "ruffle.js"
-          if not js.is_file() or js.stat().st_size < 100000:
-              raise SystemExit("Missing or invalid local ruffle.js")
-          js_text = js.read_text(encoding="utf-8")
-          wasm_names = ["878d548199cddef07035.wasm", "172de42e6619eac8f371.wasm"]
-          if not all(name in js_text for name in wasm_names):
-              raise SystemExit("Ruffle JS references unexpected or missing WASM files")
-          for name in wasm_names:
-              wasm = ruffle / name
-              if not wasm.is_file() or wasm.stat().st_size < 1024:
-                  raise SystemExit(f"Missing local Ruffle WASM file: {name}")
-          print(f"Validated {len(pages)} Papa's pages and {len(wasm_names)} local Ruffle WASM binaries.")
+                  raise SystemExit(f"Incorrect local Ruffle publicPath in {page}")
+              if not (page.parent / "game.swf").is_file():
+                  raise SystemExit(f"Missing local SWF for {page.parent.name}")
+
+          for path in target.iterdir():
+              if path.is_file() and path.stat().st_size > 25 * 1024 * 1024:
+                  raise SystemExit(f"Ruffle asset exceeds Cloudflare Pages limit: {path}")
+          print(f"Verified {len(pages)} Papa games, {len(chunks)} Ruffle core chunks and {len(wasm_names)} WASM files.")
           PY
-      - name: Commit and push fixes
+
+      - name: Commit the complete Ruffle runtime
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add games/papas-*/index.html
-          git commit -m "Fix Papa's games Ruffle loading" || echo "No changes required."
+          git add games/ruffle
+          git commit -m "Restore missing Ruffle core chunks for Papa games"
           git fetch origin main
           git rebase origin/main
-          git push
+          git push origin main
