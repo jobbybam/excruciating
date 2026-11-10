@@ -150,8 +150,36 @@ async function listFiles(directory, relative = "") {
   return results;
 }
 
+async function installGameShell() {
+  const cataloguePath = path.join(OUT_DIR, "catalog", "games.json");
+  const catalogue = JSON.parse(await readFile(cataloguePath, "utf8"));
+  const gamesRoot = path.join(OUT_DIR, "games");
+  for (const game of catalogue.games ?? []) {
+    if (game.published === false || !game.url || !game.url.startsWith("/games/")) continue;
+    const gameFile = path.join(OUT_DIR, game.url.replace(/^\//, ""));
+    let html;
+    try {
+      html = await readFile(gameFile, "utf8");
+    } catch {
+      continue;
+    }
+    if (html.includes("/game-shell.js")) continue;
+    const additions = [
+      '<link rel="icon" type="image/svg+xml" href="/favicon.svg">',
+      '<script src="/game-shell.js" defer></script>'
+    ].join("\\n    ");
+    if (/<\\/head>/i.test(html)) {
+      html = html.replace(/<\\/head>/i, `    ${additions}\\n</head>`);
+    } else {
+      html = html.replace(/<body\\b/i, `${additions}\\n<body`);
+    }
+    await writeFile(gameFile, html, "utf8");
+  }
+}
+
 async function main() {
   await copyStaticSite();
+  await installGameShell();
 
   const html = await readFile(INDEX_FILE, "utf8");
   const archiveMapMatch = html.match(
