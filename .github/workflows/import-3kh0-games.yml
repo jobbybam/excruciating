@@ -136,7 +136,7 @@ jobs:
               if folder.startswith("motox3m"):
                   for sdk in ("gamebridge.js", "pk-sdk.js"):
                       if (dest / sdk).exists(): (dest / sdk).unlink()
-              thumbnail = next((f"/games/{folder}/{name}" for name in ("splash.jpg", "thumbnail.png", "thumb.png", "favicon.png", "favicon.ico") if (dest / name).is_file()), f"/games/{folder}/favicon.svg")
+              thumbnail = next((f"/games/{folder}/{name}" for name in ("splash.jpg", "thumbnail.png", "thumb.png", "favicon.png", "favicon.ico", "icon-256.png", "eggy-car.png", "stack.png", "img/og-icon.png", "img/snake.png", "icons/icon-512.png") if (dest / name).is_file()), f"/games/{folder}/favicon.svg")
               entries[folder] = {
                 "slug":folder,"title":title,"category":category,
                 "description":"Locally hosted game imported from the 3kh0 assets collection.",
