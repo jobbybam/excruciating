@@ -37,7 +37,7 @@
       player.style.height = "100%";
       document.getElementById("game").appendChild(player);
       try {
-    await player.ruffle().load(new URL("./game.swf", window.location.href).href);
+    await player.load({ url: new URL("./game.swf", window.location.href).href });
   } catch (error) {
     console.error("Failed to load the locally hosted Papa's SWF or Ruffle WASM.", error);
     const message = document.createElement("div");
