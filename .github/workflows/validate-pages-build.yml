@@ -129,7 +129,7 @@ jobs:
           for slug in ("motox3m", "motox3m-pool", "motox3m-spooky", "motox3m-winter"):
               page = dist / "games" / slug / "index.html"
               html = page.read_text(encoding="utf-8")
-              if re.search(r"gamebridge|pk-sdk|imasdk\\.googleapis", html, re.I):
+              if re.search(r"gamebridge|pk-sdk|imasdk\.googleapis", html, re.I):
                   raise SystemExit(f"Ad SDK reference remains in {page}")
           snowrider = (dist / "games/snowrider3d/index.html").read_text(encoding="utf-8")
           if "o.s.src=o.f(" in snowrider or "../images/" in snowrider:
