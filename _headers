@@ -1,3 +1,7 @@
 /games/ruffle/*.wasm
   Content-Type: application/wasm
   Cache-Control: public, max-age=31536000, immutable
+
+/games/deltarune/runner.wasm
+  Content-Type: application/wasm
+  Cache-Control: public, max-age=31536000, immutable
