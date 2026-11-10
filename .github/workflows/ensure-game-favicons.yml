@@ -33,6 +33,14 @@ jobs:
           sparse-checkout: |
             games/*/index.html
             games/*/favicon.svg
+            games/*/favicon.ico
+            games/*/favicon.png
+            games/*/icon-256.png
+            games/*/stack.png
+            games/*/img/snake.png
+            games/*/img/og-icon.png
+            games/*/icons/icon-256.png
+            games/*/icons/icon-512.png
           sparse-checkout-cone-mode: false
       - name: Create a favicon for every game page missing one
         shell: bash
