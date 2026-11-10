@@ -86,6 +86,19 @@ jobs:
                   content = content.replace(f"https://raw.githack.com/3kh0/3kh0-assets/main/{folder}/", f"/games/{folder}/")
                   content = content.replace(f"https://raw.githubusercontent.com/3kh0/3kh0-assets/main/{folder}/", f"/games/{folder}/")
                   html.write_text(content, encoding="utf-8")
+              index_page = dest / "index.html"
+              page_html = index_page.read_text(encoding="utf-8")
+              credit = """
+              <div id="excruciating-3kh0-credit">Game files from <a href="https://gitlab.com/3kh0/3kh0-assets" target="_blank" rel="noopener noreferrer">3kh0 Assets</a></div>
+              <style>#excruciating-3kh0-credit{position:fixed;right:8px;bottom:6px;z-index:99998;padding:4px 7px;border-radius:5px;background:rgba(0,0,0,.65);color:#fff;font:10px/1.3 system-ui,sans-serif;opacity:.7}#excruciating-3kh0-credit a{color:inherit;text-decoration:underline}</style>
+              """
+              if "excruciating-3kh0-credit" not in page_html:
+                  page_html = page_html.replace("</body>", credit + chr(10) + "</body>")
+              index_page.write_text(page_html, encoding="utf-8")
+              (dest / "ATTRIBUTION.md").write_text(
+                  "# Attribution\\n\\nGame files sourced from the 3kh0 Assets collection. Please credit 3kh0. Original game names, trademarks and third-party game rights remain with their respective creators.\\n\\nSource: https://gitlab.com/3kh0/3kh0-assets\\n",
+                  encoding="utf-8"
+              )
               entries[folder] = {
                 "slug":folder,"title":title,"category":category,
                 "description":"Locally hosted game imported from the 3kh0 assets collection.",
