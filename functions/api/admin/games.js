@@ -8,7 +8,7 @@ export async function onRequestGet({ request, env }) {
     const response = await fetch(new URL("/catalog/games.json", request.url));
     if (response.ok) { const data = await response.json(); catalogue = Array.isArray(data.games) ? data.games : []; }
   } catch {}
-  const rows = await env.DB.prepare("SELECT slug,title,category,thumbnail,description,source_url,license,attribution,published,created_at FROM games WHERE source_url IS NULL OR (source_url NOT LIKE '%mashukui/web-games%' AND source_url NOT LIKE '%3kh0%') ORDER BY title COLLATE NOCASE").all();
+  const rows = await env.DB.prepare("SELECT slug,title,category,thumbnail,description,source_url,license,attribution,published,created_at FROM games WHERE source_url IS NULL OR (source_url NOT LIKE '%mashukui/web-games%') ORDER BY title COLLATE NOCASE").all();
   const bySlug = new Map((rows.results || []).map(row => [row.slug, row]));
   const merged = catalogue.map(game => ({...game,...(bySlug.get(game.slug) || {})}));
   const known = new Set(catalogue.map(game => game.slug));
