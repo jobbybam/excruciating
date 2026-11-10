@@ -4,7 +4,7 @@ const encoder=new TextEncoder();
 function toHex(bytes){return Array.from(new Uint8Array(bytes),b=>b.toString(16).padStart(2,"0")).join("");}
 function fromHex(value){return Uint8Array.from(value.match(/.{2}/g)||[],x=>parseInt(x,16));}
 function randomHex(length){return toHex(crypto.getRandomValues(new Uint8Array(length)));}
-async function passwordHash(password,salt){const key=await crypto.subtle.importKey("raw",encoder.encode(password),"PBKDF2",false,["deriveBits"]);const bits=await crypto.subtle.deriveBits({name:"PBKDF2",salt:fromHex(salt),iterations:210000,hash:"SHA-256"},key,256);return toHex(bits);}
+async function passwordHash(password,salt){const key=await crypto.subtle.importKey("raw",encoder.encode(password),"PBKDF2",false,["deriveBits"]);const bits=await crypto.subtle.deriveBits({name:"PBKDF2",salt:fromHex(salt),iterations:100000,hash:"SHA-256"},key,256);return toHex(bits);}
 async function ipHash(request){const value=request.headers.get("CF-Connecting-IP")||"unknown";return toHex(await crypto.subtle.digest("SHA-256",encoder.encode(value)));}
 function cookieResponse(data,token,status=200){return json(data,status,{"Set-Cookie":chatCookie(token)});}
 export async function onRequestGet({request,env}){const user=await getChatUser(request,env);return json({user:user?{id:user.id,username:user.username,isAdmin:Number(user.is_admin)===1}:null});}
