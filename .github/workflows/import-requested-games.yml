@@ -65,6 +65,31 @@ jobs:
           EOF
           done
 
+          # Give every imported title a local icon before the post-import favicon pass.
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          for slug, label in [("bad-time-simulator", "BT"), ("fnaf-1", "F1"), ("fnaf-2", "F2"), ("fnaf-3", "F3"), ("fnaf-4", "F4")]:
+              folder = Path("games") / slug
+              page = folder / "index.html"
+              icon = folder / "favicon.svg"
+              if not icon.exists():
+                  icon.write_text(
+                      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#171717"/><text x="32" y="42" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#fff">' + label + '</text></svg>\n',
+                      encoding="utf-8"
+                  )
+              html = page.read_text(encoding="utf-8")
+              match = re.search(r"""<link\b[^>]*\brel=["'](?:shortcut\s+)?icon["'][^>]*\bhref=["']([^"']+)["']""", html, re.I)
+              if not match or match.group(1).startswith("http"):
+                  html = re.sub(r"""<link\b[^>]*\brel=["'](?:shortcut\s+)?icon["'][^>]*>""", "", html, flags=re.I)
+                  link = '<link rel="icon" type="image/svg+xml" href="./favicon.svg">'
+                  if re.search(r"<head\b[^>]*>", html, re.I):
+                      html = re.sub(r"(<head\b[^>]*>)", r"\1\n  " + link, html, count=1, flags=re.I)
+                  else:
+                      html = link + "\n" + html
+                  page.write_text(html, encoding="utf-8")
+          PY
+
           python3 - <<'PY'
           import json
           from pathlib import Path
@@ -85,7 +110,7 @@ jobs:
             "url": "/games/bad-time-simulator/index.html",
             "thumbnail": "/games/bad-time-simulator/icon-256.png",
             "source_url": "https://github.com/FlafyDev/bad-time-simulator-compiled",
-            "license": "Redistribution rights not independently verified; see REDISTRIBUTION-NOTE.txt.",
+            "license": "Permission reported by site owner; see REDISTRIBUTION-NOTE.txt.",
             "attribution": "Compiled build by FlafyDev; original project by Jcw87. Unofficial fan project.",
             "published": True
           })
@@ -99,7 +124,7 @@ jobs:
                 "url": f"/games/fnaf-{n}/index.html",
                 "thumbnail": f"/games/fnaf-{n}/resources/title.png",
                 "source_url": "https://github.com/irv77/hd_fnaf",
-                "license": "Redistribution permission reported by site owner; see REDISTRIBUTION-NOTE.txt.",
+                "license": "Redistribution rights not independently verified; see REDISTRIBUTION-NOTE.txt.",
                 "attribution": "Unofficial browser remake by irv77. Five Nights at Freddy's © Scott Cawthon.",
                 "published": True
               })
@@ -160,7 +185,7 @@ jobs:
               "description": "Locally hosted compiled Bad Time Simulator mirror.",
               "url": "/games/bad-time-simulator/index.html", "thumbnail": "/games/bad-time-simulator/icon-256.png",
               "source_url": "https://github.com/FlafyDev/bad-time-simulator-compiled",
-              "license": "Redistribution permission reported by site owner; see REDISTRIBUTION-NOTE.txt.",
+              "license": "Redistribution rights not independently verified; see REDISTRIBUTION-NOTE.txt.",
               "attribution": "Compiled build by FlafyDev; original project by Jcw87. Unofficial fan project.",
               "published": True
           }
@@ -170,7 +195,7 @@ jobs:
                   "description": f"Locally hosted unofficial HTML remake of Five Nights at Freddy's {n}.",
                   "url": f"/games/fnaf-{n}/index.html", "thumbnail": f"/games/fnaf-{n}/resources/title.png",
                   "source_url": "https://github.com/irv77/hd_fnaf",
-                  "license": "Redistribution permission reported by site owner; see REDISTRIBUTION-NOTE.txt.",
+                  "license": "Redistribution rights not independently verified; see REDISTRIBUTION-NOTE.txt.",
                   "attribution": "Unofficial browser remake by irv77. Five Nights at Freddy's © Scott Cawthon.",
                   "published": True
               }
