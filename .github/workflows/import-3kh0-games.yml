@@ -80,7 +80,6 @@ jobs:
             games/cats-drop
             games/merge-rainbow
             games/subway-surfers
-            games/subway-surfers-ny
           sparse-checkout-cone-mode: false
       - name: Clone only the requested 3kh0 GitLab game folders
         shell: bash
@@ -88,7 +87,7 @@ jobs:
           set -euo pipefail
           git clone --depth 1 --filter=blob:none --no-checkout https://gitlab.com/3kh0/3kh0-assets.git /tmp/3kh0-assets
           git -C /tmp/3kh0-assets sparse-checkout init --cone
-          git -C /tmp/3kh0-assets sparse-checkout set bitlife geodash happywheels jetpack-joyride motox3m motox3m-pool motox3m-spooky motox3m-winter motox3m2 google-snake draw-the-hill chrome-dino eggycar stack snowrider3d temple-run-2 monster-tracks ovo rooftop-snipers slope yohoho eaglerfaithful 99balls aquapark-slides basket-random bloonstd fruitninja hextris idle-breakout monkey-mart drive-mad drift-boss stickman-hook ctr ctr-holiday ctr-tr cookie-clicker paperio2 doodle-jump 2048-multitask flappy-bird ducklife1 ducklife2 ducklife3 tiny-fishing crossyroad bad-ice-cream om-bounce elasticman doge-miner sort-the-court the-final-earth circlo connect3 cupcake2048 idle-shark cats-drop merge-rainbow subway-surfers subway-surfers-ny
+          git -C /tmp/3kh0-assets sparse-checkout set bitlife geodash happywheels jetpack-joyride motox3m motox3m-pool motox3m-spooky motox3m-winter motox3m2 google-snake draw-the-hill chrome-dino eggycar stack snowrider3d temple-run-2 monster-tracks ovo rooftop-snipers slope yohoho eaglerfaithful 99balls aquapark-slides basket-random bloonstd fruitninja hextris idle-breakout monkey-mart drive-mad drift-boss stickman-hook ctr ctr-holiday ctr-tr cookie-clicker paperio2 doodle-jump 2048-multitask flappy-bird ducklife1 ducklife2 ducklife3 tiny-fishing crossyroad bad-ice-cream om-bounce elasticman doge-miner sort-the-court the-final-earth circlo connect3 cupcake2048 idle-shark cats-drop merge-rainbow subway-surfers
           git -C /tmp/3kh0-assets checkout
       - name: Clone the permitted PolyTrack reupload source
         run: git clone --depth 1 https://github.com/itjey/polytrack.git /tmp/polytrack
@@ -161,7 +160,6 @@ jobs:
             ("cats-drop", "Cats Drop", "Puzzle"),
             ("merge-rainbow", "Merge Rainbow", "Puzzle"),
             ("subway-surfers", "Subway Surfers", "Arcade"),
-            ("subway-surfers-ny", "Subway Surfers New York", "Arcade"),
           ]
           catalogue_path = Path("catalog/games.json")
           catalogue = json.loads(catalogue_path.read_text(encoding="utf-8"))
@@ -174,6 +172,10 @@ jobs:
                   continue
               if not (src / "index.html").is_file():
                   print(f"No root index.html; skipping: {folder}")
+                  continue
+              source_oversized = [p for p in src.rglob("*") if p.is_file() and p.stat().st_size > 25 * 1024 * 1024]
+              if source_oversized:
+                  print(f"Skipping {title}: Cloudflare Pages 25 MiB file limit: {source_oversized[0]}")
                   continue
               dest = target / folder
               if not (dest / "index.html").is_file():
@@ -321,7 +323,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add catalog/games.json
-          for folder in bitlife geodash happywheels jetpack-joyride motox3m motox3m-pool motox3m-spooky motox3m-winter motox3m2 google-snake draw-the-hill chrome-dino eggycar stack snowrider3d temple-run-2 monster-tracks ovo rooftop-snipers slope yohoho eaglerfaithful polytrack 99balls aquapark-slides basket-random bloonstd fruitninja hextris idle-breakout monkey-mart drive-mad drift-boss stickman-hook ctr ctr-holiday ctr-tr cookie-clicker paperio2 doodle-jump 2048-multitask flappy-bird ducklife1 ducklife2 ducklife3 tiny-fishing crossyroad bad-ice-cream om-bounce elasticman doge-miner sort-the-court the-final-earth circlo connect3 cupcake2048 idle-shark cats-drop merge-rainbow subway-surfers subway-surfers-ny; do
+          for folder in bitlife geodash happywheels jetpack-joyride motox3m motox3m-pool motox3m-spooky motox3m-winter motox3m2 google-snake draw-the-hill chrome-dino eggycar stack snowrider3d temple-run-2 monster-tracks ovo rooftop-snipers slope yohoho eaglerfaithful polytrack 99balls aquapark-slides basket-random bloonstd fruitninja hextris idle-breakout monkey-mart drive-mad drift-boss stickman-hook ctr ctr-holiday ctr-tr cookie-clicker paperio2 doodle-jump 2048-multitask flappy-bird ducklife1 ducklife2 ducklife3 tiny-fishing crossyroad bad-ice-cream om-bounce elasticman doge-miner sort-the-court the-final-earth circlo connect3 cupcake2048 idle-shark cats-drop merge-rainbow subway-surfers; do
             if [ -d "games/$folder" ]; then git add "games/$folder"; fi
           done
           git commit -m "Add requested locally hosted 3kh0 games" || echo "No catalogue or game changes to commit."
