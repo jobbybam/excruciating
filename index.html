@@ -21,6 +21,10 @@
   <main class="shell" id="home-view">
     <section id="continue-section" class="continue-section" aria-labelledby="continue-heading" hidden><div class="section-heading"><h2 id="continue-heading">Continue playing</h2></div><div id="continue-grid" class="game-grid continue-grid"></div></section>
     <section class="library" aria-labelledby="library-heading"><div class="section-heading library-heading"><div><h1 id="library-heading">Games</h1><span id="game-count" class="muted">0 games</span></div><button id="suggest-open" class="secondary-button" type="button">Suggest a game <span aria-hidden="true">＋</span></button></div><div id="game-grid" class="game-grid" aria-live="polite"></div><div id="empty-state" class="empty-state" hidden><div class="empty-mark">—</div><h2>No games found</h2><p>Try another search or category.</p></div></section>
+    <section id="public-changelog" class="public-changelog" hidden aria-labelledby="public-changelog-heading">
+      <div class="section-heading"><h2 id="public-changelog-heading">Changelog</h2><span class="muted">Latest updates</span></div>
+      <div id="public-changelog-list" class="public-changelog-list"></div>
+    </section>
   </main>
   <main id="admin-view" class="admin-view" hidden>
     <div class="admin-top"><div><p class="eyebrow">CONTROL PANEL</p><h1>Admin</h1></div><button id="admin-close" class="toolbar-button" type="button">Back to games</button></div>
@@ -35,6 +39,17 @@
           <label>Attribution<input id="game-attribution" maxlength="300" placeholder="Creator / copyright notice (if required)"></label>
           <button id="game-submit-button" class="primary-button" type="submit">Publish in catalogue</button><p id="upload-status" class="form-status" role="status"></p>
         </form>
+      </section>
+      <section class="admin-card">
+        <div class="admin-section-heading"><h2>Edit changelog</h2><span class="muted">Shown on the home page</span></div>
+        <form id="changelog-form">
+          <label>Update title<input id="changelog-title" maxlength="100" required placeholder="e.g. Added new games"></label>
+          <label>Update type<select id="changelog-kind"><option value="added">Added</option><option value="changed">Changed</option><option value="fixed">Fixed</option><option value="removed">Removed</option><option value="update">Update</option></select></label>
+          <label>Details<textarea id="changelog-details" maxlength="1200" rows="3" placeholder="What changed? (optional)"></textarea></label>
+          <div class="admin-row-actions"><button id="changelog-submit" class="primary-button" type="submit">Publish update</button><button id="changelog-cancel" class="text-button" type="button" hidden>Cancel edit</button></div>
+          <p id="changelog-status" class="form-status" role="status"></p>
+        </form>
+        <div id="admin-changelog-list" class="admin-list"></div>
       </section>
       <section class="admin-card"><div class="admin-section-heading"><h2>Game suggestions</h2><span id="admin-suggestion-count" class="muted"></span></div><div id="admin-suggestions" class="admin-list"></div></section>
       <section class="admin-card"><div class="admin-section-heading"><h2>Game library</h2><span id="admin-game-count" class="muted"></span></div><div id="admin-games" class="admin-list"></div></section>
