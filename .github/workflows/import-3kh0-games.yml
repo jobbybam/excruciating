@@ -117,15 +117,18 @@ jobs:
           if "excruciating-polytrack-notice" not in poly_html:
               poly_html = poly_html.replace("</body>", notice + chr(10) + "</body>")
           poly_index.write_text(poly_html, encoding="utf-8")
-          (poly_dest / "ATTRIBUTION.md").write_text("""# PolyTrack
-
-Original game © Kodub. This is an unofficial, non-commercial reupload.
-
-The reupload follows Kodub's terms: preserve the in-game unrecognized-domain notice and outbound links, show the unofficial notice, credit Kodub, and link to the official CrazyGames game page.
-
-Terms: https://www.kodub.com/terms/polytrack
-Source used for this local copy: https://github.com/itjey/polytrack
-""", encoding="utf-8")
+          attribution = chr(10).join([
+              "# PolyTrack",
+              "",
+              "Original game © Kodub. This is an unofficial, non-commercial reupload.",
+              "",
+              "The reupload follows Kodub's terms: preserve the in-game unrecognized-domain notice and outbound links, show the unofficial notice, credit Kodub, and link to the official CrazyGames game page.",
+              "",
+              "Terms: https://www.kodub.com/terms/polytrack",
+              "Source used for this local copy: https://github.com/itjey/polytrack",
+              ""
+          ])
+          (poly_dest / "ATTRIBUTION.md").write_text(attribution, encoding="utf-8")
           entries["polytrack"] = {
             "slug":"polytrack","title":"PolyTrack","category":"Racing",
             "description":"Locally hosted non-commercial PolyTrack reupload with Kodub's required notices and official link.",
