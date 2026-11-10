@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <meta name="theme-color" content="#000000" />
+
+    <link rel="manifest" href="./manifest.json" />
+    
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="Fruit Ninja" />
+    <meta name="apple-mobile-web-app-title" content="Fruit Ninja" />
+    <meta name="msapplication-starturl" content="./" />
+    <script type="text/javascript" src="h5Sdk.js"></script>
+    
+
+    <title>Fruit Ninja</title>
+    <style>
+      @font-face {
+        font-family: gangofchinese;
+        src: url('assets/font/gangofchinese.ttf');
+      }
+
+      body{
+          background-color: #000000;
+          margin: 0;
+
+          height: 100%;
+          max-height: 100vh !important;
+          overflow: hidden;
+          position: relative;
+      }
+
+      .fontLoader{
+          position: absolute;
+          left: -1000px;
+          visibility: hidden;
+      }
+
+      #phaser-canvas{
+          margin: 0 auto;
+      }
+
+      /*#enable3d-three-canvas{
+          position: sticky !important;
+      }*/
+      /*#enable3d-phaser-canvas{
+          margin: 0 auto;
+          position: absolute !important;
+      }*/
+
+      body,#content{
+          height: 100vh !important;
+          max-height: 100vh !important;
+      }
+
+      #divAds, #tempads{
+          display: none;
+          /*background-color: green;*/
+      }
+
+      canvas{
+          width: 100%;
+          height: 100%;
+          display: grid !important;
+          grid-area: 1/1;
+          /*position: sticky !important;*/
+          /*margin: 0 auto !important;*/
+          margin-top: 0 !important;
+          margin-bottom: 0 !important;
+          /*margin-left: auto !important;
+          margin-right: auto !important;*/
+          padding: 0 !important;
+          max-width: 100% !important;
+          max-height: 100vh !important;
+      }
+
+    </style>
+    <!-- <link rel="stylesheet" type="text/css" href="css/styles.css"> -->
+
+    <noscript>Please enable javascript to continue using this application.</noscript>
+
+    <script>window.adsbygoogle = window.adsbygoogle || [];
+        const adBreak =  adConfig = function(o) {adsbygoogle.push(o);}
+    </script>
+    <!-- installs the serviceWorker -->
+    <!-- <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js')
+        })
+      }
+    </script> -->
+  </head>
+  <body>
+    <div class="fontLoader" style="font-family: gangofchinese;">-</div>
+    <div id="content">
+        <div id="phaser-canvas"></div>
+    </div>        
+    <!-- <div id="phaser-game"></div> -->
+  <script type="text/javascript" src="vendors.fb6f2f7c51aa86f87ee3.bundle.js"></script><script type="text/javascript" src="main.bb79cf245c33f6bf6733.bundle.js"></script><style id="injectStyles">html, body{ background: none !important; }</style>
+
+    <div id="excruciating-3kh0-credit">Game files from <a href="https://gitlab.com/3kh0/3kh0-assets" target="_blank" rel="noopener noreferrer">3kh0 Assets</a></div>
+    <style>#excruciating-3kh0-credit{position:fixed;right:8px;bottom:6px;z-index:99998;padding:4px 7px;border-radius:5px;background:rgba(0,0,0,.65);color:#fff;font:10px/1.3 system-ui,sans-serif;opacity:.7}#excruciating-3kh0-credit a{color:inherit;text-decoration:underline}</style>
+    
+</body>
+</html>

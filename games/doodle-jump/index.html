@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <meta charset="utf-8">
+    <title>Doodle Jump</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="container">
+      <canvas id="canvas">Aww, your browser doesn't support HTML5!</canvas>
+      <div id="mainMenu">
+        <h1>doodle jump</h1>
+        <h3>using HTML5,</h3>
+        <p class="info">use <span class="key left">←</span> <span class="key right">→</span> to move and space to (re) start...</p>
+        <a class="button" href="javascript:init()">Play</a>
+      </div>
+      <div id="gameOverMenu">
+        <h1>game over!</h1>
+        <h3 id="go_score">you scored 0 points</h3>
+        <a class="button" href="javascript:reset()">Restart</a>
+      </div>
+      <img id="sprite" src="sprites.png"/>
+      <div id="scoreBoard">
+        <p id="score">0</p>
+      </div>
+    </div>
+    <script src="main.js"></script>
+    
+  
+    <div id="excruciating-3kh0-credit">Game files from <a href="https://gitlab.com/3kh0/3kh0-assets" target="_blank" rel="noopener noreferrer">3kh0 Assets</a></div>
+    <style>#excruciating-3kh0-credit{position:fixed;right:8px;bottom:6px;z-index:99998;padding:4px 7px;border-radius:5px;background:rgba(0,0,0,.65);color:#fff;font:10px/1.3 system-ui,sans-serif;opacity:.7}#excruciating-3kh0-credit a{color:inherit;text-decoration:underline}</style>
+    
+</body>
+</html>
