@@ -21,7 +21,6 @@ export async function onRequestGet({request,env}){
   (SELECT message FROM direct_messages d WHERE (d.sender_id=u.id AND d.recipient_id=?) OR (d.sender_id=? AND d.recipient_id=u.id) ORDER BY d.id DESC LIMIT 1) AS last_message,
   (SELECT created_at FROM direct_messages d WHERE (d.sender_id=u.id AND d.recipient_id=?) OR (d.sender_id=? AND d.recipient_id=u.id) ORDER BY d.id DESC LIMIT 1) AS last_message_at
   FROM chat_users u WHERE u.id<>? ORDER BY COALESCE(last_message_at,'') DESC,u.username COLLATE NOCASE`).bind(user.id,user.id,user.id,user.id,user.id,user.id).all();
- const unread=await env.DB.prepare("SELECT COUNT(*) AS total FROM direct_messages WHERE recipient_id=? AND read_at IS NULL").bind(user.id).first();
  let messages=[];
  if(Number.isSafeInteger(peerId)&&peerId>0){
   const peer=await env.DB.prepare("SELECT id FROM chat_users WHERE id=?").bind(peerId).first();
@@ -33,6 +32,7 @@ export async function onRequestGet({request,env}){
    ORDER BY d.id DESC LIMIT 100`).bind(user.id,peerId,peerId,user.id).all();
   messages=(rows.results||[]).reverse();
  }
+ const unread=await env.DB.prepare("SELECT COUNT(*) AS total FROM direct_messages WHERE recipient_id=? AND read_at IS NULL").bind(user.id).first();
  return json({users:users.results||[],messages,unread_count:Number(unread?.total||0),current_user_id:user.id});
 }
 export async function onRequestPost({request,env}){
