@@ -80,7 +80,8 @@ jobs:
                   )
               html = page.read_text(encoding="utf-8")
               match = re.search(r"""<link\b[^>]*\brel=["'](?:shortcut\s+)?icon["'][^>]*\bhref=["']([^"']+)["']""", html, re.I)
-              if not match or match.group(1).startswith("http"):
+              valid = bool(match and not match.group(1).startswith("http") and (folder / match.group(1).removeprefix("./")).is_file())
+              if not valid:
                   html = re.sub(r"""<link\b[^>]*\brel=["'](?:shortcut\s+)?icon["'][^>]*>""", "", html, flags=re.I)
                   link = '<link rel="icon" type="image/svg+xml" href="./favicon.svg">'
                   if re.search(r"<head\b[^>]*>", html, re.I):
