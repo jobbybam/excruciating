@@ -1,0 +1,77 @@
+name: Add local favicons to hosted games
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ensure-game-favicons.yml"
+      - "games/**/index.html"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: excruciating-game-favicons
+  cancel-in-progress: false
+
+jobs:
+  favicons:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create a favicon for every game page missing one
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, re
+
+          root = Path("games")
+          changed = []
+          for folder in sorted(root.iterdir()):
+              if not folder.is_dir() or folder.name == "ruffle":
+                  continue
+              page = folder / "index.html"
+              if not page.is_file():
+                  continue
+
+              icon = folder / "favicon.svg"
+              if not icon.exists():
+                  label = re.sub(r"[^A-Za-z0-9]", "", folder.name)[:2].upper() or "G"
+                  digest = hashlib.sha256(folder.name.encode("utf-8")).digest()
+                  hue = int.from_bytes(digest[:2], "big") % 360
+                  svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+            <rect width="64" height="64" rx="15" fill="hsl({hue} 32% 17%)"/>
+            <path d="M8 8h48v48H8z" fill="none" stroke="hsl({hue} 45% 68%)" stroke-opacity=".35" stroke-width="2"/>
+            <text x="32" y="42" text-anchor="middle" font-family="Arial,sans-serif" font-size="{25 if len(label) == 2 else 34}" font-weight="700" fill="#fff">{label}</text>
+          </svg>'''
+                  icon.write_text(svg + "\\n", encoding="utf-8")
+                  changed.append(str(icon))
+
+              html = page.read_text(encoding="utf-8")
+              if not re.search(r'<link\\b[^>]*\\brel\\s*=\\s*["\\'](?:shortcut\\s+)?icon["\\']', html, re.I):
+                  link = '<link rel="icon" type="image/svg+xml" href="./favicon.svg">'
+                  if re.search(r'<head\\b[^>]*>', html, re.I):
+                      html = re.sub(r'(<head\\b[^>]*>)', r'\\1\\n  ' + link, html, count=1, flags=re.I)
+                  else:
+                      html = link + "\\n" + html
+                  page.write_text(html, encoding="utf-8")
+                  changed.append(str(page))
+
+          print(f"Added or linked {len(changed)} favicon assets/HTML updates.")
+          for path in changed:
+              print(path)
+          PY
+      - name: Commit favicon updates
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add games/
+          git commit -m "Add missing local game favicons" || echo "All game favicons are already present."
+          git fetch origin main
+          git rebase origin/main
+          git push
