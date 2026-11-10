@@ -39,7 +39,7 @@ jobs:
           set -euo pipefail
           git clone --depth 1 --filter=blob:none --no-checkout https://gitlab.com/3kh0/3kh0-assets.git /tmp/3kh0-assets
           git -C /tmp/3kh0-assets sparse-checkout init --cone
-          git -C /tmp/3kh0-assets sparse-checkout set bitlife geodash happywheels jetpack-joyride motox3m monster-tracks ovo rooftop-snipers slope yohoho eaglerfaithful
+          git -C /tmp/3kh0-assets sparse-checkout set bitlife geodash happywheels jetpack-joyride motox3m motox3m-pool motox3m-spooky motox3m-winter monster-tracks ovo rooftop-snipers slope yohoho eaglerfaithful
           git -C /tmp/3kh0-assets checkout
       - name: Clone the permitted PolyTrack reupload source
         run: git clone --depth 1 https://github.com/itjey/polytrack.git /tmp/polytrack
@@ -48,7 +48,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import json, shutil
+          import json, shutil, re
           from pathlib import Path
           source = Path("/tmp/3kh0-assets")
           target = Path("games")
@@ -58,6 +58,9 @@ jobs:
             ("happywheels", "Happy Wheels", "Action"),
             ("jetpack-joyride", "Jetpack Joyride", "Arcade"),
             ("motox3m", "Moto X3M", "Racing"),
+            ("motox3m-pool", "Moto X3M Pool Party", "Racing"),
+            ("motox3m-spooky", "Moto X3M Spooky Land", "Racing"),
+            ("motox3m-winter", "Moto X3M Winter", "Racing"),
             ("monster-tracks", "Monster Tracks", "Racing"),
             ("ovo", "OvO", "Platformer"),
             ("rooftop-snipers", "Rooftop Snipers", "Action"),
@@ -91,6 +94,8 @@ jobs:
                   except UnicodeDecodeError: continue
                   content = content.replace(f"https://raw.githack.com/3kh0/3kh0-assets/main/{folder}/", f"/games/{folder}/")
                   content = content.replace(f"https://raw.githubusercontent.com/3kh0/3kh0-assets/main/{folder}/", f"/games/{folder}/")
+              if folder.startswith("motox3m"):
+                  content = re.sub(r'<script\\b[^>]*(?:gamebridge\\.js|pk-sdk\\.js|imasdk\\.googleapis\\.com)[^>]*>.*?</script\\s*>', '', content, flags=re.I|re.S)
                   html.write_text(content, encoding="utf-8")
               index_page = dest / "index.html"
               page_html = index_page.read_text(encoding="utf-8")
@@ -110,10 +115,15 @@ jobs:
                   ""
               ])
               (dest / "ATTRIBUTION.md").write_text(attribution, encoding="utf-8")
+              if folder.startswith("motox3m"):
+                  for sdk in ("gamebridge.js", "pk-sdk.js"):
+                      if (dest / sdk).exists(): (dest / sdk).unlink()
+              thumbnail = next((f"/games/{folder}/{name}" for name in ("splash.jpg", "thumbnail.png", "thumb.png", "favicon.png", "favicon.ico") if (dest / name).is_file()), f"/games/{folder}/favicon.svg")
               entries[folder] = {
                 "slug":folder,"title":title,"category":category,
                 "description":"Locally hosted game imported from the 3kh0 assets collection.",
                 "url":f"/games/{folder}/index.html",
+                "thumbnail":thumbnail,
                 "source_url":"https://gitlab.com/3kh0/3kh0-assets",
                 "license":"3kh0 Assets README requests attribution; third-party game rights vary by title.",
                 "attribution":"Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
