@@ -246,23 +246,46 @@ html,body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans
 .blocklist-row strong{font-size:12px;font-weight:600;overflow-wrap:anywhere;}
 @media(max-width:620px){.chat-toasts{left:12px;bottom:12px}.blocklist-form{grid-template-columns:1fr!important}.blocklist-form button{width:100%}}
 
-/* Centered account login and integrated admin access */
+/* Account page and guest chat */
 .topbar .admin-toggle{margin-left:0;white-space:nowrap;min-height:38px;padding:9px 13px}
-.chat-login-overlay{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:20px;background:rgba(0,0,0,.78);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);animation:login-fade .18s ease}
-.chat-login-card{width:min(390px,100%);padding:25px;border:1px solid #333;border-radius:16px;background:#111;box-shadow:0 24px 90px #000d;animation:login-rise .22s ease}
-.chat-login-card h2{font-size:22px;letter-spacing:-.7px;margin:5px 0 0}
-.chat-login-card #chat-auth-form{display:flex;flex-direction:column;gap:9px;padding-top:15px}
-.chat-login-card .chat-user-label{margin:3px 0 0}
-.chat-login-card .chat-input{padding:12px}
-.chat-login-card .primary-button{min-height:42px;margin-top:5px}
-.chat-login-card #chat-auth-switch{padding:8px}
-.chat-login-card .chat-status{min-height:16px;margin:0}
+.account-toggle{text-decoration:none}
+.chat-login-prompt{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0 0;border-top:1px solid var(--line);font-size:11px;color:#999}
+.chat-login-prompt .primary-button{flex:none;padding:9px 12px}
 .chat-account-actions{display:flex;align-items:center;gap:7px}
 .chat-account{gap:8px}
+.account-page{min-height:100vh}
+.account-topbar{max-width:1100px;margin:0 auto}
+.account-shell{width:min(540px,calc(100% - 32px));margin:8vh auto 56px}
+.account-card{padding:24px;border:1px solid #292929;border-radius:16px;background:#111;box-shadow:0 18px 54px #0005}
+.account-auth-card h1,.account-page-heading h1{font-size:26px;letter-spacing:-.8px;margin:6px 0}
+.account-copy{font-size:12px;line-height:1.55;color:#999;margin:6px 0 16px}
+.account-auth-card form,.account-card form{display:flex;flex-direction:column;gap:9px}
+.account-auth-card label,.account-card label{font-size:11px;color:#aaa;margin-top:4px}
+.account-auth-card .chat-input,.account-card .chat-input{padding:12px}
+.account-auth-card .primary-button,.account-card .primary-button{min-height:42px;margin-top:5px}
+#account-auth-switch{padding:9px}
+.account-page-heading{margin:0 0 18px}
+.account-page-heading .account-copy{margin-bottom:0}
+.account-card h2{font-size:16px;margin:0}
+.account-access-card{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:14px}
+.account-access-card .account-copy{margin:5px 0 0}
+.account-access-card .form-status{flex-basis:100%;margin:0}
+.account-shell [hidden]{display:none!important}
+.admin-account-search-label{display:grid;gap:7px;width:min(360px,100%);margin-bottom:10px;color:#aaa;font-size:11px}
+.admin-dropdown{position:relative;flex:none}
+.admin-dropdown>summary{list-style:none;cursor:pointer;white-space:nowrap;padding:8px 11px;border:1px solid #363636;border-radius:8px;background:#141414;color:#ddd;font-size:11px}
+.admin-dropdown>summary::-webkit-details-marker{display:none}
+.admin-dropdown>summary::after{content:"▾";margin-left:8px;color:#888}
+.admin-dropdown[open]>summary::after{content:"▴"}
+.admin-dropdown-menu{position:absolute;right:0;top:calc(100% + 5px);z-index:30;min-width:160px;display:grid;padding:5px;border:1px solid #383838;border-radius:9px;background:#151515;box-shadow:0 12px 30px #000a}
+.admin-dropdown-menu button{width:100%;border:0;border-radius:6px;padding:9px 10px;background:transparent;color:#ddd;text-align:left;font-size:11px;cursor:pointer}
+.admin-dropdown-menu button:hover{background:#242424}
+.admin-dropdown-menu button.danger{color:#ff8b8b}
+.admin-feature-select{min-width:125px;border:1px solid #363636;border-radius:8px;background:#141414;color:#ddd;padding:8px 10px;font:inherit;font-size:11px}
 .admin-view{animation:login-rise .2s ease}
 @keyframes login-fade{from{opacity:0}to{opacity:1}}
 @keyframes login-rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:620px){.topbar{gap:8px;padding-inline:12px}.topbar .admin-toggle{padding:8px 9px;font-size:10px;min-height:36px}.chat-login-card{padding:20px}.chat-account-actions{gap:2px}}
+@media(max-width:620px){.topbar{gap:8px;padding-inline:12px}.topbar .admin-toggle{padding:8px 9px;font-size:10px;min-height:36px}.account-shell{margin-top:5vh}.account-card{padding:20px}.chat-account-actions{gap:2px}.chat-login-prompt{align-items:flex-start;flex-direction:column}.account-access-card{align-items:flex-start;flex-wrap:wrap}}
 
 .thumbnail-editor-preview{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:4px 0 12px}.thumbnail-editor-preview img{width:160px;height:90px;object-fit:cover;border-radius:9px;border:1px solid var(--border,#333)}.thumbnail-editor-preview small{color:var(--muted,#999)}.thumbnail-editor-preview img[hidden]{display:none}
 
@@ -310,3 +333,25 @@ html,body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans
 .dm-message-own p{color:#eee}
 .chat-status{flex:none}
 @media(max-width:620px){.chat-panel{width:calc(100vw - 20px);right:10px;bottom:65px;height:min(640px,calc(100dvh - 85px));padding:12px}.chat-dm-view{grid-template-columns:minmax(105px,.72fr) minmax(0,1.4fr)}.dm-user-list-wrap{padding-right:6px}.dm-conversation{padding-left:8px}.dm-user{padding:9px 5px}.dm-user small{max-width:90px}}
+
+.game-thumb img.game-icon{object-fit:contain;padding:13%;background:#111}
+.dm-search-label,.dm-search-heading{padding:8px 6px 5px;color:#777;font-size:9px;letter-spacing:1px;font-weight:700}
+.dm-user-search{margin:0 4px 5px;width:calc(100% - 8px);font-size:11px;padding:9px}
+.dm-user-list{flex:1}
+.dm-search-results{max-height:38%;overflow:auto;flex:none;border-top:1px solid #252525}
+.dm-search-results[hidden]{display:none}
+.dm-user-row{display:flex;align-items:center;gap:2px}
+.dm-user-row .dm-user{flex:1;min-width:0}
+.dm-user-details{display:block;min-width:0;overflow:hidden;text-align:left}
+.dm-pin{flex:none;width:28px;height:34px;border:0;border-radius:7px;background:transparent;color:#777;font-size:17px;line-height:1;cursor:pointer}
+.dm-pin:hover,.dm-pin.active{color:#f0ca6a;background:#202020}
+.notification-dialog{width:min(430px,calc(100vw - 28px))}
+.notification-dialog form{gap:12px}
+.notification-dialog .secondary-button{align-self:flex-start;min-height:40px;padding:10px 14px}
+.notification-divider{height:1px;background:#282828;margin:5px 0}
+.notification-dialog .form-status{line-height:1.5}
+body.chat-embed{overflow:hidden;background:#101010}
+body.chat-embed>.topbar,body.chat-embed>#home-view,body.chat-embed>#player,body.chat-embed>#admin-view,body.chat-embed>.public-changelog,body.chat-embed>footer,body.chat-embed>#suggest-dialog,body.chat-embed>#notification-dialog,body.chat-embed>#chat-toasts{display:none!important}
+body.chat-embed>#chat-panel{position:fixed;inset:0;width:100%;height:100dvh;max-height:none;right:0;bottom:0;border:0;border-radius:0;padding:max(14px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));box-shadow:none}
+body.chat-embed>#chat-panel[hidden]{display:none!important}
+@media(max-width:620px){.dm-search-results{max-height:34%}.dm-pin{width:24px}.notification-dialog{padding:19px}}
