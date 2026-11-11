@@ -47,7 +47,24 @@ The root `_headers` file sets the Ruffle `.wasm` files to `Content-Type: applica
 - D1 stores the catalogue and chat messages.
 - No R2 bucket or paid storage service is used.
 
-Apply D1 migrations and set `ADMIN_PASSWORD` and `SESSION_SECRET` as Pages secrets in Cloudflare. Never commit passwords, session secrets or API tokens. Admin is available at `/admin` and is intentionally not linked on the public page.
+Visitors can read public chat without an account. Signing in is required to post, use direct messages, and manage an account. Accounts can change their username once every three days; the server enforces the cooldown.
+
+Admins can terminate and restore non-admin accounts from the admin panel. Terminated accounts cannot sign in, post, or send direct messages; existing public chat history is retained.
+
+Apply all pending D1 migrations with `npx wrangler d1 migrations apply excruciating --remote`. This includes the account cooldown and account termination fields. Set `ADMIN_PASSWORD` and `SESSION_SECRET` as Pages secrets in Cloudflare. Never commit passwords, session secrets or API tokens. Admin is available at `/admin` and is intentionally not linked on the public page.
+
+### Home Screen installs and notifications
+
+The site and each locally hosted game have their own install manifest and icon. The build picks each game's local icon or catalogue thumbnail and uses it for the game tile and its Home Screen install.
+
+Direct-message push notifications use standard Web Push. To enable them:
+
+1. Run `npm install`, then `npm run generate:vapid` once to create a VAPID key pair. Keep the private key secret.
+2. In Cloudflare Pages, set `VAPID_PUBLIC_KEY` to the generated public key, add `VAPID_PRIVATE_KEY` as a secret, and set `VAPID_SUBJECT` to a contact such as `mailto:you@example.com`.
+3. Apply the D1 migration with `npx wrangler d1 migrations apply excruciating --remote`.
+4. On iPhone or iPad, open the site in Safari, use **Share → Add to Home Screen**, then open it from the new icon. Sign in, open **Install & notifications**, and tap **Enable notifications**.
+
+iOS supports web push for Home Screen web apps from iOS/iPadOS 16.4 onward. The permission prompt is only requested after the user taps the enable button. Push alerts are sent for direct messages, not public chat posts.
 
 ## Status
 

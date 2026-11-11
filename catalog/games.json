@@ -459,10 +459,11 @@
     },
     {
       "slug": "soundboard",
-      "title": "Soundboard",
+      "title": "Sound Buttons Space",
       "category": "Soundboard",
-      "description": "Open SoundButtonsSpace.",
-      "url": "https://soundbuttonsspace.org",
+      "description": "Open the Sound Buttons Space soundboard.",
+      "url": "https://soundbuttonsspace.com",
+      "thumbnail": "https://soundbuttonsspace.com/favicon.ico",
       "external": true,
       "published": true
     },
@@ -920,6 +921,54 @@
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
       "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
+      "published": true
+    },
+    {
+      "slug": "angry-birds",
+      "title": "Angry Birds",
+      "category": "Arcade",
+      "description": "Unofficial JavaScript slingshot remake by Mahdi7s and tonikolaba.",
+      "url": "/games/angry-birds/index.html",
+      "thumbnail": "/games/angry-birds/icon.png",
+      "source_url": "https://github.com/olivia-games/game/tree/main/angry-birds",
+      "license": "MIT (upstream Licence.md)",
+      "attribution": "Simple Angry Birds by Mahdi7s and tonikolaba. Angry Birds and its original characters are property of Rovio Entertainment.",
+      "published": true
+    },
+    {
+      "slug": "backflip-dive-3d",
+      "title": "Backflip Dive 3D",
+      "category": "Sports",
+      "description": "Unity WebGL build of Backflip Dive 3D.",
+      "url": "/games/backflip-dive-3d/index.html",
+      "thumbnail": "/games/backflip-dive-3d/icon.png",
+      "source_url": "https://github.com/olivia-games/game/tree/main/backflip-dive-3d",
+      "license": "Redistribution permission supplied for this project; upstream folder contains no licence file.",
+      "attribution": "Backflip Dive 3D © Smartline Games. Original artwork and game rights remain with their owners.",
+      "published": true
+    },
+    {
+      "slug": "fridaynightfunkin",
+      "title": "Friday Night Funkin'",
+      "category": "Arcade",
+      "description": "Locally hosted browser build with touch arrows for play on iPad.",
+      "url": "/games/fridaynightfunkin/index.html",
+      "thumbnail": "/games/fridaynightfunkin/icon.png",
+      "source_url": "https://github.com/olivia-games/game/tree/main/fridaynightfunkin",
+      "license": "Redistribution permission supplied for this project; retain the original credits and permission note.",
+      "attribution": "Friday Night Funkin' by ninjamuffin99, PhantomArcade, kawaisprite, and evilsk8r. See the preserved upstream credits and permission note.",
+      "published": true
+    },
+    {
+      "slug": "subway-surfers",
+      "title": "Subway Surfers",
+      "category": "Arcade",
+      "description": "Unity WebGL build with touch swipe controls for iPad.",
+      "url": "/games/subway-surfers/index.html",
+      "thumbnail": "/games/subway-surfers/icon.png",
+      "source_url": "https://github.com/olivia-games/game/tree/main/subway-surfers",
+      "license": "Redistribution permission supplied for this project; upstream folder contains no licence file.",
+      "attribution": "Subway Surfers © SYBO Games. Original characters and artwork remain with their owners.",
       "published": true
     }
   ]

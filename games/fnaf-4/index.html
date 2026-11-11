@@ -170,7 +170,8 @@
 </head>
 
 <body>
-    <button id="mobile-ctrl" type="button" aria-label="Hold Control key">CTRL</button>\n    <canvas id="MMFCanvas" width="1024" height="768"> Your browser does not support Canvas, Please try again.</canvas>
+    <button id="mobile-ctrl" type="button" aria-label="Hold Control key">CTRL</button>
+    <canvas id="MMFCanvas" width="1024" height="768"> Your browser does not support Canvas, Please try again.</canvas>
     <div class="selection" id="selection">
         <img id="title" src="resources/title.png">
         <img id="animatronic" src="resources/animatronic.png">
@@ -225,7 +226,8 @@
         document.addEventListener('visibilitychange', () => { if (document.hidden) release(); });
         document.addEventListener('contextmenu', event => { if (event.target === button) event.preventDefault(); });
     })();
-\n    const parts = 20;
+
+    const parts = 20;
     let gametitle, runtimecanvas
     gametitle = document.title;
     runtimecanvas = "resources/fnaf 4.cch";

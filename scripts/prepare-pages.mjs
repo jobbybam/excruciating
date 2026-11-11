@@ -57,12 +57,12 @@ async function copyStaticSite() {
   }
 }
 
-async function splitArchive(filePath, fileName, fileSize) {
-  const oldEntries = await readdir(GAME_DIR);
+async function splitArchive(filePath, fileName, fileSize, outputDirectory = GAME_DIR) {
+  const oldEntries = await readdir(outputDirectory);
   const oldParts = oldEntries.filter((entry) =>
     entry.startsWith(`${fileName}.pages-part`)
   );
-  await Promise.all(oldParts.map((entry) => unlink(path.join(GAME_DIR, entry))));
+  await Promise.all(oldParts.map((entry) => unlink(path.join(outputDirectory, entry))));
 
   const input = await open(filePath, "r");
   const generated = [];
@@ -73,7 +73,7 @@ async function splitArchive(filePath, fileName, fileSize) {
     while (totalRead < fileSize) {
       partNumber += 1;
       const partName = `${fileName}.pages-part${String(partNumber).padStart(3, "0")}`;
-      const partPath = path.join(GAME_DIR, partName);
+      const partPath = path.join(outputDirectory, partName);
       const output = await open(partPath, "w");
       let partBytes = 0;
 
@@ -150,34 +150,149 @@ async function listFiles(directory, relative = "") {
   return results;
 }
 
+async function resolveLocalAsset(rawPath, baseDirectory) {
+  if (typeof rawPath !== "string" || !rawPath.trim()) return null;
+  const clean = rawPath.trim().split(/[?#]/, 1)[0].replaceAll("&amp;", "&");
+  if (/^(?:[a-z]+:|\/\/)/i.test(clean)) return null;
+  const relative = clean.startsWith("/")
+    ? clean.slice(1)
+    : path.join(path.relative(OUT_DIR, baseDirectory), clean);
+  const root = path.resolve(OUT_DIR);
+  const candidate = path.resolve(root, relative);
+  if (candidate !== root && !candidate.startsWith(root + path.sep)) return null;
+  try {
+    const info = await stat(candidate);
+    if (!info.isFile()) return null;
+    return "/" + path.relative(root, candidate).split(path.sep).join("/");
+  } catch {
+    return null;
+  }
+}
+
+async function findGameIcon(game, gameFile, html) {
+  const gameDirectory = path.dirname(gameFile);
+  for (const fileName of [
+    "apple-touch-icon.png", "apple-touch-icon-precomposed.png", "apple-touch-icon-180x180.png",
+    "icon-512.png", "icon-192.png", "logo192.png", "icon.png", "icon.svg",
+    "favicon-32x32.png", "favicon-16x16.png", "favicon.png", "favicon.svg", "logo.png",
+    "thumbnail.png", "thumb.png", "favicon.ico"
+  ]) {
+    const icon = await resolveLocalAsset(fileName, gameDirectory);
+    if (icon) return icon;
+  }
+
+  for (const tag of html.match(/<link\b[^>]*>/gi) ?? []) {
+    const rel = tag.match(/\brel\s*=\s*(["'])(.*?)\1/i)?.[2] ?? "";
+    if (!/(?:^|\s)(?:icon|apple-touch-icon)(?:\s|$)/i.test(rel)) continue;
+    const href = tag.match(/\bhref\s*=\s*(["'])(.*?)\1/i)?.[2];
+    const icon = await resolveLocalAsset(href, gameDirectory);
+    if (icon) return icon;
+  }
+  for (const tag of html.match(/<meta\b[^>]*>/gi) ?? []) {
+    const property = tag.match(/\b(?:property|name)\s*=\s*(["'])(.*?)\1/i)?.[2] ?? "";
+    if (!/^(?:og:image|twitter:image(?::src)?)$/i.test(property)) continue;
+    const content = tag.match(/\bcontent\s*=\s*(["'])(.*?)\1/i)?.[2];
+    const icon = await resolveLocalAsset(content, gameDirectory);
+    if (icon) return icon;
+  }
+  const fromCatalogue = await resolveLocalAsset(game.thumbnail, gameDirectory);
+  if (fromCatalogue) return fromCatalogue;
+  return null;
+}
+
+function iconMimeType(iconPath) {
+  const extension = path.extname(iconPath).toLowerCase();
+  return ({
+    ".ico": "image/x-icon",
+    ".svg": "image/svg+xml",
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".webp": "image/webp",
+    ".gif": "image/gif"
+  })[extension] ?? "image/png";
+}
+
 async function installGameShell() {
   const cataloguePath = path.join(OUT_DIR, "catalog", "games.json");
   const catalogue = JSON.parse(await readFile(cataloguePath, "utf8"));
   const newline = String.fromCharCode(10);
+  const manifestDirectory = path.join(OUT_DIR, "game-manifests");
+  await mkdir(manifestDirectory, { recursive: true });
   for (const game of catalogue.games ?? []) {
-    if (game.published === false || !game.url || !game.url.startsWith("/games/")) continue;
+    if (game.published === false || !game.url || !game.url.startsWith("/games/") || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(game.slug ?? "")) continue;
     const gameFile = path.join(OUT_DIR, game.url.slice(1));
     let html;
     try { html = await readFile(gameFile, "utf8"); } catch { continue; }
-    if (html.includes("/game-shell.js")) continue;
-    const additions = [
-      '<link rel="icon" type="image/svg+xml" href="/favicon.svg">',
-      '<script src="/game-shell.js" defer></script>'
-    ].join(newline + "    ");
+    const icon = await findGameIcon(game, gameFile, html);
+    if (icon) game.icon = icon;
+    else delete game.icon;
+    const iconEntries = icon ? [{ src: icon, type: iconMimeType(icon), ...(icon.toLowerCase().endsWith(".svg") ? { sizes: "any" } : {}) }] : [];
+    const manifestPath = path.join(manifestDirectory, `${game.slug}.webmanifest`);
+    const gameDirectoryUrl = path.posix.dirname(game.url) + "/";
+    await writeFile(manifestPath, JSON.stringify({
+      id: gameDirectoryUrl,
+      name: game.title || game.slug,
+      short_name: (game.title || game.slug).slice(0, 12),
+      start_url: game.url,
+      scope: gameDirectoryUrl,
+      display: "standalone",
+      background_color: "#080808",
+      theme_color: "#080808",
+      icons: iconEntries
+    }, null, 2) + newline, "utf8");
+
+    const viewport = html.match(/<meta\b(?=[^>]*\bname\s*=\s*(["'])viewport\1)[^>]*>/i);
+    if (!viewport) {
+      html = html.replace(/<head\b[^>]*>/i, match => `${match}${newline}    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">`);
+    } else if (!/viewport-fit\s*=\s*cover/i.test(viewport[0])) {
+      const updated = viewport[0].replace(/\bcontent\s*=\s*(["'])(.*?)\1/i, (_match, quote, content) => `content=${quote}${content}, viewport-fit=cover${quote}`);
+      html = html.replace(viewport[0], updated);
+    }
+
+    html = html.replace(/<link\b(?=[^>]*\brel\s*=\s*(["'])[^"']*(?:icon|manifest)[^"']*\1)[^>]*>/gi, "");
+    const additions = [];
+    if (icon) {
+      const mime = iconMimeType(icon);
+      additions.push(`<link rel="icon" type="${mime}" href="${icon}">`);
+      additions.push(`<link rel="apple-touch-icon" href="${icon}">`);
+    }
+    additions.push(`<link rel="manifest" href="/game-manifests/${game.slug}.webmanifest">`);
+    if (!html.includes("/game-shell.js")) additions.push('<script src="/game-shell.js" defer></script>');
+    const additionMarkup = additions.join(newline + "    ");
     const headEnd = html.toLowerCase().lastIndexOf("</head>");
     if (headEnd >= 0) {
-      html = html.slice(0, headEnd) + "    " + additions + newline + html.slice(headEnd);
+      html = html.slice(0, headEnd) + "    " + additionMarkup + newline + html.slice(headEnd);
     } else {
       const bodyStart = html.toLowerCase().indexOf("<body");
-      if (bodyStart >= 0) html = html.slice(0, bodyStart) + additions + newline + html.slice(bodyStart);
+      if (bodyStart >= 0) html = html.slice(0, bodyStart) + additionMarkup + newline + html.slice(bodyStart);
     }
     await writeFile(gameFile, html, "utf8");
   }
+  await writeFile(cataloguePath, JSON.stringify(catalogue, null, 2) + newline, "utf8");
+}
+
+async function splitSubwaySurfersData() {
+  const buildDirectory = path.join(OUT_DIR, "games", "subway-surfers", "Build");
+  const dataFile = path.join(buildDirectory, "SanFrancisco.data.unityweb");
+  let info;
+  try { info = await stat(dataFile); } catch { return; }
+  if (info.size <= PAGES_MAX_BYTES) return;
+  const parts = await splitArchive(dataFile, path.basename(dataFile), info.size, buildDirectory);
+  await writeFile(
+    path.join(buildDirectory, "SanFrancisco.data.unityweb.parts.json"),
+    JSON.stringify(parts, null, 2) + String.fromCharCode(10),
+    "utf8"
+  );
+  console.log(
+    `Pages build: split ${path.basename(dataFile)} (${(info.size / 1024 / 1024).toFixed(2)} MiB) into ${parts.length} pieces.`
+  );
 }
 
 async function main() {
   await copyStaticSite();
   await installGameShell();
+  await splitSubwaySurfersData();
 
   const html = await readFile(INDEX_FILE, "utf8");
   const archiveMapMatch = html.match(
