@@ -141,18 +141,23 @@ const gameShellUiStyle=document.createElement("style");
     overlay.setAttribute("aria-live","polite");
     overlay.innerHTML='<div class="inner"><div class="brand"><b>&gt;</b>excruciating</div><div class="track" role="progressbar" aria-label="Loading game" aria-valuemin="0" aria-valuemax="100" aria-valuenow="4"><div class="fill"></div></div><div class="status">LOADING GAME</div></div>';
     (document.body||document.documentElement).append(overlay);
-    const fill=overlay.querySelector(".fill"),track=overlay.querySelector(".track"),status=overlay.querySelector(".status"),startedAt=Date.now();
-    let progress=4,loaded=document.readyState==="complete",stableSince=0,finished=false,errorShown=false;
+    const fill=overlay.querySelector(".fill"),track=overlay.querySelector(".track");
     const undertale=/(?:^|\/)undertale(?:\/|$)/i.test(location.pathname);
+    if(undertale){
+      let progress=4;
+      const timer=setInterval(()=>{progress=Math.min(92,progress+(progress<65?3:1));fill.style.width=progress+"%";track.setAttribute("aria-valuenow",String(progress));},180);
+      const finish=()=>{clearInterval(timer);fill.style.width="100%";track.setAttribute("aria-valuenow","100");overlay.classList.add("is-done");setTimeout(()=>overlay.remove(),420);};
+      window.addEventListener("load",finish,{once:true});
+      if(document.readyState==="complete")finish();
+      setTimeout(()=>{if(document.readyState==="complete")finish();},12000);
+      return;
+    }
+    const status=overlay.querySelector(".status"),startedAt=Date.now();
+    let progress=4,loaded=document.readyState==="complete",stableSince=0,finished=false,errorShown=false;
     const isVisible=element=>{
       if(!element)return false;
       const style=getComputedStyle(element),rect=element.getBoundingClientRect();
       return style.display!=="none"&&style.visibility!=="hidden"&&Number(style.opacity||1)>0.05&&rect.width>24&&rect.height>24;
-    };
-    const cacheStillLoading=()=>{
-      const message=document.querySelector("#status");
-      const text=String(message?.textContent||"").replace(/\s+/g," ").trim();
-      return /in\s+cache\s+game\.unx\s*=\s*0/i.test(text)||(/game\.unx/i.test(text)&&/(?:cache|download|load)/i.test(text));
     };
     const hasVisibleGame=()=>{
       const surface=document.querySelector("canvas,ruffle-player,video,#ruffle,#unity-container,#game-container");
@@ -164,10 +169,6 @@ const gameShellUiStyle=document.createElement("style");
     };
     const ready=()=>{
       if(!loaded)return false;
-      if(undertale){
-        const canvas=document.querySelector("canvas.emscripten#canvas");
-        return !cacheStillLoading()&&isVisible(canvas)&&canvas.classList.contains("active");
-      }
       if(explicitLoaderActive())return false;
       return hasVisibleGame()||Date.now()-startedAt>3200;
     };
@@ -235,6 +236,7 @@ const gameShellUiStyle=document.createElement("style");
     setTimeout(() => { if (window.parent !== window && !document.hidden) location.assign("/"); }, 900);
   });
 
+  let unreadDirectMessages=0;
   const chatToggle = document.createElement("button");
   chatToggle.id = "excruciating-game-chat-toggle";
   chatToggle.type = "button";
@@ -269,7 +271,6 @@ const gameShellUiStyle=document.createElement("style");
   chatUnreadBadge.hidden=true;
   chatUnreadBadge.setAttribute("aria-hidden","true");
   chatToggle.append(chatUnreadBadge);
-  let unreadDirectMessages=0;
   function setChatToggleLabel(open){
     chatToggle.setAttribute("aria-label",(open?"Close chat":"Open chat")+(unreadDirectMessages?", "+unreadDirectMessages+" unread direct messages":""));
   }

@@ -9,8 +9,8 @@ self.addEventListener("activate",event=>{
 self.addEventListener("push",event=>{
  let payload={};
  try{payload=event.data?event.data.json():{};}catch{}
- const title=typeof payload.title==="string"&&payload.title?payload.title:"Excruciating";
- const body=typeof payload.body==="string"?payload.body:"You have a new message.";
+ const title=typeof payload.username==="string"&&payload.username?payload.username:(typeof payload.title==="string"&&payload.title?payload.title:"Excruciating");
+ const body=typeof payload.message==="string"?payload.message:(typeof payload.body==="string"?payload.body:"You have a new message.");
  const target=typeof payload.url==="string"?payload.url:"/";
  const url=new URL(target,self.location.origin);
  const safeUrl=url.origin===self.location.origin?url.href:self.location.origin+"/";

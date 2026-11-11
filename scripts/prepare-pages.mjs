@@ -172,6 +172,8 @@ async function resolveLocalAsset(rawPath, baseDirectory) {
 
 async function findGameIcon(game, gameFile, html) {
   const gameDirectory = path.dirname(gameFile);
+  const configuredIcon = await resolveLocalAsset(game.icon, gameDirectory);
+  if (configuredIcon) return configuredIcon;
   for (const fileName of [
     "apple-touch-icon.png", "apple-touch-icon-precomposed.png", "apple-touch-icon-180x180.png",
     "icon-512.png", "icon-192.png", "logo192.png", "icon.png", "icon.svg",
@@ -240,8 +242,18 @@ async function installGameShell() {
     try { html = await readFile(gameFile, "utf8"); } catch { continue; }
     html = stripRequestedGameDisclaimers(html);
     const icon = await findGameIcon(game, gameFile, html);
-    if (icon) game.icon = icon;
-    else delete game.icon;
+    if (icon) {
+      const extension = path.extname(icon).toLowerCase() || ".png";
+      const centralDirectory = path.join(OUT_DIR, "favicons");
+      await mkdir(centralDirectory, { recursive: true });
+      let centralIcon = icon;
+      if (!icon.startsWith("/favicons/")) {
+        const centralName = `${game.slug}${extension}`;
+        await cp(path.join(OUT_DIR, icon.slice(1)), path.join(centralDirectory, centralName), { force: true });
+        centralIcon = `/favicons/${centralName}`;
+      }
+      game.icon = centralIcon;
+    } else delete game.icon;
     const iconEntries = icon ? [{ src: icon, type: iconMimeType(icon), ...(icon.toLowerCase().endsWith(".svg") ? { sizes: "any" } : {}) }] : [];
     const manifestPath = path.join(manifestDirectory, `${game.slug}.webmanifest`);
     const gameDirectoryUrl = path.posix.dirname(game.url) + "/";
@@ -273,6 +285,11 @@ async function installGameShell() {
 
     html = html.replace(/<link\b(?=[^>]*\brel\s*=\s*(["'])[^"']*(?:icon|manifest)[^"']*\1)[^>]*>/gi, "");
     const additions = [];
+    additions.push('<style id="excruciating-game-scroll-lock">html,body{width:100%;height:100%;overflow:hidden!important;overscroll-behavior:none!important}body{-webkit-overflow-scrolling:auto!important}</style>');
+    if (game.slug === "deltarune") {
+      additions.push('<style id="excruciating-ios-game-touch">canvas.emscripten,#game-container canvas,#game-container img,#game-container button{-webkit-touch-callout:none!important;-webkit-user-select:none!important;user-select:none!important}</style>');
+      additions.push('<script id="excruciating-ios-context-menu-lock">document.addEventListener("contextmenu",event=>{if(event.target.closest("canvas,button,img"))event.preventDefault()},true);</script>');
+    }
     if (icon) {
       const mime = iconMimeType(icon);
       additions.push(`<link rel="icon" type="${mime}" href="${icon}">`);
@@ -291,6 +308,24 @@ async function installGameShell() {
     await writeFile(gameFile, html, "utf8");
   }
   await writeFile(cataloguePath, JSON.stringify(catalogue, null, 2) + newline, "utf8");
+}
+
+async function splitLargeGameSwfs() {
+  const gamesDirectory = path.join(OUT_DIR, "games");
+  const files = await listFiles(gamesDirectory);
+  for (const file of files) {
+    if (path.extname(file.relative).toLowerCase() !== ".swf") continue;
+    const info = await stat(file.absolute);
+    if (info.size <= PAGES_MAX_BYTES) continue;
+    const directory = path.dirname(file.absolute);
+    const parts = await splitArchive(file.absolute, path.basename(file.absolute), info.size, directory);
+    await writeFile(
+      path.join(directory, `${path.basename(file.absolute)}.parts.json`),
+      JSON.stringify(parts, null, 2) + String.fromCharCode(10),
+      "utf8"
+    );
+    console.log(`Pages build: split ${file.relative} into ${parts.length} pieces.`);
+  }
 }
 
 async function splitSubwaySurfersData() {
@@ -312,6 +347,7 @@ async function splitSubwaySurfersData() {
 
 async function main() {
   await copyStaticSite();
+  await splitLargeGameSwfs();
   await installGameShell();
   await splitSubwaySurfersData();
 

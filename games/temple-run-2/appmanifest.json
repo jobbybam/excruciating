@@ -5,9 +5,9 @@
   "version": "2.0",
   "theme_color": "#000000",
   "background_color": "#000000",
-  "display": "fullScreen",
+  "display": "fullscreen",
   "orientation": "any",
-  "start_url": "index.html",
+  "start_url": "./",
   "icons": [
     {
       "src": "img/icons/icon-72x72.png",

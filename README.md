@@ -4,12 +4,15 @@ A self-hosted browser-game library built from files in this repository and deplo
 
 ## Locally hosted games
 
-- **Undertale** — local browser build in `games/undertale/`.
-- **Deltarune** — local browser build in `games/deltarune/`. Its large archive chunks are split for Cloudflare Pages during the build and reassembled by the game loader at runtime.
-- **Ballistic** — upstream AGPL-3.0 browser shooter, built and hosted locally in `games/ballistic/`; upstream licence and source are included.
-- **14 Papa's games** — local Standard Version SWF files in `games/papas-*/`, played through the local Ruffle WebAssembly runtime in `games/ruffle/`.
+The catalogue contains 86 games with local `/games/...` pages and 15 links that still open their publishers' sites. Local highlights include:
 
-Only titles with actual local files are included in the published static catalogue. A link to a remote game is not counted as a self-hosted game.
+- **Undertale and Deltarune** — browser builds in `games/undertale/` and `games/deltarune/`. Deltarune archive chunks are split for Cloudflare Pages during the build and reassembled by the loader.
+- **14 Papa's games** — Standard Version SWF files played through the local Ruffle WebAssembly runtime.
+- **Henry Stickmin** — the five original Flash games, played through the local Ruffle runtime.
+- **Temple Run 2, Retro Bowl, Google Feud, and Unlimited Wordle** — locally bundled game packages with matching catalogue icons.
+- **Idle Mining Empire** — the official responsive HTML5 package, hosted locally with permission from the publisher.
+
+Only entries whose game files are in the repository are described as self-hosted. A remote catalogue link is not counted as a local game.
 
 ## Add games
 
@@ -55,16 +58,7 @@ Apply all pending D1 migrations with `npx wrangler d1 migrations apply excruciat
 
 ### Home Screen installs and notifications
 
-The site and each locally hosted game have their own install manifest and icon. The build picks each game's local icon or catalogue thumbnail and uses it for the game tile and its Home Screen install.
-
-Direct-message push notifications use standard Web Push. To enable them:
-
-1. Run `npm install`, then `npm run generate:vapid` once to create a VAPID key pair. Keep the private key secret.
-2. In Cloudflare Pages, set `VAPID_PUBLIC_KEY` to the generated public key, add `VAPID_PRIVATE_KEY` as a secret, and set `VAPID_SUBJECT` to a contact such as `mailto:you@example.com`.
-3. Apply the D1 migration with `npx wrangler d1 migrations apply excruciating --remote`.
-4. On iPhone or iPad, open the site in Safari, use **Share → Add to Home Screen**, then open it from the new icon. Sign in, open **Install & notifications**, and tap **Enable notifications**.
-
-iOS supports web push for Home Screen web apps from iOS/iPadOS 16.4 onward. The permission prompt is only requested after the user taps the enable button. Push alerts are sent for direct messages, not public chat posts.
+See [WEB_PUSH_SETUP.md](docs/WEB_PUSH_SETUP.md) for generating and configuring VAPID keys, enabling direct-message alerts, and moving the site to a new domain. On iPhone and iPad, add Excruciating from Safari using **Share → Add to Home Screen**, then open the new icon.
 
 ## Status
 

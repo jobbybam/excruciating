@@ -9,11 +9,12 @@
       "category": "Adventure",
       "description": "Locally hosted Undertale WebPort build from the files in this repository.",
       "url": "/games/undertale/index.html",
-      "thumbnail": "/games/undertale/favicon.png",
+      "thumbnail": "/favicons/undertale.svg",
       "source_url": "https://github.com/Mollomm1/test",
       "license": "Proprietary game assets; redistribution status not verified",
       "attribution": "Undertale © Toby Fox. This local webport is unofficial.",
-      "published": true
+      "published": true,
+      "icon": "/favicons/undertale.svg"
     },
     {
       "slug": "deltarune",
@@ -24,7 +25,9 @@
       "source_url": "https://github.com/Mollomm1/test",
       "license": "Proprietary game assets; redistribution status not verified",
       "attribution": "Deltarune © Toby Fox. This local webport is unofficial.",
-      "published": true
+      "published": true,
+      "icon": "/favicons/deltarune.svg",
+      "thumbnail": "/favicons/deltarune.svg"
     },
     {
       "slug": "papas-scooperia",
@@ -36,7 +39,8 @@
       "license": "Flipline Studios — Free Games for your Site hosting permission",
       "attribution": "© Flipline Studios. Official Standard Version supplied for website hosting.",
       "published": true,
-      "thumbnail": "/games/papas-scooperia/thumbnail.jpg"
+      "thumbnail": "/favicons/papas-scooperia.jpg",
+      "icon": "/favicons/papas-scooperia.jpg"
     },
     {
       "slug": "papas-sushiria",
@@ -48,7 +52,8 @@
       "license": "Flipline Studios — Free Games for your Site hosting permission",
       "attribution": "© Flipline Studios. Official Standard Version supplied for website hosting.",
       "published": true,
-      "thumbnail": "/games/papas-sushiria/thumbnail.jpg"
+      "thumbnail": "/favicons/papas-sushiria.jpg",
+      "icon": "/favicons/papas-sushiria.jpg"
     },
     {
       "slug": "papas-bakeria",
@@ -60,7 +65,8 @@
       "license": "Flipline Studios — Free Games for your Site hosting permission",
       "attribution": "© Flipline Studios. Official Standard Version supplied for website hosting.",
       "published": true,
-      "thumbnail": "/games/papas-bakeria/thumbnail.jpg"
+      "thumbnail": "/favicons/papas-bakeria.jpg",
+      "icon": "/favicons/papas-bakeria.jpg"
     },
     {
       "slug": "papas-cheeseria",
@@ -72,7 +78,8 @@
       "license": "Flipline Studios — Free Games for your Site hosting permission",
       "attribution": "© Flipline Studios. Official Standard Version supplied for website hosting.",
       "published": true,
-      "thumbnail": "/games/papas-cheeseria/thumbnail.jpg"
+      "thumbnail": "/favicons/papas-cheeseria.jpg",
+      "icon": "/favicons/papas-cheeseria.jpg"
     },
     {
       "slug": "papas-donuteria",
@@ -84,7 +91,8 @@
       "license": "Flipline Studios — Free Games for your Site hosting permission",
       "attribution": "© Flipline Studios. Official Standard Version supplied for website hosting.",
       "published": true,
-      "thumbnail": "/games/papas-donuteria/thumbnail.jpg"
+      "thumbnail": "/favicons/papas-donuteria.jpg",
+      "icon": "/favicons/papas-donuteria.jpg"
     },
     {
       "slug": "papas-pastaria",
@@ -96,7 +104,8 @@
       "license": "Flipline Studios — Free Games for your Site hosting permission",
       "attribution": "© Flipline Studios. Official Standard Version supplied for website hosting.",
       "published": true,
-      "thumbnail": "/games/papas-pastaria/thumbnail.jpg"
+      "thumbnail": "/favicons/papas-pastaria.jpg",
+      "icon": "/favicons/papas-pastaria.jpg"
     },
     {
       "slug": "papas-cupcakeria",
@@ -108,7 +117,8 @@
       "license": "Flipline Studios — Free Games for your Site hosting permission",
       "attribution": "© Flipline Studios. Official Standard Version supplied for website hosting.",
       "published": true,
-      "thumbnail": "/games/papas-cupcakeria/thumbnail.jpg"
+      "thumbnail": "/favicons/papas-cupcakeria.jpg",
+      "icon": "/favicons/papas-cupcakeria.jpg"
     },
     {
       "slug": "papas-hot-doggeria",
@@ -120,7 +130,8 @@
       "license": "Flipline Studios — Free Games for your Site hosting permission",
       "attribution": "© Flipline Studios. Official Standard Version supplied for website hosting.",
       "published": true,
-      "thumbnail": "/games/papas-hot-doggeria/thumbnail.jpg"
+      "thumbnail": "/favicons/papas-hot-doggeria.jpg",
+      "icon": "/favicons/papas-hot-doggeria.jpg"
     },
     {
       "slug": "papas-wingeria",
@@ -132,7 +143,8 @@
       "license": "Flipline Studios — Free Games for your Site hosting permission",
       "attribution": "© Flipline Studios. Official Standard Version supplied for website hosting.",
       "published": true,
-      "thumbnail": "/games/papas-wingeria/thumbnail.jpg"
+      "thumbnail": "/favicons/papas-wingeria.jpg",
+      "icon": "/favicons/papas-wingeria.jpg"
     },
     {
       "slug": "papas-pancakeria",
@@ -144,7 +156,8 @@
       "license": "Flipline Studios — Free Games for your Site hosting permission",
       "attribution": "© Flipline Studios. Official Standard Version supplied for website hosting.",
       "published": true,
-      "thumbnail": "/games/papas-pancakeria/thumbnail.jpg"
+      "thumbnail": "/favicons/papas-pancakeria.jpg",
+      "icon": "/favicons/papas-pancakeria.jpg"
     },
     {
       "slug": "papas-freezeria",
@@ -156,7 +169,8 @@
       "license": "Flipline Studios — Free Games for your Site hosting permission",
       "attribution": "© Flipline Studios. Official Standard Version supplied for website hosting.",
       "published": true,
-      "thumbnail": "/games/papas-freezeria/thumbnail.jpg"
+      "thumbnail": "/favicons/papas-freezeria.jpg",
+      "icon": "/favicons/papas-freezeria.jpg"
     },
     {
       "slug": "papas-taco-mia",
@@ -168,7 +182,8 @@
       "license": "Flipline Studios — Free Games for your Site hosting permission",
       "attribution": "© Flipline Studios. Official Standard Version supplied for website hosting.",
       "published": true,
-      "thumbnail": "/games/papas-taco-mia/thumbnail.jpg"
+      "thumbnail": "/favicons/papas-taco-mia.jpg",
+      "icon": "/favicons/papas-taco-mia.jpg"
     },
     {
       "slug": "papas-burgeria",
@@ -180,7 +195,8 @@
       "license": "Flipline Studios — Free Games for your Site hosting permission",
       "attribution": "© Flipline Studios. Official Standard Version supplied for website hosting.",
       "published": true,
-      "thumbnail": "/games/papas-burgeria/thumbnail.jpg"
+      "thumbnail": "/favicons/papas-burgeria.jpg",
+      "icon": "/favicons/papas-burgeria.jpg"
     },
     {
       "slug": "papas-pizzeria",
@@ -192,7 +208,8 @@
       "license": "Flipline Studios — Free Games for your Site hosting permission",
       "attribution": "© Flipline Studios. Official Standard Version supplied for website hosting.",
       "published": true,
-      "thumbnail": "/games/papas-pizzeria/thumbnail.jpg"
+      "thumbnail": "/favicons/papas-pizzeria.jpg",
+      "icon": "/favicons/papas-pizzeria.jpg"
     },
     {
       "slug": "bitlife",
@@ -200,11 +217,11 @@
       "category": "Simulation",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/bitlife/index.html",
-      "thumbnail": "/games/bitlife/favicon.svg",
+      "thumbnail": "/favicons/bitlife.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/bitlife.svg"
     },
     {
       "slug": "geodash",
@@ -212,11 +229,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/geodash/index.html",
-      "thumbnail": "/games/geodash/favicon.svg",
+      "thumbnail": "/favicons/geodash.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/geodash.svg"
     },
     {
       "slug": "jetpack-joyride",
@@ -224,11 +241,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/jetpack-joyride/index.html",
-      "thumbnail": "/games/jetpack-joyride/splash.jpg",
+      "thumbnail": "/favicons/jetpack-joyride.jpg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/jetpack-joyride.jpg"
     },
     {
       "slug": "motox3m",
@@ -236,11 +253,11 @@
       "category": "Racing",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/motox3m/index.html",
-      "thumbnail": "/games/motox3m/splash.jpg",
+      "thumbnail": "/favicons/motox3m.jpg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/motox3m.jpg"
     },
     {
       "slug": "monster-tracks",
@@ -248,11 +265,11 @@
       "category": "Racing",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/monster-tracks/index.html",
-      "thumbnail": "/games/monster-tracks/favicon.svg",
+      "thumbnail": "/favicons/monster-tracks.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/monster-tracks.svg"
     },
     {
       "slug": "ovo",
@@ -260,11 +277,11 @@
       "category": "Platformer",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/ovo/index.html",
-      "thumbnail": "/games/ovo/icon-256.png",
+      "thumbnail": "/favicons/ovo.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/ovo.png"
     },
     {
       "slug": "rooftop-snipers",
@@ -272,11 +289,11 @@
       "category": "Action",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/rooftop-snipers/index.html",
-      "thumbnail": "/games/rooftop-snipers/favicon.svg",
+      "thumbnail": "/favicons/rooftop-snipers.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/rooftop-snipers.svg"
     },
     {
       "slug": "slope",
@@ -284,11 +301,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/slope/index.html",
-      "thumbnail": "/games/slope/favicon.svg",
+      "thumbnail": "/favicons/slope.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/slope.svg"
     },
     {
       "slug": "eaglerfaithful",
@@ -296,11 +313,11 @@
       "category": "Multiplayer",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/eaglerfaithful/index.html",
-      "thumbnail": "/games/eaglerfaithful/favicon.svg",
+      "thumbnail": "/favicons/eaglerfaithful.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/eaglerfaithful.svg"
     },
     {
       "slug": "polytrack",
@@ -311,7 +328,9 @@
       "source_url": "https://github.com/itjey/polytrack",
       "license": "Reupload permitted subject to Kodub's PolyTrack Terms of Service.",
       "attribution": "PolyTrack © Kodub. Unofficial non-commercial reupload; official game link and required notice are preserved.",
-      "published": true
+      "published": true,
+      "icon": "/favicons/polytrack.svg",
+      "thumbnail": "/favicons/polytrack.svg"
     },
     {
       "slug": "motox3m-pool",
@@ -319,11 +338,11 @@
       "category": "Racing",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/motox3m-pool/index.html",
-      "thumbnail": "/games/motox3m-pool/splash.jpg",
+      "thumbnail": "/favicons/motox3m-pool.jpg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/motox3m-pool.jpg"
     },
     {
       "slug": "motox3m-spooky",
@@ -331,11 +350,11 @@
       "category": "Racing",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/motox3m-spooky/index.html",
-      "thumbnail": "/games/motox3m-spooky/assets/atlases/x1/cars_game.png",
+      "thumbnail": "/favicons/motox3m-spooky.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/motox3m-spooky.png"
     },
     {
       "slug": "motox3m-winter",
@@ -343,11 +362,11 @@
       "category": "Racing",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/motox3m-winter/index.html",
-      "thumbnail": "/games/motox3m-winter/assets/atlases/x1/cars_game.png",
+      "thumbnail": "/favicons/motox3m-winter.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/motox3m-winter.png"
     },
     {
       "slug": "google-snake",
@@ -355,11 +374,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/google-snake/index.html",
-      "thumbnail": "/games/google-snake/img/snake.png",
+      "thumbnail": "/favicons/google-snake.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/google-snake.png"
     },
     {
       "slug": "draw-the-hill",
@@ -367,11 +386,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/draw-the-hill/index.html",
-      "thumbnail": "/games/draw-the-hill/icons/icon-512.png",
+      "thumbnail": "/favicons/draw-the-hill.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/draw-the-hill.png"
     },
     {
       "slug": "chrome-dino",
@@ -379,11 +398,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/chrome-dino/index.html",
-      "thumbnail": "/games/chrome-dino/favicon.ico",
+      "thumbnail": "/favicons/chrome-dino.ico",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/chrome-dino.ico"
     },
     {
       "slug": "eggycar",
@@ -391,11 +410,11 @@
       "category": "Racing",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/eggycar/index.html",
-      "thumbnail": "/games/eggycar/favicon.ico",
+      "thumbnail": "/favicons/eggycar.ico",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/eggycar.ico"
     },
     {
       "slug": "stack",
@@ -403,11 +422,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/stack/index.html",
-      "thumbnail": "/games/stack/stack.png",
+      "thumbnail": "/favicons/stack.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/stack.png"
     },
     {
       "slug": "snowrider3d",
@@ -415,11 +434,11 @@
       "category": "Racing",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/snowrider3d/index.html",
-      "thumbnail": "/games/snowrider3d/favicon.ico",
+      "thumbnail": "/favicons/snowrider3d.ico",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/snowrider3d.ico"
     },
     {
       "slug": "temple-run-2",
@@ -427,11 +446,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/temple-run-2/index.html",
-      "thumbnail": "/games/temple-run-2/img/og-icon.png",
-      "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "thumbnail": "/favicons/temple-run-2.png",
+      "source_url": "https://gitlab.com/3kh0/3kh0-assets/-/tree/main/temple-run-2",
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/temple-run-2.png"
     },
     {
       "slug": "soundboard",
@@ -439,9 +458,10 @@
       "category": "Soundboard",
       "description": "Open the Sound Buttons Space soundboard.",
       "url": "https://soundbuttonsspace.com",
-      "thumbnail": "https://soundbuttonsspace.com/favicon.ico",
+      "thumbnail": "/favicons/soundboard.jpg",
       "external": true,
-      "published": true
+      "published": true,
+      "icon": "/favicons/soundboard.jpg"
     },
     {
       "slug": "bad-time-simulator",
@@ -449,11 +469,12 @@
       "category": "Action",
       "description": "Locally hosted compiled Bad Time Simulator mirror.",
       "url": "/games/bad-time-simulator/index.html",
-      "thumbnail": "/games/bad-time-simulator/icon-256.png",
+      "thumbnail": "/favicons/bad-time-simulator.png",
       "source_url": "https://github.com/FlafyDev/bad-time-simulator-compiled",
       "license": "Permission reported by site owner; see REDISTRIBUTION-NOTE.txt.",
       "attribution": "Compiled build by FlafyDev; original project by Jcw87. Unofficial fan project.",
-      "published": true
+      "published": true,
+      "icon": "/favicons/bad-time-simulator.png"
     },
     {
       "slug": "fnaf-1",
@@ -461,11 +482,12 @@
       "category": "Horror",
       "description": "Locally hosted unofficial HTML remake of Five Nights at Freddy's 1.",
       "url": "/games/fnaf-1/index.html",
-      "thumbnail": "/games/fnaf-1/resources/title.png",
+      "thumbnail": "/favicons/fnaf-1.png",
       "source_url": "https://github.com/irv77/hd_fnaf",
       "license": "Redistribution rights not independently verified; see REDISTRIBUTION-NOTE.txt.",
       "attribution": "Unofficial browser remake by irv77. Five Nights at Freddy's © Scott Cawthon.",
-      "published": true
+      "published": true,
+      "icon": "/favicons/fnaf-1.png"
     },
     {
       "slug": "fnaf-2",
@@ -473,11 +495,12 @@
       "category": "Horror",
       "description": "Locally hosted unofficial HTML remake of Five Nights at Freddy's 2.",
       "url": "/games/fnaf-2/index.html",
-      "thumbnail": "/games/fnaf-2/resources/title.png",
+      "thumbnail": "/favicons/fnaf-2.png",
       "source_url": "https://github.com/irv77/hd_fnaf",
       "license": "Redistribution rights not independently verified; see REDISTRIBUTION-NOTE.txt.",
       "attribution": "Unofficial browser remake by irv77. Five Nights at Freddy's © Scott Cawthon.",
-      "published": true
+      "published": true,
+      "icon": "/favicons/fnaf-2.png"
     },
     {
       "slug": "fnaf-3",
@@ -485,11 +508,12 @@
       "category": "Horror",
       "description": "Locally hosted unofficial HTML remake of Five Nights at Freddy's 3.",
       "url": "/games/fnaf-3/index.html",
-      "thumbnail": "/games/fnaf-3/resources/title.png",
+      "thumbnail": "/favicons/fnaf-3.png",
       "source_url": "https://github.com/irv77/hd_fnaf",
       "license": "Redistribution rights not independently verified; see REDISTRIBUTION-NOTE.txt.",
       "attribution": "Unofficial browser remake by irv77. Five Nights at Freddy's © Scott Cawthon.",
-      "published": true
+      "published": true,
+      "icon": "/favicons/fnaf-3.png"
     },
     {
       "slug": "fnaf-4",
@@ -497,11 +521,12 @@
       "category": "Horror",
       "description": "Locally hosted unofficial HTML remake of Five Nights at Freddy's 4.",
       "url": "/games/fnaf-4/index.html",
-      "thumbnail": "/games/fnaf-4/resources/title.png",
+      "thumbnail": "/favicons/fnaf-4.png",
       "source_url": "https://github.com/irv77/hd_fnaf",
       "license": "Redistribution rights not independently verified; see REDISTRIBUTION-NOTE.txt.",
       "attribution": "Unofficial browser remake by irv77. Five Nights at Freddy's © Scott Cawthon.",
-      "published": true
+      "published": true,
+      "icon": "/favicons/fnaf-4.png"
     },
     {
       "slug": "motox3m2",
@@ -509,11 +534,11 @@
       "category": "Racing",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/motox3m2/index.html",
-      "thumbnail": "/games/motox3m2/assets/atlases/x1/cars_game.png",
+      "thumbnail": "/favicons/motox3m2.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/motox3m2.png"
     },
     {
       "slug": "99balls",
@@ -521,11 +546,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/99balls/index.html",
-      "thumbnail": "/games/99balls/favicon.svg",
+      "thumbnail": "/favicons/99balls.jpg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/99balls.jpg"
     },
     {
       "slug": "basket-random",
@@ -533,11 +558,11 @@
       "category": "Sports",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/basket-random/index.html",
-      "thumbnail": "/games/basket-random/favicon.svg",
+      "thumbnail": "/favicons/basket-random.jpg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/basket-random.jpg"
     },
     {
       "slug": "bloonstd",
@@ -545,11 +570,11 @@
       "category": "Strategy",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/bloonstd/index.html",
-      "thumbnail": "/games/bloonstd/favicon.svg",
+      "thumbnail": "/favicons/bloonstd.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/bloonstd.svg"
     },
     {
       "slug": "fruitninja",
@@ -557,11 +582,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/fruitninja/index.html",
-      "thumbnail": "/games/fruitninja/favicon.svg",
+      "thumbnail": "/favicons/fruitninja.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/fruitninja.svg"
     },
     {
       "slug": "hextris",
@@ -569,11 +594,11 @@
       "category": "Puzzle",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/hextris/index.html",
-      "thumbnail": "/games/hextris/favicon.ico",
+      "thumbnail": "/favicons/hextris.ico",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/hextris.ico"
     },
     {
       "slug": "idle-breakout",
@@ -581,11 +606,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/idle-breakout/index.html",
-      "thumbnail": "/games/idle-breakout/favicon.svg",
+      "thumbnail": "/favicons/idle-breakout.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/idle-breakout.svg"
     },
     {
       "slug": "drive-mad",
@@ -593,11 +618,11 @@
       "category": "Racing",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/drive-mad/index.html",
-      "thumbnail": "/games/drive-mad/favicon.ico",
+      "thumbnail": "/favicons/drive-mad.ico",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/drive-mad.ico"
     },
     {
       "slug": "drift-boss",
@@ -605,11 +630,11 @@
       "category": "Racing",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/drift-boss/index.html",
-      "thumbnail": "/games/drift-boss/favicon.svg",
+      "thumbnail": "/favicons/drift-boss.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/drift-boss.svg"
     },
     {
       "slug": "stickman-hook",
@@ -617,11 +642,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/stickman-hook/index.html",
-      "thumbnail": "/games/stickman-hook/favicon.svg",
+      "thumbnail": "/favicons/stickman-hook.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/stickman-hook.svg"
     },
     {
       "slug": "ctr",
@@ -629,11 +654,11 @@
       "category": "Puzzle",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/ctr/index.html",
-      "thumbnail": "/games/ctr/favicon.svg",
+      "thumbnail": "/favicons/ctr.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/ctr.svg"
     },
     {
       "slug": "ctr-holiday",
@@ -641,11 +666,11 @@
       "category": "Puzzle",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/ctr-holiday/index.html",
-      "thumbnail": "/games/ctr-holiday/favicon.ico",
+      "thumbnail": "/favicons/ctr-holiday.ico",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/ctr-holiday.ico"
     },
     {
       "slug": "ctr-tr",
@@ -653,11 +678,11 @@
       "category": "Puzzle",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/ctr-tr/index.html",
-      "thumbnail": "/games/ctr-tr/favicon.ico",
+      "thumbnail": "/favicons/ctr-tr.ico",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/ctr-tr.ico"
     },
     {
       "slug": "cookie-clicker",
@@ -665,11 +690,11 @@
       "category": "Simulation",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/cookie-clicker/index.html",
-      "thumbnail": "/games/cookie-clicker/favicon.svg",
+      "thumbnail": "/favicons/cookie-clicker.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/cookie-clicker.svg"
     },
     {
       "slug": "paperio2",
@@ -677,11 +702,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/paperio2/index.html",
-      "thumbnail": "/games/paperio2/favicon.svg",
+      "thumbnail": "/favicons/paperio2.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/paperio2.svg"
     },
     {
       "slug": "doodle-jump",
@@ -689,11 +714,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/doodle-jump/index.html",
-      "thumbnail": "/games/doodle-jump/favicon.svg",
+      "thumbnail": "/favicons/doodle-jump.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/doodle-jump.svg"
     },
     {
       "slug": "2048-multitask",
@@ -701,11 +726,11 @@
       "category": "Puzzle",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/2048-multitask/index.html",
-      "thumbnail": "/games/2048-multitask/favicon.ico",
+      "thumbnail": "/favicons/2048-multitask.ico",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/2048-multitask.ico"
     },
     {
       "slug": "flappy-bird",
@@ -713,11 +738,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/flappy-bird/index.html",
-      "thumbnail": "/games/flappy-bird/favicon.svg",
+      "thumbnail": "/favicons/flappy-bird.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/flappy-bird.svg"
     },
     {
       "slug": "ducklife1",
@@ -725,11 +750,11 @@
       "category": "Adventure",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/ducklife1/index.html",
-      "thumbnail": "/games/ducklife1/favicon.svg",
+      "thumbnail": "/favicons/ducklife1.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/ducklife1.svg"
     },
     {
       "slug": "ducklife2",
@@ -737,11 +762,11 @@
       "category": "Adventure",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/ducklife2/index.html",
-      "thumbnail": "/games/ducklife2/favicon.svg",
+      "thumbnail": "/favicons/ducklife2.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/ducklife2.svg"
     },
     {
       "slug": "ducklife3",
@@ -749,11 +774,11 @@
       "category": "Adventure",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/ducklife3/index.html",
-      "thumbnail": "/games/ducklife3/favicon.ico",
+      "thumbnail": "/favicons/ducklife3.ico",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/ducklife3.ico"
     },
     {
       "slug": "tiny-fishing",
@@ -761,11 +786,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/tiny-fishing/index.html",
-      "thumbnail": "/games/tiny-fishing/thumb.png",
+      "thumbnail": "/favicons/tiny-fishing.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/tiny-fishing.png"
     },
     {
       "slug": "crossyroad",
@@ -773,11 +798,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/crossyroad/index.html",
-      "thumbnail": "/games/crossyroad/favicon.svg",
+      "thumbnail": "/favicons/crossyroad.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/crossyroad.svg"
     },
     {
       "slug": "bad-ice-cream",
@@ -785,11 +810,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/bad-ice-cream/index.html",
-      "thumbnail": "/games/bad-ice-cream/favicon.svg",
+      "thumbnail": "/favicons/bad-ice-cream.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/bad-ice-cream.svg"
     },
     {
       "slug": "om-bounce",
@@ -797,11 +822,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/om-bounce/index.html",
-      "thumbnail": "/games/om-bounce/favicon.svg",
+      "thumbnail": "/favicons/om-bounce.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/om-bounce.svg"
     },
     {
       "slug": "elasticman",
@@ -809,11 +834,11 @@
       "category": "Casual",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/elasticman/index.html",
-      "thumbnail": "/games/elasticman/favicon.svg",
+      "thumbnail": "/favicons/elasticman.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/elasticman.svg"
     },
     {
       "slug": "sort-the-court",
@@ -821,11 +846,11 @@
       "category": "Simulation",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/sort-the-court/index.html",
-      "thumbnail": "/games/sort-the-court/favicon.svg",
+      "thumbnail": "/favicons/sort-the-court.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/sort-the-court.svg"
     },
     {
       "slug": "the-final-earth",
@@ -833,11 +858,11 @@
       "category": "Strategy",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/the-final-earth/index.html",
-      "thumbnail": "/games/the-final-earth/favicon.svg",
+      "thumbnail": "/favicons/the-final-earth.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/the-final-earth.svg"
     },
     {
       "slug": "circlo",
@@ -845,11 +870,11 @@
       "category": "Puzzle",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/circlo/index.html",
-      "thumbnail": "/games/circlo/favicon.svg",
+      "thumbnail": "/favicons/circlo.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/circlo.svg"
     },
     {
       "slug": "connect3",
@@ -857,11 +882,11 @@
       "category": "Puzzle",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/connect3/index.html",
-      "thumbnail": "/games/connect3/favicon.png",
+      "thumbnail": "/favicons/connect3.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/connect3.png"
     },
     {
       "slug": "cupcake2048",
@@ -869,11 +894,11 @@
       "category": "Puzzle",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/cupcake2048/index.html",
-      "thumbnail": "/games/cupcake2048/favicon.png",
+      "thumbnail": "/favicons/cupcake2048.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/cupcake2048.png"
     },
     {
       "slug": "idle-shark",
@@ -881,11 +906,11 @@
       "category": "Simulation",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/idle-shark/index.html",
-      "thumbnail": "/games/idle-shark/favicon.png",
+      "thumbnail": "/favicons/idle-shark.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/idle-shark.png"
     },
     {
       "slug": "monkey-mart",
@@ -893,11 +918,11 @@
       "category": "Simulation",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/monkey-mart/index.html",
-      "thumbnail": "/games/monkey-mart/favicon.svg",
+      "thumbnail": "/favicons/monkey-mart.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "3kh0 Assets README requests attribution; third-party game rights vary by title.",
-      "attribution": "Sourced from the 3kh0 assets collection. Credit to 3kh0; original game rights belong to their respective creators.",
-      "published": true
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/monkey-mart.svg"
     },
     {
       "slug": "backflip-dive-3d",
@@ -905,11 +930,12 @@
       "category": "Sports",
       "description": "Unity WebGL build of Backflip Dive 3D.",
       "url": "/games/backflip-dive-3d/index.html",
-      "thumbnail": "/games/backflip-dive-3d/icon.png",
+      "thumbnail": "/favicons/backflip-dive-3d.png",
       "source_url": "https://github.com/olivia-games/game/tree/main/backflip-dive-3d",
       "license": "Redistribution permission supplied for this project; upstream folder contains no licence file.",
       "attribution": "Backflip Dive 3D © Smartline Games. Original artwork and game rights remain with their owners.",
-      "published": true
+      "published": true,
+      "icon": "/favicons/backflip-dive-3d.png"
     },
     {
       "slug": "fridaynightfunkin",
@@ -917,11 +943,12 @@
       "category": "Arcade",
       "description": "Locally hosted browser build with touch arrows for play on iPad.",
       "url": "/games/fridaynightfunkin/index.html",
-      "thumbnail": "/games/fridaynightfunkin/icon.png",
+      "thumbnail": "/favicons/fridaynightfunkin.png",
       "source_url": "https://github.com/olivia-games/game/tree/main/fridaynightfunkin",
       "license": "Redistribution permission supplied for this project; retain the original credits and permission note.",
       "attribution": "Friday Night Funkin' by ninjamuffin99, PhantomArcade, kawaisprite, and evilsk8r. See the preserved upstream credits and permission note.",
-      "published": true
+      "published": true,
+      "icon": "/favicons/fridaynightfunkin.png"
     },
     {
       "slug": "subway-surfers",
@@ -929,11 +956,12 @@
       "category": "Arcade",
       "description": "Unity WebGL build with touch swipe controls for iPad.",
       "url": "/games/subway-surfers/index.html",
-      "thumbnail": "/games/subway-surfers/icon.png",
+      "thumbnail": "/favicons/subway-surfers.png",
       "source_url": "https://github.com/olivia-games/game/tree/main/subway-surfers",
       "license": "Redistribution permission supplied for this project; upstream folder contains no licence file.",
       "attribution": "Subway Surfers © SYBO Games. Original characters and artwork remain with their owners.",
-      "published": true
+      "published": true,
+      "icon": "/favicons/subway-surfers.png"
     },
     {
       "slug": "mr-jump",
@@ -942,11 +970,12 @@
       "description": "Mobile-friendly browser version.",
       "url": "https://www.yiv.com/Mr-Jump",
       "external": true,
-      "icon": "/icons/game-icons/mr-jump.svg",
+      "icon": "/favicons/mr-jump.jpg",
       "source_url": "https://www.yiv.com/",
       "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
       "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "published": true,
+      "thumbnail": "/favicons/mr-jump.jpg"
     },
     {
       "slug": "angry-gran-run",
@@ -955,11 +984,12 @@
       "description": "Browser version with touch input.",
       "url": "https://doodlejump.io/angry-gran-run-play-online-for-free-poki",
       "external": true,
-      "icon": "/icons/game-icons/angry-gran-run.svg",
+      "icon": "/favicons/angry-gran-run.jpg",
       "source_url": "https://doodlejump.io/",
       "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
       "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "published": true,
+      "thumbnail": "/favicons/angry-gran-run.jpg"
     },
     {
       "slug": "running-fred",
@@ -968,11 +998,12 @@
       "description": "Browser version; supports touch input on phones and tablets.",
       "url": "https://doodlejump.io/running-fred-play-online-for-free-poki",
       "external": true,
-      "icon": "/icons/game-icons/running-fred.svg",
+      "icon": "/favicons/running-fred.jpg",
       "source_url": "https://doodlejump.io/",
       "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
       "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "published": true,
+      "thumbnail": "/favicons/running-fred.jpg"
     },
     {
       "slug": "super-falling-fred",
@@ -981,11 +1012,12 @@
       "description": "Browser version for phones and tablets.",
       "url": "https://ant.games/g/super-falling-fred",
       "external": true,
-      "icon": "/icons/game-icons/super-falling-fred.svg",
+      "icon": "/favicons/super-falling-fred.png",
       "source_url": "https://ant.games/",
       "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
       "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "published": true,
+      "thumbnail": "/favicons/super-falling-fred.png"
     },
     {
       "slug": "falling-fred",
@@ -994,11 +1026,12 @@
       "description": "Official iOS listing; availability depends on the App Store region.",
       "url": "https://apps.apple.com/us/app/falling-fred/id414729389",
       "external": true,
-      "icon": "/icons/game-icons/falling-fred.svg",
+      "icon": "/favicons/falling-fred.png",
       "source_url": "https://www.dedalord.com/",
       "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
       "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "published": true,
+      "thumbnail": "/favicons/falling-fred.png"
     },
     {
       "slug": "rooftop-run",
@@ -1007,11 +1040,12 @@
       "description": "Touch-friendly browser version.",
       "url": "https://www.y8.com/games/rooftop_run",
       "external": true,
-      "icon": "/icons/game-icons/rooftop-run.svg",
+      "icon": "/favicons/rooftop-run.webp",
       "source_url": "https://www.y8.com/",
       "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
       "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "published": true,
+      "thumbnail": "/favicons/rooftop-run.webp"
     },
     {
       "slug": "troll-face-quest-video-games",
@@ -1020,11 +1054,12 @@
       "description": "Browser edition hosted by Flipline Studios.",
       "url": "https://www.flipline.com/othergames/trollfacequestforvideogames/play.html",
       "external": true,
-      "icon": "/icons/game-icons/troll-face-quest-video-games.svg",
+      "icon": "/favicons/troll-face-quest-video-games.jpg",
       "source_url": "https://www.flipline.com/othergames/trollfacequestforvideogames/play.html",
       "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
       "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "published": true,
+      "thumbnail": "/favicons/troll-face-quest-video-games.jpg"
     },
     {
       "slug": "rolling-sky",
@@ -1033,11 +1068,12 @@
       "description": "Independent touch-enabled browser version; not the official app.",
       "url": "https://rolling-sky.com/",
       "external": true,
-      "icon": "/icons/game-icons/rolling-sky.svg",
+      "icon": "/favicons/rolling-sky.webp",
       "source_url": "https://rolling-sky.com/",
       "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
       "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "published": true,
+      "thumbnail": "/favicons/rolling-sky.webp"
     },
     {
       "slug": "dumb-ways-to-die-2",
@@ -1046,11 +1082,12 @@
       "description": "HTML5 version for mobile and tablet browsers.",
       "url": "https://www.crazygames.com/game/dumb-ways-to-die-2-the-games",
       "external": true,
-      "icon": "/icons/game-icons/dumb-ways-to-die-2.svg",
+      "icon": "/favicons/dumb-ways-to-die-2.jpg",
       "source_url": "https://www.crazygames.com/",
       "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
       "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "published": true,
+      "thumbnail": "/favicons/dumb-ways-to-die-2.jpg"
     },
     {
       "slug": "helix-jump",
@@ -1059,11 +1096,12 @@
       "description": "Mobile and tablet browser version.",
       "url": "https://www.crazygames.com/game/helix-jump/",
       "external": true,
-      "icon": "/icons/game-icons/helix-jump.svg",
+      "icon": "/favicons/helix-jump.png",
       "source_url": "https://www.crazygames.com/",
       "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
       "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "published": true,
+      "thumbnail": "/favicons/helix-jump.png"
     },
     {
       "slug": "ballistic",
@@ -1072,76 +1110,77 @@
       "description": "Block-breaker browser game with mobile and tablet support.",
       "url": "https://www.rocketgames.io/game/ballistic",
       "external": true,
-      "icon": "/icons/game-icons/ballistic.svg",
+      "icon": "/favicons/ballistic.jpg",
       "source_url": "https://www.rocketgames.io/",
       "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
       "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "published": true,
+      "thumbnail": "/favicons/ballistic.jpg"
     },
     {
       "slug": "henry-breaking-the-bank",
       "title": "Henry Stickmin: Breaking the Bank",
       "category": "Adventure",
-      "description": "Original browser game by PuffballsUnited.",
-      "url": "https://www.newgrounds.com/portal/view/457209",
-      "external": true,
-      "icon": "/icons/game-icons/henry-breaking-the-bank.svg",
-      "source_url": "https://www.newgrounds.com/portal/view/457209",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
-      "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "description": "Locally hosted Henry Stickmin Flash game, running with Ruffle.",
+      "url": "/games/henry-breaking-the-bank/index.html",
+      "icon": "/favicons/henry-breaking-the-bank.png",
+      "source_url": "https://archive.org/download/stickmin-flash-game-series./",
+      "license": "Archive.org source supplied by the site owner; original game rights remain with PuffballsUnited.",
+      "attribution": "Henry Stickmin © PuffballsUnited. Original game by PuffballsUnited; SWF supplied by the site owner from Archive.org.",
+      "published": true,
+      "thumbnail": "/favicons/henry-breaking-the-bank.png"
     },
     {
       "slug": "henry-escaping-the-prison",
       "title": "Henry Stickmin: Escaping the Prison",
       "category": "Adventure",
-      "description": "Original browser game by PuffballsUnited.",
-      "url": "https://www.newgrounds.com/portal/view/533001",
-      "external": true,
-      "icon": "/icons/game-icons/henry-escaping-the-prison.svg",
-      "source_url": "https://www.newgrounds.com/portal/view/533001",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
-      "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "description": "Locally hosted Henry Stickmin Flash game, running with Ruffle.",
+      "url": "/games/henry-escaping-the-prison/index.html",
+      "icon": "/favicons/henry-escaping-the-prison.jpg",
+      "source_url": "https://archive.org/download/stickmin-flash-game-series./",
+      "license": "Archive.org source supplied by the site owner; original game rights remain with PuffballsUnited.",
+      "attribution": "Henry Stickmin © PuffballsUnited. Original game by PuffballsUnited; SWF supplied by the site owner from Archive.org.",
+      "published": true,
+      "thumbnail": "/favicons/henry-escaping-the-prison.jpg"
     },
     {
       "slug": "henry-stealing-the-diamond",
       "title": "Henry Stickmin: Stealing the Diamond",
       "category": "Adventure",
-      "description": "Original browser game by PuffballsUnited.",
-      "url": "https://www.newgrounds.com/portal/view/574241",
-      "external": true,
-      "icon": "/icons/game-icons/henry-stealing-the-diamond.svg",
-      "source_url": "https://www.newgrounds.com/portal/view/574241",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
-      "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "description": "Locally hosted Henry Stickmin Flash game, running with Ruffle.",
+      "url": "/games/henry-stealing-the-diamond/index.html",
+      "icon": "/favicons/henry-stealing-the-diamond.jpg",
+      "source_url": "https://archive.org/download/stickmin-flash-game-series./",
+      "license": "Archive.org source supplied by the site owner; original game rights remain with PuffballsUnited.",
+      "attribution": "Henry Stickmin © PuffballsUnited. Original game by PuffballsUnited; SWF supplied by the site owner from Archive.org.",
+      "published": true,
+      "thumbnail": "/favicons/henry-stealing-the-diamond.jpg"
     },
     {
       "slug": "henry-infiltrating-the-airship",
       "title": "Henry Stickmin: Infiltrating the Airship",
       "category": "Adventure",
-      "description": "Original browser game by PuffballsUnited.",
-      "url": "https://www.newgrounds.com/portal/view/618518",
-      "external": true,
-      "icon": "/icons/game-icons/henry-infiltrating-the-airship.svg",
-      "source_url": "https://www.newgrounds.com/portal/view/618518",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
-      "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "description": "Locally hosted Henry Stickmin Flash game, running with Ruffle.",
+      "url": "/games/henry-infiltrating-the-airship/index.html",
+      "icon": "/favicons/henry-infiltrating-the-airship.jpg",
+      "source_url": "https://archive.org/download/stickmin-flash-game-series./",
+      "license": "Archive.org source supplied by the site owner; original game rights remain with PuffballsUnited.",
+      "attribution": "Henry Stickmin © PuffballsUnited. Original game by PuffballsUnited; SWF supplied by the site owner from Archive.org.",
+      "published": true,
+      "thumbnail": "/favicons/henry-infiltrating-the-airship.jpg"
     },
     {
       "slug": "henry-fleeing-the-complex",
       "title": "Henry Stickmin: Fleeing the Complex",
       "category": "Adventure",
-      "description": "Original browser game by PuffballsUnited.",
-      "url": "https://www.newgrounds.com/portal/view/665992",
-      "external": true,
-      "icon": "/icons/game-icons/henry-fleeing-the-complex.svg",
-      "source_url": "https://www.newgrounds.com/portal/view/665992",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
-      "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "description": "Locally hosted Henry Stickmin Flash game, running with Ruffle.",
+      "url": "/games/henry-fleeing-the-complex/index.html",
+      "icon": "/favicons/henry-fleeing-the-complex.webp",
+      "source_url": "https://archive.org/download/stickmin-flash-game-series./",
+      "license": "Archive.org source supplied by the site owner; original game rights remain with PuffballsUnited.",
+      "attribution": "Henry Stickmin © PuffballsUnited. Original game by PuffballsUnited; SWF supplied by the site owner from Archive.org.",
+      "published": true,
+      "thumbnail": "/favicons/henry-fleeing-the-complex.webp"
     },
     {
       "slug": "henry-completing-the-mission",
@@ -1150,24 +1189,24 @@
       "description": "Final game in the official paid PC collection; no mobile browser edition.",
       "url": "https://store.steampowered.com/app/1089980/The_Henry_Stickmin_Collection/",
       "external": true,
-      "icon": "/icons/game-icons/henry-completing-the-mission.svg",
+      "icon": "/favicons/henry-completing-the-mission.jpg",
       "source_url": "https://www.innersloth.com/games/the-henry-stickmin-collection/",
       "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
       "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "published": true,
+      "thumbnail": "/favicons/henry-completing-the-mission.jpg"
     },
     {
       "slug": "google-feud",
       "title": "Google Feud",
       "category": "Trivia",
       "description": "Official browser game; opens in a new tab.",
-      "url": "https://googlefeud.com/",
-      "external": true,
-      "icon": "/icons/game-icons/google-feud.svg",
-      "source_url": "https://googlefeud.com/about/",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
-      "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "url": "/games/google-feud/index.html",
+      "icon": "/favicons/google-feud.jpg",
+      "source_url": "https://gitlab.com/3kh0/3kh0-assets/-/tree/main/google-feud",
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "thumbnail": "/favicons/google-feud.jpg"
     },
     {
       "slug": "bad-piggies",
@@ -1176,11 +1215,12 @@
       "description": "Rovio’s official page with iOS and Android app links.",
       "url": "https://www.rovio.com/games/bad-piggies/",
       "external": true,
-      "icon": "/icons/game-icons/bad-piggies.svg",
+      "icon": "/favicons/bad-piggies.jpg",
       "source_url": "https://www.rovio.com/games/bad-piggies/",
       "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
       "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "published": true,
+      "thumbnail": "/favicons/bad-piggies.jpg"
     },
     {
       "slug": "8-ball-pool",
@@ -1189,37 +1229,50 @@
       "description": "Official Miniclip browser game, playable in mobile browsers.",
       "url": "https://8ballpool.com/en/game",
       "external": true,
-      "icon": "/icons/game-icons/8-ball-pool.svg",
+      "icon": "/favicons/8-ball-pool.png",
       "source_url": "https://support.miniclip.com/hc/en-us/articles/360020665798--How-to-start-playing-8-Ball-Pool",
       "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
       "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "published": true,
+      "thumbnail": "/favicons/8-ball-pool.png"
     },
     {
       "slug": "idle-mining-empire",
       "title": "Idle Mining Empire",
       "category": "Simulation",
       "description": "Browser game with mobile and tablet support.",
-      "url": "https://www.crazygames.com/game/idle-mining-empire",
-      "external": true,
-      "icon": "/icons/game-icons/idle-mining-empire.svg",
-      "source_url": "https://www.crazygames.com/",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
+      "url": "/games/idle-mining-empire/index.html",
+      "icon": "/favicons/idle-mining-empire.png",
+      "source_url": "https://www.marketjs.com/item/idle-mining-empire/",
+      "license": "Self-hosted with permission from the publisher.",
       "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "published": true,
+      "thumbnail": "/favicons/idle-mining-empire.png"
     },
     {
       "slug": "unlimited-wordle",
       "title": "Unlimited Wordle",
       "category": "Puzzle",
       "description": "Mobile-friendly browser game with unlimited rounds.",
-      "url": "https://wordleunlimited.me/",
-      "external": true,
-      "icon": "/icons/game-icons/unlimited-wordle.svg",
-      "source_url": "https://wordleunlimited.me/about/",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
+      "url": "/games/unlimited-wordle/index.html",
+      "icon": "/favicons/unlimited-wordle.png",
+      "source_url": "https://gitlab.com/3kh0/3kh0-assets/-/tree/main/wordle",
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
       "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true
+      "published": true,
+      "thumbnail": "/favicons/unlimited-wordle.png"
+    },
+    {
+      "slug": "retro-bowl",
+      "title": "Retro Bowl",
+      "category": "Sports",
+      "description": "A touch-friendly American football management game.",
+      "url": "/games/retro-bowl/index.html",
+      "thumbnail": "/favicons/retro-bowl.jpg",
+      "source_url": "https://gitlab.com/3kh0/3kh0-assets/-/tree/main/retro-bowl",
+      "license": "Reuse permitted by the 3kh0 Assets archive.",
+      "published": true,
+      "icon": "/favicons/retro-bowl.jpg"
     }
   ]
 }

@@ -121,7 +121,7 @@ export async function onRequestPost(context){
  const recent=await env.DB.prepare("SELECT COUNT(*) AS total FROM direct_messages WHERE sender_id=? AND created_at>=datetime('now','-10 seconds')").bind(user.id).first();
  if((recent?.total||0)>=5)return json({error:"Slow down a moment before sending another message."},429);
  const result=await env.DB.prepare("INSERT INTO direct_messages(sender_id,recipient_id,message) VALUES(?,?,?)").bind(user.id,recipientId,message).run();
- const push=sendChatPush(env,[recipientId],{title:"New message from "+user.username,body:message.slice(0,140),url:"/?open-chat=dm",tag:"direct-message-"+user.id});
+ const push=sendChatPush(env,[recipientId],{title:user.username,body:message,username:user.username,message,url:"/?open-chat=dm",tag:"direct-message-"+user.id});
  if(typeof context.waitUntil==="function")context.waitUntil(push);else await push;
  return json({ok:true,id:result.meta.last_row_id},201);
 }
