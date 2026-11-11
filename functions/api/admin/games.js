@@ -11,10 +11,11 @@ export async function onRequestGet({ request, env }) {
     if (response.ok) { const data = await response.json(); catalogue = Array.isArray(data.games) ? data.games : []; }
   } catch {}
   const rows = await env.DB.prepare("SELECT slug,title,category,thumbnail,description,source_url,license,attribution,published,created_at FROM games WHERE source_url IS NULL OR (source_url NOT LIKE '%mashukui/web-games%') ORDER BY title COLLATE NOCASE").all();
-  const bySlug = new Map((rows.results || []).map(row => [row.slug, row]));
+  const removedSlugs=new Set(["angry-birds","happywheels","yohoho"]);
+  const bySlug = new Map((rows.results || []).filter(row=>!removedSlugs.has(row.slug)).map(row => [row.slug, row]));
   const merged = catalogue.map(game => ({...game,...(bySlug.get(game.slug) || {})}));
   const known = new Set(catalogue.map(game => game.slug));
-  for (const row of rows.results || []) if (!known.has(row.slug)) merged.push(row);
+  for (const row of rows.results || []) if (!known.has(row.slug) && !removedSlugs.has(row.slug)) merged.push(row);
   const featuredRows=await env.DB.prepare("SELECT slug,position FROM featured_games ORDER BY position,created_at").all();
   const featured=new Map((featuredRows.results||[]).map(x=>[x.slug,Number(x.position)]));
   return json({games:merged.map(g=>({...g,featured:featured.has(g.slug),featured_position:featured.get(g.slug)??null}))});
