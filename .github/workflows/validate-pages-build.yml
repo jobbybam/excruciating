@@ -123,8 +123,8 @@ jobs:
           game_pages = list((dist / "games").glob("*/index.html"))
           for page in game_pages:
               html = page.read_text(encoding="utf-8")
-              viewport = re.search(r'<meta\b[^>]*\bname=["\']viewport["\'][^>]*\bcontent=["\']([^"\']+)["\']', html, re.I)
-              if not viewport or "width=device-width" not in viewport.group(1):
+              viewport = re.search(r'<meta\b(?=[^>]*\bname=["\']viewport["\'])(?=[^>]*\bcontent=["\'][^"\']*width=device-width[^"\']*["\'])[^>]*>', html, re.I)
+              if not viewport:
                   raise SystemExit(f"Game page is missing a mobile viewport: {page}")
               if '/game-shell.js' not in html:
                   raise SystemExit(f"Game page is missing the mobile shell: {page}")

@@ -260,9 +260,15 @@ async function installGameShell() {
     const viewport = html.match(/<meta\b(?=[^>]*\bname\s*=\s*(["'])viewport\1)[^>]*>/i);
     if (!viewport) {
       html = html.replace(/<head\b[^>]*>/i, match => `${match}${newline}    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">`);
-    } else if (!/viewport-fit\s*=\s*cover/i.test(viewport[0])) {
-      const updated = viewport[0].replace(/\bcontent\s*=\s*(["'])(.*?)\1/i, (_match, quote, content) => `content=${quote}${content}, viewport-fit=cover${quote}`);
-      html = html.replace(viewport[0], updated);
+    } else {
+      const contentMatch = viewport[0].match(/\bcontent\s*=\s*(["'])(.*?)\1/i);
+      if (contentMatch) {
+        const settings = contentMatch[2].split(",").map(value => value.trim()).filter(Boolean);
+        const preserved = settings.filter(value => !/^width\s*=/i.test(value) && !/^viewport-fit\s*=/i.test(value));
+        const normalized = ["width=device-width", ...preserved, "viewport-fit=cover"].join(", ");
+        const updated = viewport[0].replace(contentMatch[0], `content=${contentMatch[1]}${normalized}${contentMatch[1]}`);
+        html = html.replace(viewport[0], updated);
+      }
     }
 
     html = html.replace(/<link\b(?=[^>]*\brel\s*=\s*(["'])[^"']*(?:icon|manifest)[^"']*\1)[^>]*>/gi, "");
