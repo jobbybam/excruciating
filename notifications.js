@@ -2,7 +2,10 @@
  const dialog=document.querySelector("#notification-dialog");
  if(!dialog||new URLSearchParams(location.search).get("chat")==="embedded")return;
  const status=document.querySelector("#notification-status"),installHelp=document.querySelector("#install-help"),installButton=document.querySelector("#pwa-install-button"),enableButton=document.querySelector("#notification-enable"),disableButton=document.querySelector("#notification-disable");
- let installPrompt=null,registrationPromise=null,configPromise=null;
+ let installPrompt=null,registrationPromise=null,configPromise=null,audioContext=null;
+ const soundToggle=document.querySelector("#notification-sound"),soundKey="excruciating-chat-sound";
+ if(soundToggle){soundToggle.checked=localStorage.getItem(soundKey)!=="off";soundToggle.addEventListener("change",()=>localStorage.setItem(soundKey,soundToggle.checked?"on":"off"));}
+ window.excruciatingPlayNotificationSound=()=>{if(!soundToggle?.checked||document.hidden)return;try{const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;audioContext=audioContext||new Audio();if(audioContext.state==="suspended")audioContext.resume();const start=audioContext.currentTime;for(const [offset,frequency] of [[0,740],[0.12,990]]){const oscillator=audioContext.createOscillator(),gain=audioContext.createGain();oscillator.type="sine";oscillator.frequency.setValueAtTime(frequency,start+offset);gain.gain.setValueAtTime(0.0001,start+offset);gain.gain.exponentialRampToValueAtTime(0.07,start+offset+0.018);gain.gain.exponentialRampToValueAtTime(0.0001,start+offset+0.15);oscillator.connect(gain);gain.connect(audioContext.destination);oscillator.start(start+offset);oscillator.stop(start+offset+0.16);}}catch{}};
  const isStandalone=()=>Boolean(navigator.standalone||window.matchMedia?.("(display-mode: standalone)").matches);
  const isIos=()=>/iphone|ipad|ipod/i.test(navigator.userAgent);
  const say=message=>{status.textContent=message;};

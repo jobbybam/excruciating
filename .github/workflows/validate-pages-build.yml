@@ -123,6 +123,11 @@ jobs:
           game_pages = list((dist / "games").glob("*/index.html"))
           for page in game_pages:
               html = page.read_text(encoding="utf-8")
+              viewport = re.search(r'<meta\b[^>]*\bname=["\']viewport["\'][^>]*\bcontent=["\']([^"\']+)["\']', html, re.I)
+              if not viewport or "width=device-width" not in viewport.group(1):
+                  raise SystemExit(f"Game page is missing a mobile viewport: {page}")
+              if '/game-shell.js' not in html:
+                  raise SystemExit(f"Game page is missing the mobile shell: {page}")
               icon = re.search(r'<link\b[^>]*\brel=["\'](?:shortcut\s+)?icon["\'][^>]*\bhref=["\']([^"\']+)["\']', html, re.I)
               if not icon:
                   raise SystemExit(f"Missing favicon link in {page}")
@@ -132,6 +137,17 @@ jobs:
               icon_path = (dist / href.lstrip("/")) if href.startswith("/") else (page.parent / href)
               if not icon_path.is_file():
                   raise SystemExit(f"Favicon target does not exist for {page}: {href}")
+
+          catalogue = json.loads((dist / "catalog/games.json").read_text(encoding="utf-8"))
+          retired = {"angry-birds", "happywheels", "yohoho"}
+          if any(game.get("slug") in retired for game in catalogue.get("games", [])):
+              raise SystemExit("A removed game is still present in the public catalogue.")
+          for game in catalogue.get("games", []):
+              url = game.get("url", "")
+              if url.startswith("/games/") and not (dist / url.lstrip("/")).is_file():
+                  raise SystemExit(f"Catalogue entry has no local launch page: {game.get('slug')}")
+              if game.get("external") and not url.startswith("https://"):
+                  raise SystemExit(f"External game must use HTTPS: {game.get('slug')}")
 
           papa_pages = list((dist / "games").glob("papas-*/index.html"))
           if len(papa_pages) != 14:

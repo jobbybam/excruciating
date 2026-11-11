@@ -29,6 +29,7 @@ const EXCLUDED_ROOT_ENTRIES = new Set([
   ".github",
   ".wrangler",
   "node_modules",
+  "work",
   "dist",
   "functions",
   "migrations",
@@ -213,6 +214,19 @@ function iconMimeType(iconPath) {
   })[extension] ?? "image/png";
 }
 
+function stripRequestedGameDisclaimers(html) {
+  let output = html
+    .replace(/<div\b(?=[^>]*\bid=["']excruciating-3kh0-credit["'])[^>]*>[\s\S]*?<\/div>/gi, "")
+    .replace(/<style\b[^>]*>[^<]*#excruciating-3kh0-credit[\s\S]*?<\/style>/gi, "");
+  return output.replace(/<(div|p|aside|span)\b([^>]*)>([\s\S]*?)<\/\1\s*>/gi, (element, tag, attributes, content) => {
+    const visible = content.replace(/<[^>]*>/g, " ").replace(/&nbsp;/gi, " ").replace(/\s+/g, " ").trim();
+    if (!/(?:game files from\s*3kh0|not\s+(?:affiliated|associated)\s+with\s+kodub)/i.test(visible)) return element;
+    const markedNotice = /(?:id|class)\s*=\s*["'][^"']*(?:disclaimer|attribution|credit|notice|kodub|3kh0)[^"']*["']/i.test(attributes);
+    const containsGame = /<(?:canvas|script|iframe|video|button|input|object|embed)\b/i.test(content);
+    return markedNotice || (!containsGame && visible.length <= 320) ? "" : element;
+  });
+}
+
 async function installGameShell() {
   const cataloguePath = path.join(OUT_DIR, "catalog", "games.json");
   const catalogue = JSON.parse(await readFile(cataloguePath, "utf8"));
@@ -224,6 +238,7 @@ async function installGameShell() {
     const gameFile = path.join(OUT_DIR, game.url.slice(1));
     let html;
     try { html = await readFile(gameFile, "utf8"); } catch { continue; }
+    html = stripRequestedGameDisclaimers(html);
     const icon = await findGameIcon(game, gameFile, html);
     if (icon) game.icon = icon;
     else delete game.icon;

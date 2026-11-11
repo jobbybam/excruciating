@@ -50,6 +50,14 @@
     <div id="orientation"></div>
     <div id="loader">Loading ...</div>
 
+    <script>
+      // The original game waits on Poki ad callbacks between levels. This local copy has no Poki runtime.
+      window.PokiSDK = window.PokiSDK || {
+        init: () => Promise.resolve(), gameLoadingStart() {}, gameLoadingProgress() {}, gameLoadingFinished() {},
+        gameplayStart() {}, gameplayStop() {}, happyTime() {}, commercialBreak: () => Promise.resolve(),
+        rewardedBreak: () => Promise.resolve(false), displayAd() {}, destroyAd() {}
+      };
+    </script>
     <script type="text/javascript" src="assets/lib/nape.min.js">
         var nape = "nape.min.js";
     </script>

@@ -351,7 +351,28 @@ html,body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans
 .notification-divider{height:1px;background:#282828;margin:5px 0}
 .notification-dialog .form-status{line-height:1.5}
 body.chat-embed{overflow:hidden;background:#101010}
-body.chat-embed>.topbar,body.chat-embed>#home-view,body.chat-embed>#player,body.chat-embed>#admin-view,body.chat-embed>.public-changelog,body.chat-embed>footer,body.chat-embed>#suggest-dialog,body.chat-embed>#notification-dialog,body.chat-embed>#chat-toasts{display:none!important}
+body.chat-embed>.site-banner,body.chat-embed>.topbar,body.chat-embed>#home-view,body.chat-embed>#player,body.chat-embed>#admin-view,body.chat-embed>.public-changelog,body.chat-embed>footer,body.chat-embed>#suggest-dialog,body.chat-embed>#notification-dialog,body.chat-embed>#chat-toasts{display:none!important}
 body.chat-embed>#chat-panel{position:fixed;inset:0;width:100%;height:100dvh;max-height:none;right:0;bottom:0;border:0;border-radius:0;padding:max(14px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));box-shadow:none}
 body.chat-embed>#chat-panel[hidden]{display:none!important}
 @media(max-width:620px){.dm-search-results{max-height:34%}.dm-pin{width:24px}.notification-dialog{padding:19px}}
+
+/* Requested top-bar suggestions, site banner, chat effects and account action */
+.suggest-toggle{flex:none;width:38px;height:38px;padding:0}
+.site-banner{display:flex;justify-content:center;align-items:center;min-height:36px;padding:8px 18px;background:#b8b8b8;color:#171717;text-align:center;font-size:12px;line-height:1.45;font-weight:600}
+#site-banner-message{max-width:1100px;overflow-wrap:anywhere}
+.chat-panel:not([hidden]){animation:chat-panel-in .2s ease both}
+@keyframes chat-panel-in{from{opacity:0;transform:translateY(8px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+.dm-delete{flex:none;width:28px;height:34px;border:0;border-radius:7px;background:transparent;color:#bcbcbc;font-size:19px;line-height:1;cursor:pointer}.dm-delete:hover{background:#3a181b;color:#ff9a9a}
+.chat-delete{flex:none;width:30px;height:34px;border:0;border-radius:7px;background:transparent;color:#bcbcbc;font-size:19px;line-height:1;cursor:pointer}
+.chat-delete:hover{background:#3a181b;color:#ff9a9a}
+#account-logout{flex:0 0 auto;min-width:104px;white-space:nowrap;align-self:center;border-color:#a82530;background:#bd2b37;color:#fff;padding:10px 16px;font-weight:700}
+#account-logout:hover{background:#d43a46;border-color:#d43a46}
+.account-access-card{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:14px}
+.account-access-card #account-logout-status{grid-column:1/-1;margin:0}
+.notification-sound-setting{display:flex;align-items:center;gap:9px;font-size:12px;color:#aaa}
+.notification-sound-setting input,.admin-card .banner-enabled input{width:auto;min-width:0;accent-color:#ddd}
+.admin-card label.banner-enabled{display:flex;flex-direction:row;align-items:center;gap:9px}
+body.chat-embed>#chat-panel>.chat-heading{display:none!important}
+@media(prefers-reduced-motion:reduce){.chat-panel:not([hidden]){animation:none}}
+
+@media(max-width:430px){.topbar{gap:6px;padding-inline:8px}.topbar>.chat-toggle{width:32px;height:34px;flex:none}.wordmark{font-size:15px;letter-spacing:-.6px}.search-wrap kbd{display:none}}

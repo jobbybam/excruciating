@@ -3,6 +3,7 @@
 
   const styles = document.createElement("style");
   styles.textContent = `
+    #c2canvasdiv { transform: scale(1.08); transform-origin: center center; }
     #excruciating-game-controls {
       position: fixed;
       top: max(14px, env(safe-area-inset-top));
@@ -14,6 +15,7 @@
       pointer-events: none;
     }
     .excruciating-game-control {
+      position: relative;
       pointer-events: auto;
       display: inline-flex;
       align-items: center;
@@ -129,19 +131,97 @@
   const loaderStyle=document.createElement("style");
   loaderStyle.textContent='#excruciating-loader{position:fixed;inset:0;z-index:2147483646;display:grid;place-items:center;background:#080808;color:#f5f5f5;font-family:system-ui,sans-serif;transition:opacity .35s ease,visibility .35s ease}#excruciating-loader.is-done{opacity:0;visibility:hidden;pointer-events:none}#excruciating-loader .inner{width:min(300px,calc(100vw - 52px));text-align:center}#excruciating-loader .brand{font-size:23px;font-weight:850;letter-spacing:-1px;margin-bottom:23px}#excruciating-loader .brand b{margin-right:7px}#excruciating-loader .track{height:3px;border-radius:9px;background:#242424;overflow:hidden}#excruciating-loader .fill{height:100%;width:4%;background:#fff;transition:width .2s ease}#excruciating-loader .status{margin-top:11px;color:#777;font-size:10px;letter-spacing:.5px}';
   document.head.append(loaderStyle);
-  function showLoadingScreen(){
+const gameShellUiStyle=document.createElement("style");
+  gameShellUiStyle.textContent="#excruciating-chat-unread{position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;padding:0 4px;display:grid;place-items:center;border:2px solid #080808;border-radius:99px;background:#eee;color:#111;font:700 9px/1 system-ui,sans-serif}#excruciating-chat-unread[hidden]{display:none!important}.excruciating-loader-retry{margin-top:18px;padding:10px 16px;border:1px solid #444;border-radius:8px;background:#222;color:#fff;font:600 12px system-ui,sans-serif;cursor:pointer}.excruciating-loader-retry:hover{background:#333}";
+  document.head.append(gameShellUiStyle);  function showLoadingScreen(){
     if(document.getElementById("excruciating-loader"))return;
-    const overlay=document.createElement("div");overlay.id="excruciating-loader";
+    const overlay=document.createElement("div");
+    overlay.id="excruciating-loader";
+    overlay.setAttribute("role","status");
+    overlay.setAttribute("aria-live","polite");
     overlay.innerHTML='<div class="inner"><div class="brand"><b>&gt;</b>excruciating</div><div class="track" role="progressbar" aria-label="Loading game" aria-valuemin="0" aria-valuemax="100" aria-valuenow="4"><div class="fill"></div></div><div class="status">LOADING GAME</div></div>';
     (document.body||document.documentElement).append(overlay);
-    const fill=overlay.querySelector(".fill"),track=overlay.querySelector(".track");let progress=4;
-    const timer=setInterval(()=>{progress=Math.min(92,progress+(progress<65?3:1));fill.style.width=progress+"%";track.setAttribute("aria-valuenow",String(progress));},180);
-    const finish=()=>{clearInterval(timer);fill.style.width="100%";track.setAttribute("aria-valuenow","100");overlay.classList.add("is-done");setTimeout(()=>overlay.remove(),420);};
-    window.addEventListener("load",finish,{once:true});if(document.readyState==="complete")finish();
-    setTimeout(()=>{if(document.readyState==="complete")finish();},12000);
+    const fill=overlay.querySelector(".fill"),track=overlay.querySelector(".track"),status=overlay.querySelector(".status"),startedAt=Date.now();
+    let progress=4,loaded=document.readyState==="complete",stableSince=0,finished=false,errorShown=false;
+    const undertale=/(?:^|\/)undertale(?:\/|$)/i.test(location.pathname);
+    const isVisible=element=>{
+      if(!element)return false;
+      const style=getComputedStyle(element),rect=element.getBoundingClientRect();
+      return style.display!=="none"&&style.visibility!=="hidden"&&Number(style.opacity||1)>0.05&&rect.width>24&&rect.height>24;
+    };
+    const cacheStillLoading=()=>{
+      const message=document.querySelector("#status");
+      const text=String(message?.textContent||"").replace(/\s+/g," ").trim();
+      return /in\s+cache\s+game\.unx\s*=\s*0/i.test(text)||(/game\.unx/i.test(text)&&/(?:cache|download|load)/i.test(text));
+    };
+    const hasVisibleGame=()=>{
+      const surface=document.querySelector("canvas,ruffle-player,video,#ruffle,#unity-container,#game-container");
+      return isVisible(surface);
+    };
+    const explicitLoaderActive=()=>{
+      const candidates=[...document.querySelectorAll("#loading,.loading,.loading-screen,.loading-overlay,[aria-busy='true']")];
+      return candidates.some(element=>element.id!=="excruciating-loader"&&isVisible(element)&&/loading|downloading|starting|initializing|cached/i.test(element.textContent||""));
+    };
+    const ready=()=>{
+      if(!loaded)return false;
+      if(undertale){
+        const canvas=document.querySelector("canvas.emscripten#canvas");
+        return !cacheStillLoading()&&isVisible(canvas)&&canvas.classList.contains("active");
+      }
+      if(explicitLoaderActive())return false;
+      return hasVisibleGame()||Date.now()-startedAt>3200;
+    };
+    const stop=()=>{
+      if(finished)return;
+      finished=true;
+      clearInterval(progressTimer);
+      observer?.disconnect();
+    };
+    const finish=()=>{
+      if(finished)return;
+      stop();
+      fill.style.width="100%";
+      track.setAttribute("aria-valuenow","100");
+      status.textContent="READY";
+      overlay.classList.add("is-done");
+      setTimeout(()=>overlay.remove(),420);
+    };
+    const showLoadError=()=>{
+      if(errorShown||finished)return;
+      errorShown=true;
+      status.textContent="The game is taking longer than expected. Check your connection, then reload.";
+      const retry=document.createElement("button");
+      retry.type="button";
+      retry.className="excruciating-loader-retry";
+      retry.textContent="Reload game";
+      retry.addEventListener("click",()=>location.reload());
+      overlay.querySelector(".inner").append(retry);
+      clearInterval(progressTimer);
+    };
+    const check=()=>{
+      if(finished)return;
+      if(ready()){
+        if(!stableSince)stableSince=Date.now();
+        if(Date.now()-stableSince>=750)finish();
+      }else stableSince=0;
+      const elapsed=Date.now()-startedAt;
+      if(elapsed>15000&&!errorShown)status.textContent="Loading game…";
+      if(elapsed>90000)showLoadError();
+    };
+    const progressTimer=setInterval(()=>{
+      if(!finished){
+        progress=Math.min(94,progress+(progress<65?2:0.7));
+        fill.style.width=progress+"%";
+        track.setAttribute("aria-valuenow",String(Math.round(progress)));
+      }
+    },180);
+    const observer=new MutationObserver(check);
+    observer.observe(document.body||document.documentElement,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["class","style","hidden"]});
+    window.addEventListener("load",()=>{loaded=true;check();},{once:true});
+    if(loaded)check();
+    const poll=setInterval(()=>{check();if(finished)clearInterval(poll);},200);
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",showLoadingScreen,{once:true});else showLoadingScreen();
-
   const back = document.createElement("a");
   back.id = "excruciating-games-back";
   back.href = "/";
@@ -159,7 +239,7 @@
   chatToggle.id = "excruciating-game-chat-toggle";
   chatToggle.type = "button";
   chatToggle.className = "excruciating-game-control";
-  chatToggle.setAttribute("aria-label", "Open community chat");
+  setChatToggleLabel(false);
   chatToggle.setAttribute("aria-expanded", "false");
   chatToggle.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H5l1.8-3A7.5 7.5 0 1 1 20 11.5Z"/></svg><span>Chat</span>';
 
@@ -179,20 +259,36 @@
   const chatPanel = document.createElement("section");
   chatPanel.id = "excruciating-game-chat";
   chatPanel.hidden = true;
-  chatPanel.setAttribute("aria-label", "Community chat");
-  chatPanel.innerHTML = '<div id="excruciating-game-chat-heading"><strong>Community chat</strong><button id="excruciating-game-chat-close" type="button" aria-label="Close chat">×</button></div><iframe id="excruciating-game-chat-frame" title="Community chat" loading="lazy" referrerpolicy="same-origin"></iframe>';
+  chatPanel.setAttribute("aria-label", "Chat");
+  chatPanel.innerHTML = '<div id="excruciating-game-chat-heading"><strong>Chat</strong><button id="excruciating-game-chat-close" type="button" aria-label="Close chat">×</button></div><iframe id="excruciating-game-chat-frame" title="Chat" loading="eager" referrerpolicy="same-origin"></iframe>';
   document.body.append(chatPanel);
   const chatFrame = chatPanel.querySelector("iframe");
+  chatFrame.src = new URL("/?chat=embedded", location.origin).href;
+  const chatUnreadBadge=document.createElement("span");
+  chatUnreadBadge.id="excruciating-chat-unread";
+  chatUnreadBadge.hidden=true;
+  chatUnreadBadge.setAttribute("aria-hidden","true");
+  chatToggle.append(chatUnreadBadge);
+  let unreadDirectMessages=0;
+  function setChatToggleLabel(open){
+    chatToggle.setAttribute("aria-label",(open?"Close chat":"Open chat")+(unreadDirectMessages?", "+unreadDirectMessages+" unread direct messages":""));
+  }
+  function updateChatUnread(count){
+    unreadDirectMessages=Math.max(0,Number(count)||0);
+    chatUnreadBadge.hidden=unreadDirectMessages===0;
+    chatUnreadBadge.textContent=unreadDirectMessages>99?"99+":String(unreadDirectMessages);
+    setChatToggleLabel(!chatPanel.hidden);
+  }
   function closeGameChat() {
     chatPanel.hidden = true;
     chatToggle.setAttribute("aria-expanded", "false");
-    chatToggle.setAttribute("aria-label", "Open community chat");
+    setChatToggleLabel(false);
   }
   chatToggle.addEventListener("click", () => {
     const opening = chatPanel.hidden;
     chatPanel.hidden = !opening;
     chatToggle.setAttribute("aria-expanded", String(opening));
-    chatToggle.setAttribute("aria-label", opening ? "Close community chat" : "Open community chat");
+    setChatToggleLabel(opening);
     if (opening && !chatFrame.src) chatFrame.src = new URL("/?chat=embedded", location.origin).href;
     if (opening) setTimeout(() => chatFrame.focus(), 50);
   });
@@ -200,6 +296,7 @@
   window.addEventListener("message", event => {
     if (event.origin !== location.origin || event.source !== chatFrame.contentWindow) return;
     if (event.data?.type === "excruciating:close-game-chat") closeGameChat();
+    if (event.data?.type === "excruciating:dm-unread") updateChatUnread(event.data.count);
     if (event.data?.type === "excruciating:open-account") {
       const next = location.pathname + location.search + location.hash;
       location.assign("/account/?next=" + encodeURIComponent(next));
@@ -210,16 +307,21 @@
   touchControls.id = "excruciating-touch-controls";
   const isEaglerGame = /(?:^|\/)eaglerfaithful(?:\/|$)/.test(location.pathname);
   const isFunkinGame = /(?:^|\/)fridaynightfunkin(?:\/|$)/.test(location.pathname);
+  const isUndertaleGame = /(?:^|\/)undertale(?:\/|$)/i.test(location.pathname);
+  const isBadTimeGame = /(?:^|\/)bad-time-simulator(?:\/|$)/i.test(location.pathname);
+  const isUndertaleControls = isUndertaleGame || isBadTimeGame;
   const touchDevice = matchMedia("(hover:none) and (pointer:coarse)").matches;
-  touchControls.hidden = !(touchDevice && (isEaglerGame || isFunkinGame));
+  touchControls.hidden = !(touchDevice && (isEaglerGame || isFunkinGame || isUndertaleControls));
   touchControls.classList.toggle("eagler-controls", isEaglerGame);
   touchControls.classList.toggle("fnf-controls", isFunkinGame);
   touchControls.setAttribute("aria-label", isEaglerGame ? "Eaglercraft touch controls" : isFunkinGame ? "Friday Night Funkin touch controls" : "Optional touch game controls");
   touchControls.innerHTML = isEaglerGame
-    ? '<div id="excruciating-eagler-stick" class="eagler-stick" role="application" aria-label="Move with the left stick"><span class="eagler-stick-knob"></span></div><div class="eagler-touch-right"><div class="eagler-action-grid" aria-label="Minecraft actions"><button type="button" data-keys="Space" aria-label="Jump">Jump</button><button type="button" data-keys="Control,r" aria-label="Sprint">Sprint</button><button type="button" data-keys="Shift" aria-label="Sneak">Sneak</button><button type="button" data-keys="e" aria-label="Open inventory">Bag</button><button type="button" data-mouse="0" aria-label="Mine or attack">Mine</button><button type="button" data-mouse="2" aria-label="Place or use">Use</button><button type="button" data-keys="t" aria-label="Open chat">Chat</button><button type="button" data-keys="Escape" aria-label="Pause or close menu">Menu</button></div><div class="eagler-hotbar" aria-label="Choose hotbar slot">' + Array.from({length:9},(_,i)=>'<button type="button" data-keys="'+(i+1)+'" aria-label="Select hotbar slot '+(i+1)+'">'+(i+1)+'</button>').join("") + '</div></div>'
-    : isFunkinGame
-      ? '<div class="excruciating-dpad" aria-label="Rhythm notes"><button type="button" data-keys="ArrowUp" data-direction="up" aria-label="Up note">↑</button><button type="button" data-keys="ArrowLeft" data-direction="left" aria-label="Left note">←</button><button type="button" data-keys="ArrowRight" data-direction="right" aria-label="Right note">→</button><button type="button" data-keys="ArrowDown" data-direction="down" aria-label="Down note">↓</button></div><div class="excruciating-actions" aria-label="Menu controls"><button type="button" data-keys="Enter">Accept<br>Enter</button><button type="button" data-keys="Escape">Back<br>Esc</button></div>'
-    : '<div class="excruciating-dpad" aria-label="Movement"><button type="button" data-keys="ArrowUp,w" data-direction="up" aria-label="Move up">↑</button><button type="button" data-keys="ArrowLeft,a" data-direction="left" aria-label="Move left">←</button><button type="button" data-keys="ArrowRight,d" data-direction="right" aria-label="Move right">→</button><button type="button" data-keys="ArrowDown,s" data-direction="down" aria-label="Move down">↓</button></div><div class="excruciating-actions" aria-label="Action keys"><button type="button" data-keys="Space">Jump<br>Space</button><button type="button" data-keys="e,KeyE">E</button><button type="button" data-keys="z,KeyZ">Z</button><button type="button" data-keys="x,KeyX">X</button></div>';
+    ? '<div id="excruciating-eagler-stick" class="eagler-stick" role="application" aria-label="Move with the left stick"><span class="eagler-stick-knob"></span></div><div class="eagler-touch-right"><div class="eagler-action-grid" aria-label="Minecraft actions"><button type="button" data-keys="Space" aria-label="Jump">Jump</button><button type="button" data-keys="Control,r" aria-label="Sprint">Sprint</button><button type="button" data-keys="Shift" aria-label="Sneak">Sneak</button><button type="button" data-keys="e,KeyE" aria-label="Open inventory">Bag</button><button type="button" data-mouse="0" aria-label="Mine or attack">Mine</button><button type="button" data-mouse="2" aria-label="Place or use">Use</button><button type="button" data-keys="t" aria-label="Open chat">Chat</button><button type="button" data-keys="Escape" aria-label="Pause or close menu">Menu</button></div><div class="eagler-hotbar" aria-label="Choose hotbar slot">' + Array.from({length:9},(_,i)=>'<button type="button" data-keys="'+(i+1)+'" aria-label="Select hotbar slot '+(i+1)+'">'+(i+1)+'</button>').join("") + '</div></div>'
+    : isUndertaleControls
+      ? '<div class="excruciating-dpad" aria-label="Movement"><button type="button" data-keys="ArrowUp" data-direction="up" aria-label="Move up">↑</button><button type="button" data-keys="ArrowLeft" data-direction="left" aria-label="Move left">←</button><button type="button" data-keys="ArrowRight" data-direction="right" aria-label="Move right">→</button><button type="button" data-keys="ArrowDown" data-direction="down" aria-label="Move down">↓</button></div><div class="excruciating-actions" aria-label="Undertale actions"><button type="button" data-keys="z,KeyZ" aria-label="Confirm">Z</button><button type="button" data-keys="x,KeyX" aria-label="Cancel">X</button><button type="button" data-keys="Shift" aria-label="Focus or slow">Shift</button></div>'
+      : isFunkinGame
+        ? '<div class="excruciating-dpad" aria-label="Rhythm notes"><button type="button" data-keys="ArrowUp" data-direction="up" aria-label="Up note">↑</button><button type="button" data-keys="ArrowLeft" data-direction="left" aria-label="Left note">←</button><button type="button" data-keys="ArrowRight" data-direction="right" aria-label="Right note">→</button><button type="button" data-keys="ArrowDown" data-direction="down" aria-label="Down note">↓</button></div><div class="excruciating-actions" aria-label="Menu controls"><button type="button" data-keys="Enter">Accept<br>Enter</button><button type="button" data-keys="Escape">Back<br>Esc</button></div>'
+        : '<div class="excruciating-dpad" aria-label="Movement"><button type="button" data-keys="ArrowUp,w" data-direction="up" aria-label="Move up">↑</button><button type="button" data-keys="ArrowLeft,a" data-direction="left" aria-label="Move left">←</button><button type="button" data-keys="ArrowRight,d" data-direction="right" aria-label="Move right">→</button><button type="button" data-keys="ArrowDown,s" data-direction="down" aria-label="Move down">↓</button></div><div class="excruciating-actions" aria-label="Action keys"><button type="button" data-keys="Space">Jump<br>Space</button><button type="button" data-keys="e,KeyE">E</button><button type="button" data-keys="z,KeyZ">Z</button><button type="button" data-keys="x,KeyX">X</button></div>';
   document.body.append(touchControls);
   const lookSurface = document.createElement("div");
   lookSurface.id = "excruciating-eagler-look-surface";

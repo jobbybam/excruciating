@@ -5,5 +5,6 @@ export async function onRequestGet({ env }) {
   const result = await env.DB.prepare("SELECT slug,title,category,thumbnail,description,source_url,license,attribution,published FROM games WHERE source_url IS NULL OR (source_url NOT LIKE '%mashukui/web-games%') ORDER BY title COLLATE NOCASE").all();
   const rows=await env.DB.prepare("SELECT slug,position FROM featured_games ORDER BY position,created_at").all();
   const featured=new Map((rows.results||[]).map(x=>[x.slug,Number(x.position)]));
-  return json({games:(result.results||[]).map(g=>({...g,featured:featured.has(g.slug),featured_position:featured.get(g.slug)??null})),featured_slugs:[...featured.keys()]},200,{"Cache-Control":"public, max-age=30"});
+  const removedSlugs=new Set(["angry-birds","happywheels","yohoho"]);
+  return json({games:(result.results||[]).filter(g=>!removedSlugs.has(g.slug)).map(g=>({...g,featured:featured.has(g.slug),featured_position:featured.get(g.slug)??null})),featured_slugs:[...featured.keys()].filter(slug=>!removedSlugs.has(slug))},200,{"Cache-Control":"public, max-age=30"});
 }
