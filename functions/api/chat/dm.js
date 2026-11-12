@@ -113,6 +113,13 @@ export async function onRequestPost(context){
   await env.DB.prepare("DELETE FROM direct_message_pins WHERE user_id=? AND peer_id=?").bind(user.id,peerId).run();
   return json({ok:true,action,peer_id:peerId});
  }
+ if(action==="delete-message"){
+  const messageId=Number(body.message_id);
+  if(!Number.isSafeInteger(messageId)||messageId<1)return json({error:"Invalid message ID."},400);
+  const result=await env.DB.prepare("DELETE FROM direct_messages WHERE id=? AND sender_id=?").bind(messageId,user.id).run();
+  if(!result.meta?.changes)return json({error:"Message not found or you cannot delete it."},404);
+  return json({ok:true,id:messageId});
+ }
  const recipientId=Number(body.recipient_id),message=typeof body.message==="string"?body.message.trim():"";
  if(!Number.isSafeInteger(recipientId)||recipientId<1||recipientId===user.id)return json({error:"Choose a valid recipient."},400);
  if(!message||message.length>500)return json({error:"Message must be between 1 and 500 characters."},400);

@@ -1207,32 +1207,28 @@
       "thumbnail": "/favicons/google-feud.jpg"
     },
     {
-      "slug": "bad-piggies",
-      "title": "Bad Piggies",
-      "category": "Mobile",
-      "description": "Rovio’s official page with iOS and Android app links.",
-      "url": "https://www.rovio.com/games/bad-piggies/",
-      "external": true,
-      "icon": "/favicons/bad-piggies.jpg",
-      "source_url": "https://www.rovio.com/games/bad-piggies/",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
-      "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true,
-      "thumbnail": "/favicons/bad-piggies.jpg"
+      "slug": "gravity-forge",
+      "title": "Gravity Forge",
+      "category": "Puzzle",
+      "description": "Touch-optimized gravity-bending puzzle platformer with 22 levels.",
+      "url": "/games/gravity-forge/index.html",
+      "icon": "/favicons/gravity-forge.svg",
+      "thumbnail": "/favicons/gravity-forge.svg",
+      "source_url": "https://github.com/Mohammed-Farzan-Javeed/gravity-forge",
+      "license": "MIT License; see the included LICENSE file.",
+      "published": true
     },
     {
       "slug": "8-ball-pool",
       "title": "8 Ball Pool",
       "category": "Sports",
-      "description": "Official Miniclip browser game, playable in mobile browsers.",
-      "url": "https://8ballpool.com/en/game",
-      "external": true,
+      "description": "Classic touch-friendly 8-ball billiards game, self-hosted from GitHub.",
+      "url": "/games/8-ball-pool/index.html",
       "icon": "/favicons/8-ball-pool.png",
-      "source_url": "https://support.miniclip.com/hc/en-us/articles/360020665798--How-to-start-playing-8-Ball-Pool",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
-      "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true,
-      "thumbnail": "/favicons/8-ball-pool.png"
+      "thumbnail": "/favicons/8-ball-pool.png",
+      "source_url": "https://github.com/henshmi/Classic-Pool-Game",
+      "license": "MIT License; see the included LICENSE.txt.",
+      "published": true
     },
     {
       "slug": "idle-mining-empire",
