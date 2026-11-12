@@ -1105,17 +1105,15 @@
     },
     {
       "slug": "ballistic",
-      "title": "Ballistic",
-      "category": "Puzzle",
-      "description": "Block-breaker browser game with mobile and tablet support.",
-      "url": "https://www.rocketgames.io/game/ballistic",
-      "external": true,
-      "icon": "/favicons/ballistic.jpg",
-      "source_url": "https://www.rocketgames.io/",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
-      "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": true,
-      "thumbnail": "/favicons/ballistic.jpg"
+      "title": "Brick Breaker",
+      "category": "Arcade",
+      "description": "Touch-friendly neon brick breaker, hosted locally from an MIT-licensed GitHub project.",
+      "url": "/games/ballistic/index.html",
+      "icon": "/favicons/ballistic-brick-breaker.svg",
+      "thumbnail": "/favicons/ballistic-brick-breaker.svg",
+      "source_url": "https://github.com/samecchang/BrickBreaker",
+      "license": "MIT License; see the included LICENSE file.",
+      "published": true
     },
     {
       "slug": "henry-breaking-the-bank",

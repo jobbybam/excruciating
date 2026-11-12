@@ -35,7 +35,8 @@
       touch-action: manipulation;
       transition: background .16s ease, border-color .16s ease, transform .16s ease;
     }
-    #excruciating-games-back { text-decoration: none; }
+    #excruciating-games-back { text-decoration: none; width:40px; height:40px; padding:0; justify-content:center; }
+    #excruciating-game-chat-toggle { width:40px; height:40px; padding:0; justify-content:center; }
     .excruciating-game-control:hover {
       background: rgba(32,32,36,.96);
       border-color: rgba(255,255,255,.3);
@@ -227,7 +228,7 @@ const gameShellUiStyle=document.createElement("style");
   back.id = "excruciating-games-back";
   back.href = "/";
   back.setAttribute("aria-label", "Back to Games");
-  back.innerHTML = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18 9 12l6-6M9 12h11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Games</span>';
+  back.innerHTML = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18 9 12l6-6M9 12h11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   back.className = "excruciating-game-control";
   back.addEventListener("click", event => {
     if (window.parent === window) return;
@@ -236,14 +237,14 @@ const gameShellUiStyle=document.createElement("style");
     setTimeout(() => { if (window.parent !== window && !document.hidden) location.assign("/"); }, 900);
   });
 
-  let unreadDirectMessages=0;
+  let unreadDirectMessages=0,unreadPublicMessages=0;
   const chatToggle = document.createElement("button");
   chatToggle.id = "excruciating-game-chat-toggle";
   chatToggle.type = "button";
   chatToggle.className = "excruciating-game-control";
   setChatToggleLabel(false);
   chatToggle.setAttribute("aria-expanded", "false");
-  chatToggle.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H5l1.8-3A7.5 7.5 0 1 1 20 11.5Z"/></svg><span>Chat</span>';
+  chatToggle.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H5l1.8-3A7.5 7.5 0 1 1 20 11.5Z"/></svg>';
 
   const controlsToggle = document.createElement("button");
   controlsToggle.id = "excruciating-controls-toggle";
@@ -255,7 +256,7 @@ const gameShellUiStyle=document.createElement("style");
 
   const toolbar = document.createElement("div");
   toolbar.id = "excruciating-game-controls";
-  toolbar.append(back, chatToggle, controlsToggle);
+  toolbar.append(back, chatToggle);
   document.body.append(toolbar);
 
   const chatPanel = document.createElement("section");
@@ -274,12 +275,8 @@ const gameShellUiStyle=document.createElement("style");
   function setChatToggleLabel(open){
     chatToggle.setAttribute("aria-label",(open?"Close chat":"Open chat")+(unreadDirectMessages?", "+unreadDirectMessages+" unread direct messages":""));
   }
-  function updateChatUnread(count){
-    unreadDirectMessages=Math.max(0,Number(count)||0);
-    chatUnreadBadge.hidden=unreadDirectMessages===0;
-    chatUnreadBadge.textContent=unreadDirectMessages>99?"99+":String(unreadDirectMessages);
-    setChatToggleLabel(!chatPanel.hidden);
-  }
+  function updateChatBadge(){const count=unreadDirectMessages+unreadPublicMessages;chatUnreadBadge.hidden=count===0;chatUnreadBadge.textContent=count>99?"99+":String(count);setChatToggleLabel(!chatPanel.hidden);}
+  function updateChatUnread(count){unreadDirectMessages=Math.max(0,Number(count)||0);updateChatBadge();}
   function closeGameChat() {
     chatPanel.hidden = true;
     chatToggle.setAttribute("aria-expanded", "false");
@@ -298,6 +295,7 @@ const gameShellUiStyle=document.createElement("style");
     if (event.origin !== location.origin || event.source !== chatFrame.contentWindow) return;
     if (event.data?.type === "excruciating:close-game-chat") closeGameChat();
     if (event.data?.type === "excruciating:dm-unread") updateChatUnread(event.data.count);
+    if (event.data?.type === "excruciating:chat-unread") { unreadPublicMessages=Math.max(0,Number(event.data.count)||0);updateChatBadge(); }
     if (event.data?.type === "excruciating:open-account") {
       const next = location.pathname + location.search + location.hash;
       location.assign("/account/?next=" + encodeURIComponent(next));
@@ -312,7 +310,8 @@ const gameShellUiStyle=document.createElement("style");
   const isBadTimeGame = /(?:^|\/)bad-time-simulator(?:\/|$)/i.test(location.pathname);
   const isUndertaleControls = isUndertaleGame || isBadTimeGame;
   const touchDevice = matchMedia("(hover:none) and (pointer:coarse)").matches;
-  touchControls.hidden = !(touchDevice && (isEaglerGame || isFunkinGame || isUndertaleControls));
+  // These games provide their own touch controls; do not overlay a competing control scheme.
+  touchControls.hidden = true;
   touchControls.classList.toggle("eagler-controls", isEaglerGame);
   touchControls.classList.toggle("fnf-controls", isFunkinGame);
   touchControls.setAttribute("aria-label", isEaglerGame ? "Eaglercraft touch controls" : isFunkinGame ? "Friday Night Funkin touch controls" : "Optional touch game controls");
@@ -326,15 +325,9 @@ const gameShellUiStyle=document.createElement("style");
   document.body.append(touchControls);
   const lookSurface = document.createElement("div");
   lookSurface.id = "excruciating-eagler-look-surface";
-  lookSurface.hidden = !(isEaglerGame && touchDevice);
+  lookSurface.hidden = true;
   lookSurface.setAttribute("aria-label", "Drag to look around in Eaglercraft");
-  if (isEaglerGame) document.body.append(lookSurface);
-  controlsToggle.addEventListener("click", () => {
-    touchControls.hidden = !touchControls.hidden;
-    if (isEaglerGame) lookSurface.hidden = touchControls.hidden;
-    controlsToggle.setAttribute("aria-expanded", String(!touchControls.hidden));
-    if (touchControls.hidden) releaseAllVirtualInputs();
-  });
+
   const keyInfo = {
     ArrowUp: ["ArrowUp", "ArrowUp", 38], ArrowDown: ["ArrowDown", "ArrowDown", 40],
     ArrowLeft: ["ArrowLeft", "ArrowLeft", 37], ArrowRight: ["ArrowRight", "ArrowRight", 39],
