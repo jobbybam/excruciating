@@ -1320,6 +1320,58 @@
       "license": "MIT License; see games/mashukui/LICENSE and per-game ATTRIBUTION.md",
       "attribution": "Original HTML5 game by mashukui. MIT-licensed upstream source, locally hosted in Excruciating.",
       "published": true
+    },
+    {
+      "slug": "mahjong-link",
+      "title": "Mahjong Link",
+      "category": "Puzzle",
+      "description": "A touch-first tile-matching puzzle with timed levels.",
+      "url": "/games/mahjong-link/index.html",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/mahjong-link",
+      "license": "MIT License — see games/mahjong-link/LICENSE",
+      "attribution": "Original game by mashukui; included under the MIT License.",
+      "published": true,
+      "thumbnail": "/games/mahjong-link/favicon.svg",
+      "icon": "/games/mahjong-link/favicon.svg"
+    },
+    {
+      "slug": "water-sort",
+      "title": "Water Sort",
+      "category": "Puzzle",
+      "description": "Sort the coloured liquids into matching tubes using simple taps.",
+      "url": "/games/water-sort/index.html",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/water-sort",
+      "license": "MIT License — see games/water-sort/LICENSE",
+      "attribution": "Original game by mashukui; included under the MIT License.",
+      "published": true,
+      "thumbnail": "/games/water-sort/favicon.svg",
+      "icon": "/games/water-sort/favicon.svg"
+    },
+    {
+      "slug": "mini-golf",
+      "title": "Mini Golf",
+      "category": "Sports",
+      "description": "A nine-hole mini golf game with drag-to-aim touch controls.",
+      "url": "/games/mini-golf/index.html",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/mini-golf",
+      "license": "MIT License — see games/mini-golf/LICENSE",
+      "attribution": "Original game by mashukui; included under the MIT License.",
+      "published": true,
+      "thumbnail": "/games/mini-golf/favicon.svg",
+      "icon": "/games/mini-golf/favicon.svg"
+    },
+    {
+      "slug": "sudoku",
+      "title": "Sudoku",
+      "category": "Puzzle",
+      "description": "Mobile-friendly Sudoku with tap-to-select cells and number entry.",
+      "url": "/games/sudoku/index.html",
+      "source_url": "https://github.com/mashukui/web-games/tree/main/sudoku",
+      "license": "MIT License — see games/sudoku/LICENSE",
+      "attribution": "Original game by mashukui; included under the MIT License.",
+      "published": true,
+      "thumbnail": "/games/sudoku/favicon.svg",
+      "icon": "/games/sudoku/favicon.svg"
     }
   ]
 }
