@@ -254,7 +254,7 @@ const gameShellUiStyle=document.createElement("style");
   controlsToggle.className = "excruciating-game-control";
   controlsToggle.setAttribute("aria-expanded", "false");
   controlsToggle.setAttribute("aria-controls", "excruciating-touch-controls");
-  controlsToggle.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5H5v3M16 5h3v3M5 16v3h3M19 16v3h-3"/><path d="M9 9h6v6H9z"/></svg><span>Controls</span>';
+  controlsToggle.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5H5v3M16 5h3v3M5 16v3h3M19 16v3h-3"/><path d="M9 9h6v6H9z"/></svg><span>Show controls</span>';
 
   const moveToggle = document.createElement("button");
   moveToggle.id = "excruciating-controls-move";
@@ -341,6 +341,11 @@ const gameShellUiStyle=document.createElement("style");
   if (isUndertaleGame) {
     const nativeTools = document.getElementById("ut-control-tools");
     if (nativeTools) nativeTools.hidden = true;
+    const nativeRoot = document.getElementById("undertale-mobile-controls");
+    if (nativeRoot && !nativeRoot.hidden) {
+      controlsToggle.querySelector("span").textContent = "Hide controls";
+      controlsToggle.setAttribute("aria-expanded", "true");
+    }
   }
   let controlsMoveMode = false;
   controlsToggle.addEventListener("click", () => {
