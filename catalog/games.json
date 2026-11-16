@@ -1,7 +1,7 @@
 {
   "version": 31,
-  "source": "Locally hosted browser games with verified original source and licence metadata; unpublished external launches are held until an original self-hosted build is cleared.",
-  "attribution": "Locally hosted titles keep their source and licence records. External titles open on their publisher or hosting platform.",
+  "source": "Published catalogue entries are locally hosted games with verified original source and licence metadata; titles without a verified self-hosted build are excluded.",
+  "attribution": "Published games are hosted locally. Original source, licence and attribution details are recorded with each game.",
   "games": [
     {
       "slug": "undertale",
@@ -451,16 +451,6 @@
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
       "icon": "/favicons/temple-run-2.png"
-    },
-    {
-      "slug": "soundboard",
-      "title": "Sound Buttons Space",
-      "category": "Soundboard",
-      "description": "Hidden until an original self-hosted browser build and redistribution permission can be verified.",
-      "thumbnail": "/favicons/soundboard.jpg",
-      "external": true,
-      "published": false,
-      "icon": "/favicons/soundboard.jpg"
     },
     {
       "slug": "bad-time-simulator",
@@ -963,136 +953,6 @@
       "icon": "/favicons/subway-surfers.png"
     },
     {
-      "slug": "mr-jump",
-      "title": "Mr Jump",
-      "category": "Arcade",
-      "description": "Hidden until an original self-hosted browser build and redistribution permission can be verified.",
-      "external": true,
-      "icon": "/favicons/mr-jump.jpg",
-      "source_url": "https://www.yiv.com/",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
-      "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": false,
-      "thumbnail": "/favicons/mr-jump.jpg"
-    },
-    {
-      "slug": "angry-gran-run",
-      "title": "Angry Gran Run",
-      "category": "Action",
-      "description": "Hidden until an original self-hosted browser build and redistribution permission can be verified.",
-      "external": true,
-      "icon": "/favicons/angry-gran-run.jpg",
-      "source_url": "https://doodlejump.io/",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
-      "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": false,
-      "thumbnail": "/favicons/angry-gran-run.jpg"
-    },
-    {
-      "slug": "running-fred",
-      "title": "Running Fred",
-      "category": "Action",
-      "description": "Hidden until an original self-hosted browser build and redistribution permission can be verified.",
-      "external": true,
-      "icon": "/favicons/running-fred.jpg",
-      "source_url": "https://doodlejump.io/",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
-      "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": false,
-      "thumbnail": "/favicons/running-fred.jpg"
-    },
-    {
-      "slug": "super-falling-fred",
-      "title": "Super Falling Fred",
-      "category": "Arcade",
-      "description": "Hidden until an original self-hosted browser build and redistribution permission can be verified.",
-      "external": true,
-      "icon": "/favicons/super-falling-fred.png",
-      "source_url": "https://ant.games/",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
-      "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": false,
-      "thumbnail": "/favicons/super-falling-fred.png"
-    },
-    {
-      "slug": "falling-fred",
-      "title": "Falling Fred",
-      "category": "Arcade",
-      "description": "Hidden until an original self-hosted browser build and redistribution permission can be verified.",
-      "external": true,
-      "icon": "/favicons/falling-fred.png",
-      "source_url": "https://www.dedalord.com/",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
-      "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": false,
-      "thumbnail": "/favicons/falling-fred.png"
-    },
-    {
-      "slug": "rooftop-run",
-      "title": "Rooftop Run",
-      "category": "Action",
-      "description": "Hidden until an original self-hosted browser build and redistribution permission can be verified.",
-      "external": true,
-      "icon": "/favicons/rooftop-run.webp",
-      "source_url": "https://www.y8.com/",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
-      "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": false,
-      "thumbnail": "/favicons/rooftop-run.webp"
-    },
-    {
-      "slug": "troll-face-quest-video-games",
-      "title": "Troll Face Quest: Video Games",
-      "category": "Puzzle",
-      "description": "Hidden until an original self-hosted browser build and redistribution permission can be verified.",
-      "external": true,
-      "icon": "/favicons/troll-face-quest-video-games.jpg",
-      "source_url": "https://www.flipline.com/othergames/trollfacequestforvideogames/play.html",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
-      "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": false,
-      "thumbnail": "/favicons/troll-face-quest-video-games.jpg"
-    },
-    {
-      "slug": "rolling-sky",
-      "title": "Rolling Sky",
-      "category": "Arcade",
-      "description": "Hidden until an original self-hosted browser build and redistribution permission can be verified.",
-      "external": true,
-      "icon": "/favicons/rolling-sky.webp",
-      "source_url": "https://rolling-sky.com/",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
-      "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": false,
-      "thumbnail": "/favicons/rolling-sky.webp"
-    },
-    {
-      "slug": "dumb-ways-to-die-2",
-      "title": "Dumb Ways to Die 2",
-      "category": "Arcade",
-      "description": "Hidden until an original self-hosted browser build and redistribution permission can be verified.",
-      "external": true,
-      "icon": "/favicons/dumb-ways-to-die-2.jpg",
-      "source_url": "https://www.crazygames.com/",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
-      "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": false,
-      "thumbnail": "/favicons/dumb-ways-to-die-2.jpg"
-    },
-    {
-      "slug": "helix-jump",
-      "title": "Helix Jump",
-      "category": "Arcade",
-      "description": "Hidden until an original self-hosted browser build and redistribution permission can be verified.",
-      "external": true,
-      "icon": "/favicons/helix-jump.png",
-      "source_url": "https://www.crazygames.com/",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
-      "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": false,
-      "thumbnail": "/favicons/helix-jump.png"
-    },
-    {
       "slug": "ballistic",
       "title": "Brick Breaker",
       "category": "Arcade",
@@ -1168,19 +1028,6 @@
       "attribution": "Henry Stickmin © PuffballsUnited. Original game by PuffballsUnited; SWF supplied by the site owner from Archive.org.",
       "published": true,
       "thumbnail": "/favicons/henry-fleeing-the-complex.webp"
-    },
-    {
-      "slug": "henry-completing-the-mission",
-      "title": "Henry Stickmin: Completing the Mission",
-      "category": "Adventure",
-      "description": "Hidden until an original self-hosted browser build and redistribution permission can be verified.",
-      "external": true,
-      "icon": "/favicons/henry-completing-the-mission.jpg",
-      "source_url": "https://www.innersloth.com/games/the-henry-stickmin-collection/",
-      "license": "Externally hosted or linked; no game files are redistributed by Excruciating.",
-      "attribution": "Game and branding remain the property of their respective creators and publishers.",
-      "published": false,
-      "thumbnail": "/favicons/henry-completing-the-mission.jpg"
     },
     {
       "slug": "google-feud",
