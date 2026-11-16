@@ -316,6 +316,7 @@ const gameShellUiStyle=document.createElement("style");
   const isFunkinGame = /(?:^|\/)fridaynightfunkin(?:\/|$)/.test(location.pathname);
   const isUndertaleGame = /(?:^|\/)undertale(?:\/|$)/i.test(location.pathname);
   const isBadTimeGame = /(?:^|\/)bad-time-simulator(?:\/|$)/i.test(location.pathname);
+  const isSlopeGame = /(?:^|\/)slope(?:\/|$)/i.test(location.pathname);
   const isUndertaleControls = isUndertaleGame || isBadTimeGame;
   const touchDevice = matchMedia("(hover:none) and (pointer:coarse)").matches;
   // These games provide their own touch controls; do not overlay a competing control scheme.
@@ -329,10 +330,16 @@ const gameShellUiStyle=document.createElement("style");
       ? '<div class="excruciating-dpad" aria-label="Movement"><button type="button" data-keys="ArrowUp" data-direction="up" aria-label="Move up">↑</button><button type="button" data-keys="ArrowLeft" data-direction="left" aria-label="Move left">←</button><button type="button" data-keys="ArrowRight" data-direction="right" aria-label="Move right">→</button><button type="button" data-keys="ArrowDown" data-direction="down" aria-label="Move down">↓</button></div><div class="excruciating-actions" aria-label="Undertale actions"><button type="button" data-keys="z,KeyZ" aria-label="Confirm">Z</button><button type="button" data-keys="x,KeyX" aria-label="Cancel">X</button><button type="button" data-keys="Shift" aria-label="Focus or slow">Shift</button></div>'
       : isFunkinGame
         ? '<div class="excruciating-dpad" aria-label="Rhythm notes"><button type="button" data-keys="ArrowUp" data-direction="up" aria-label="Up note">↑</button><button type="button" data-keys="ArrowLeft" data-direction="left" aria-label="Left note">←</button><button type="button" data-keys="ArrowRight" data-direction="right" aria-label="Right note">→</button><button type="button" data-keys="ArrowDown" data-direction="down" aria-label="Down note">↓</button></div><div class="excruciating-actions" aria-label="Menu controls"><button type="button" data-keys="Enter">Accept<br>Enter</button><button type="button" data-keys="Escape">Back<br>Esc</button></div>'
-        : '<div class="excruciating-dpad" aria-label="Movement"><button type="button" data-keys="ArrowUp,w" data-direction="up" aria-label="Move up">↑</button><button type="button" data-keys="ArrowLeft,a" data-direction="left" aria-label="Move left">←</button><button type="button" data-keys="ArrowRight,d" data-direction="right" aria-label="Move right">→</button><button type="button" data-keys="ArrowDown,s" data-direction="down" aria-label="Move down">↓</button></div><div class="excruciating-actions" aria-label="Action keys"><button type="button" data-keys="Space">Jump<br>Space</button><button type="button" data-keys="e,KeyE">E</button><button type="button" data-keys="z,KeyZ">Z</button><button type="button" data-keys="x,KeyX">X</button></div>';
+        : isSlopeGame
+          ? '<div class="excruciating-actions" aria-label="Steering"><button type="button" data-keys="ArrowLeft,a" aria-label="Steer left">LEFT</button><button type="button" data-keys="ArrowRight,d" aria-label="Steer right">RIGHT</button></div>'
+          : '<div class="excruciating-dpad" aria-label="Movement"><button type="button" data-keys="ArrowUp,w" data-direction="up" aria-label="Move up">↑</button><button type="button" data-keys="ArrowLeft,a" data-direction="left" aria-label="Move left">←</button><button type="button" data-keys="ArrowRight,d" data-direction="right" aria-label="Move right">→</button><button type="button" data-keys="ArrowDown,s" data-direction="down" aria-label="Move down">↓</button></div><div class="excruciating-actions" aria-label="Action keys"><button type="button" data-keys="Space">Jump<br>Space</button><button type="button" data-keys="e,KeyE">E</button><button type="button" data-keys="z,KeyZ">Z</button><button type="button" data-keys="x,KeyX">X</button></div>';
   // Undertale already ships its own joystick + Z/X touch interface in its game page.
   // Do not mount the generic shell controls over it.
   if (!isUndertaleGame) document.body.append(touchControls);
+  if (isUndertaleGame) {
+    const nativeTools = document.getElementById("ut-control-tools");
+    if (nativeTools) nativeTools.hidden = true;
+  }
   let controlsMoveMode = false;
   controlsToggle.addEventListener("click", () => {
     if (isUndertaleGame) {
