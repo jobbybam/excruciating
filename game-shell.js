@@ -340,7 +340,7 @@ const gameShellUiStyle=document.createElement("style");
   if (!isUndertaleGame) document.body.append(touchControls);
   if (isUndertaleGame) {
     const nativeTools = document.getElementById("ut-control-tools");
-    if (nativeTools) nativeTools.hidden = true;
+    if (nativeTools) { nativeTools.hidden = true; nativeTools.style.display = "none"; }
     const nativeRoot = document.getElementById("undertale-mobile-controls");
     if (nativeRoot && !nativeRoot.hidden) {
       controlsToggle.querySelector("span").textContent = "Hide controls";
