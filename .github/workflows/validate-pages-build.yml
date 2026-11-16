@@ -120,14 +120,16 @@ jobs:
           if "Content-Type: application/wasm" not in headers:
               raise SystemExit("Missing Ruffle WebAssembly MIME header in Pages output.")
 
+          middleware = (root / "functions/_middleware.js").read_text(encoding="utf-8")
+          if "new HTMLRewriter()" not in middleware or "/game-shell.js" not in middleware:
+              raise SystemExit("Pages middleware does not inject the shared mobile game shell.")
+
           game_pages = list((dist / "games").glob("*/index.html"))
           for page in game_pages:
               html = page.read_text(encoding="utf-8")
               viewport = re.search(r'<meta\b(?=[^>]*\bname=["\']viewport["\'])(?=[^>]*\bcontent=["\'][^"\']*width=device-width[^"\']*["\'])[^>]*>', html, re.I)
               if not viewport:
                   raise SystemExit(f"Game page is missing a mobile viewport: {page}")
-              if '/game-shell.js' not in html:
-                  raise SystemExit(f"Game page is missing the mobile shell: {page}")
               icon = re.search(r'<link\b[^>]*\brel=["\'](?:shortcut\s+)?icon["\'][^>]*\bhref=["\']([^"\']+)["\']', html, re.I)
               if not icon:
                   raise SystemExit(f"Missing favicon link in {page}")
