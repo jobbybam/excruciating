@@ -263,7 +263,7 @@ const gameShellUiStyle=document.createElement("style");
   moveToggle.setAttribute("aria-pressed", "false");
   moveToggle.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18M8 8l4-5 4 5M8 16l4 5 4-5"/></svg><span>Move</span>';
 
-  const isNativeTouchGame = /(?:^|\\/)(?:mahjong-link|water-sort|mini-golf|sudoku)(?:\\/|$)/i.test(location.pathname);
+  const isNativeTouchGame = /(?:^|\/)(?:mahjong-link|water-sort|mini-golf|sudoku)(?:\/|$)/i.test(location.pathname);
   const toolbar = document.createElement("div");
   toolbar.id = "excruciating-game-controls";
   toolbar.append(back, chatToggle);
