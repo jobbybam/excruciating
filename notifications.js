@@ -18,9 +18,23 @@
  $("#notifications-toggle").addEventListener("click",async()=>{
   say("");
   if(dialog.showModal)dialog.showModal();else dialog.setAttribute("open","");
-  if(isIos()&&!isStandalone())installHelp.textContent="On iPhone or iPad, open this page in Safari, tap Share, choose Add to Home Screen, then tap Add. Open Excruciating from the new Home Screen icon to turn on direct-message notifications.";
-  else if(isStandalone())installHelp.textContent="Excruciating is installed on this device. You can enable direct-message notifications below.";
-  else installHelp.textContent="Install Excruciating for quick access. On iPhone or iPad, use Share → Add to Home Screen, then open the new icon.";
+  const dialogTitle=$("#notification-dialog-title"),iosSteps=$("#ios-install-steps");
+  if(isIos()&&!isStandalone()){
+   if(dialogTitle)dialogTitle.textContent="Add to Home Screen";
+   installHelp.textContent="Open this page in Safari, then follow these steps:";
+   if(iosSteps)iosSteps.hidden=false;
+   installButton.hidden=true;
+  }else if(isStandalone()){
+   if(dialogTitle)dialogTitle.textContent="Direct-message notifications";
+   installHelp.textContent="Excruciating is installed on this device.";
+   if(iosSteps)iosSteps.hidden=true;
+   installButton.hidden=true;
+  }else{
+   if(dialogTitle)dialogTitle.textContent="Install Excruciating";
+   installHelp.textContent="Install Excruciating for quick access.";
+   if(iosSteps)iosSteps.hidden=true;
+   installButton.hidden=false;
+  }
   await updateSubscriptionState();
  });
  $("#notification-dialog-close").addEventListener("click",()=>dialog.close());
