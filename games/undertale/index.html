@@ -416,7 +416,7 @@
         border-color: #fff;
       }
       #undertale-mobile-controls button[data-key="KeyZ"] { grid-column: 2; grid-row: 1; background-color: #8e252d; }
-      #undertale-mobile-controls button[data-key="KeyX"] { grid-column: 1; grid-row: 2; }
+      #undertale-mobile-controls button[data-key="KeyX"] { grid-column: 1; grid-row: 1; }
       #ut-control-tools{display:none;position:fixed;top:max(10px,env(safe-area-inset-top));right:max(10px,env(safe-area-inset-right));z-index:100001;gap:6px;align-items:center;}
       #ut-control-tools button{border:1px solid rgba(255,255,255,.5);border-radius:8px;background:rgba(16,16,20,.84);color:#fff;padding:7px 10px;font:600 11px Arial,sans-serif;backdrop-filter:blur(8px);touch-action:manipulation;}
       #ut-control-tools button[aria-pressed="true"]{background:#fff;color:#111;}
@@ -433,7 +433,7 @@
         #undertale-mobile-controls .ut-stick { width: 116px; height: 116px; }
         #undertale-mobile-controls .ut-stick::before { inset: 29px; }
         #undertale-mobile-controls .ut-knob { width: 52px; height: 52px; }
-        #undertale-mobile-controls .ut-actions { grid-template-columns: repeat(2, 56px); grid-template-rows: repeat(2, 56px); gap: 8px; }
+        #undertale-mobile-controls .ut-actions { grid-template-columns: repeat(2, 56px); grid-template-rows: 56px; gap: 8px; }
         #undertale-mobile-controls button { width: 56px; height: 56px; }
       }
 
@@ -1073,7 +1073,6 @@
       <div class="ut-actions" aria-label="Action buttons">
         <button type="button" data-key="KeyZ" aria-label="Z confirm">Z</button>
         <button type="button" data-key="KeyX" aria-label="X cancel">X</button>
-        <button type="button" data-key="KeyC" aria-label="C special">C</button>
       </div>
     </div>
     <script>
@@ -1091,7 +1090,6 @@
         ArrowRight: { key: "ArrowRight", code: "ArrowRight", keyCode: 39 },
         KeyZ: { key: "z", code: "KeyZ", keyCode: 90 },
         KeyX: { key: "x", code: "KeyX", keyCode: 88 },
-        KeyC: { key: "c", code: "KeyC", keyCode: 67 }
       };
       const held = new Set();
 
