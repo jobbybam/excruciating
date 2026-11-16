@@ -21,7 +21,10 @@ jobs:
         with:
           node-version: 22
       - name: Check site JavaScript syntax
-        run: node --check app.js
+        run: |
+          node --check app.js
+          node --check account.js
+          node --check game-shell.js
       - name: Build static Pages output
         run: npm run build
       - name: Verify asset limits, Ruffle files and Deltarune reconstruction
