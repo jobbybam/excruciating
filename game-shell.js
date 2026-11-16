@@ -263,10 +263,11 @@ const gameShellUiStyle=document.createElement("style");
   moveToggle.setAttribute("aria-pressed", "false");
   moveToggle.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18M8 8l4-5 4 5M8 16l4 5 4-5"/></svg><span>Move</span>';
 
+  const isNativeTouchGame = /(?:^|\\/)(?:mahjong-link|water-sort|mini-golf|sudoku)(?:\\/|$)/i.test(location.pathname);
   const toolbar = document.createElement("div");
   toolbar.id = "excruciating-game-controls";
   toolbar.append(back, chatToggle);
-  if (matchMedia("(hover:none) and (pointer:coarse)").matches) toolbar.append(controlsToggle, moveToggle);
+  if (!isNativeTouchGame && matchMedia("(hover:none) and (pointer:coarse)").matches) toolbar.append(controlsToggle, moveToggle);
   document.body.append(toolbar);
 
   const chatPanel = document.createElement("section");
@@ -337,7 +338,7 @@ const gameShellUiStyle=document.createElement("style");
           : '<div class="excruciating-dpad" aria-label="Movement"><button type="button" data-keys="ArrowUp,w" data-direction="up" aria-label="Move up">↑</button><button type="button" data-keys="ArrowLeft,a" data-direction="left" aria-label="Move left">←</button><button type="button" data-keys="ArrowRight,d" data-direction="right" aria-label="Move right">→</button><button type="button" data-keys="ArrowDown,s" data-direction="down" aria-label="Move down">↓</button></div><div class="excruciating-actions" aria-label="Action keys"><button type="button" data-keys="Space">Jump<br>Space</button><button type="button" data-keys="e,KeyE">E</button><button type="button" data-keys="z,KeyZ">Z</button><button type="button" data-keys="x,KeyX">X</button></div>';
   // Undertale already ships its own joystick + Z/X touch interface in its game page.
   // Do not mount the generic shell controls over it.
-  if (!isUndertaleGame) document.body.append(touchControls);
+  if (!isUndertaleGame && !isNativeTouchGame) document.body.append(touchControls);
   if (isSlopeGame) {
     const nativeSlopeControls = document.getElementById("slope-mobile-controls");
     if (nativeSlopeControls) { nativeSlopeControls.hidden = true; nativeSlopeControls.style.display = "none"; }
@@ -377,7 +378,7 @@ const gameShellUiStyle=document.createElement("style");
     moveToggle.setAttribute("aria-pressed", String(controlsMoveMode));
     moveToggle.querySelector("span").textContent = controlsMoveMode ? "Done" : "Move";
   });
-  if (!isUndertaleGame && matchMedia("(hover:none) and (pointer:coarse)").matches) {
+  if (!isUndertaleGame && !isNativeTouchGame && matchMedia("(hover:none) and (pointer:coarse)").matches) {
     let drag = null;
     const saved = (() => { try { return JSON.parse(localStorage.getItem("excruciating-controls:" + location.pathname) || "null"); } catch (_) { return null; } })();
     if (saved && Number.isFinite(saved.x) && Number.isFinite(saved.y)) touchControls.style.transform = "translate(" + saved.x + "px," + saved.y + "px)";
