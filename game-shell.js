@@ -381,7 +381,11 @@ const gameShellUiStyle=document.createElement("style");
   if (!isUndertaleGame && !isNativeTouchGame && matchMedia("(hover:none) and (pointer:coarse)").matches) {
     let drag = null;
     const saved = (() => { try { return JSON.parse(localStorage.getItem("excruciating-controls:" + location.pathname) || "null"); } catch (_) { return null; } })();
-    if (saved && Number.isFinite(saved.x) && Number.isFinite(saved.y)) touchControls.style.transform = "translate(" + saved.x + "px," + saved.y + "px)";
+    if (saved && Number.isFinite(saved.x) && Number.isFinite(saved.y)) {
+      touchControls.dataset.x = String(saved.x);
+      touchControls.dataset.y = String(saved.y);
+      touchControls.style.transform = "translate(" + saved.x + "px," + saved.y + "px)";
+    }
     touchControls.addEventListener("pointerdown", event => {
       if (!controlsMoveMode) return;
       event.preventDefault();
