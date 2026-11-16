@@ -322,7 +322,9 @@ const gameShellUiStyle=document.createElement("style");
       : isFunkinGame
         ? '<div class="excruciating-dpad" aria-label="Rhythm notes"><button type="button" data-keys="ArrowUp" data-direction="up" aria-label="Up note">↑</button><button type="button" data-keys="ArrowLeft" data-direction="left" aria-label="Left note">←</button><button type="button" data-keys="ArrowRight" data-direction="right" aria-label="Right note">→</button><button type="button" data-keys="ArrowDown" data-direction="down" aria-label="Down note">↓</button></div><div class="excruciating-actions" aria-label="Menu controls"><button type="button" data-keys="Enter">Accept<br>Enter</button><button type="button" data-keys="Escape">Back<br>Esc</button></div>'
         : '<div class="excruciating-dpad" aria-label="Movement"><button type="button" data-keys="ArrowUp,w" data-direction="up" aria-label="Move up">↑</button><button type="button" data-keys="ArrowLeft,a" data-direction="left" aria-label="Move left">←</button><button type="button" data-keys="ArrowRight,d" data-direction="right" aria-label="Move right">→</button><button type="button" data-keys="ArrowDown,s" data-direction="down" aria-label="Move down">↓</button></div><div class="excruciating-actions" aria-label="Action keys"><button type="button" data-keys="Space">Jump<br>Space</button><button type="button" data-keys="e,KeyE">E</button><button type="button" data-keys="z,KeyZ">Z</button><button type="button" data-keys="x,KeyX">X</button></div>';
-  document.body.append(touchControls);
+  // Undertale already ships its own joystick + Z/X touch interface in its game page.
+  // Do not mount the generic shell controls over it.
+  if (!isUndertaleGame) document.body.append(touchControls);
   const lookSurface = document.createElement("div");
   lookSurface.id = "excruciating-eagler-look-surface";
   lookSurface.hidden = true;
