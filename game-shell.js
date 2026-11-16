@@ -338,6 +338,10 @@ const gameShellUiStyle=document.createElement("style");
   // Undertale already ships its own joystick + Z/X touch interface in its game page.
   // Do not mount the generic shell controls over it.
   if (!isUndertaleGame) document.body.append(touchControls);
+  if (isSlopeGame) {
+    const nativeSlopeControls = document.getElementById("slope-mobile-controls");
+    if (nativeSlopeControls) { nativeSlopeControls.hidden = true; nativeSlopeControls.style.display = "none"; }
+  }
   if (isUndertaleGame) {
     const nativeTools = document.getElementById("ut-control-tools");
     if (nativeTools) { nativeTools.hidden = true; nativeTools.style.display = "none"; }
