@@ -126,6 +126,8 @@
     }
     @media (max-width: 680px) { .eagler-action-grid { grid-template-columns:repeat(3,clamp(40px,13vw,52px)); } .eagler-hotbar { width:min(62vw,360px); } }
     @media (hover:none) and (pointer:coarse) { #excruciating-controls-toggle, #excruciating-controls-move { display:inline-flex; } }
+    #excruciating-touch-controls.is-moving { cursor:move; outline:1px dashed rgba(255,255,255,.72); outline-offset:5px; }
+    #excruciating-touch-controls.is-moving button { pointer-events:none; }
     @media (prefers-reduced-motion:reduce) { .excruciating-game-control { transition:none; } }
   `;
   document.head.append(styles);
