@@ -4,15 +4,16 @@ A self-hosted browser-game library built from files in this repository and deplo
 
 ## Locally hosted games
 
-The catalogue contains 86 games with local `/games/...` pages and 15 links that still open their publishers' sites. Local highlights include:
+The catalogue contains 98 locally hosted games. Published game entries open files inside this repository; there are no external game-launch entries. Local highlights include:
 
 - **Undertale and Deltarune** — browser builds in `games/undertale/` and `games/deltarune/`. Deltarune archive chunks are split for Cloudflare Pages during the build and reassembled by the loader.
 - **14 Papa's games** — Standard Version SWF files played through the local Ruffle WebAssembly runtime.
 - **Henry Stickmin** — the five original Flash games, played through the local Ruffle runtime.
 - **Temple Run 2, Retro Bowl, Google Feud, and Unlimited Wordle** — locally bundled game packages with matching catalogue icons.
 - **Idle Mining Empire** — the official responsive HTML5 package, hosted locally with permission from the publisher.
+- **Mahjong Link, Water Sort, Mini Golf, and Sudoku** — mobile-first, self-contained HTML5 games included under the MIT License with their licence files and local icons.
 
-Only entries whose game files are in the repository are described as self-hosted. A remote catalogue link is not counted as a local game.
+Every published catalogue entry has a local `/games/<slug>/` page. Source and licence metadata are kept alongside each imported game.
 
 ## Add games
 
