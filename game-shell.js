@@ -64,7 +64,7 @@
     #excruciating-game-chat-heading { height: 44px; flex:none; display:flex; align-items:center; justify-content:space-between; padding:0 13px; color:#fff; font:600 13px/1 system-ui,sans-serif; border-bottom:1px solid #282828; }
     #excruciating-game-chat-close { border:0; background:none; color:#aaa; font:400 24px/1 system-ui,sans-serif; cursor:pointer; }
     #excruciating-game-chat-frame { width:100%; flex:1; min-height:0; border:0; background:#101010; }
-    #excruciating-controls-toggle { display:none; }
+    #excruciating-controls-toggle, #excruciating-controls-move { display:none; }
     #excruciating-touch-controls {
       position: fixed;
       z-index: 2147483646;
@@ -111,7 +111,7 @@
       #excruciating-game-chat { top:0;right:0;bottom:0;left:0;width:100vw;height:100dvh;min-height:0;border:0;border-radius:0; }
       #excruciating-game-chat-heading { padding-top:env(safe-area-inset-top); height:calc(48px + env(safe-area-inset-top)); }
       #excruciating-game-chat-close { padding-right:max(0px, env(safe-area-inset-right)); }
-      #excruciating-controls-toggle { display:inline-flex; }
+      #excruciating-controls-toggle, #excruciating-controls-move { display:inline-flex; }
       #excruciating-touch-controls { left:max(7px,env(safe-area-inset-left));bottom:max(7px,env(safe-area-inset-bottom));gap:clamp(8px,5vw,24px);padding:6px; }
       .excruciating-dpad { grid-template-columns:repeat(3,42px);grid-template-rows:repeat(3,42px);gap:3px; }
       .excruciating-actions { grid-template-columns:repeat(2,48px);gap:5px; }
@@ -125,7 +125,7 @@
       #excruciating-eagler-look-surface { width:58vw; }
     }
     @media (max-width: 680px) { .eagler-action-grid { grid-template-columns:repeat(3,clamp(40px,13vw,52px)); } .eagler-hotbar { width:min(62vw,360px); } }
-    @media (hover:none) and (pointer:coarse) { #excruciating-controls-toggle { display:inline-flex; } }
+    @media (hover:none) and (pointer:coarse) { #excruciating-controls-toggle, #excruciating-controls-move { display:inline-flex; } }
     @media (prefers-reduced-motion:reduce) { .excruciating-game-control { transition:none; } }
   `;
   document.head.append(styles);
@@ -254,9 +254,17 @@ const gameShellUiStyle=document.createElement("style");
   controlsToggle.setAttribute("aria-controls", "excruciating-touch-controls");
   controlsToggle.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5H5v3M16 5h3v3M5 16v3h3M19 16v3h-3"/><path d="M9 9h6v6H9z"/></svg><span>Controls</span>';
 
+  const moveToggle = document.createElement("button");
+  moveToggle.id = "excruciating-controls-move";
+  moveToggle.type = "button";
+  moveToggle.className = "excruciating-game-control";
+  moveToggle.setAttribute("aria-pressed", "false");
+  moveToggle.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18M8 8l4-5 4 5M8 16l4 5 4-5"/></svg><span>Move</span>';
+
   const toolbar = document.createElement("div");
   toolbar.id = "excruciating-game-controls";
   toolbar.append(back, chatToggle);
+  if (matchMedia("(hover:none) and (pointer:coarse)").matches) toolbar.append(controlsToggle, moveToggle);
   document.body.append(toolbar);
 
   const chatPanel = document.createElement("section");
@@ -325,6 +333,56 @@ const gameShellUiStyle=document.createElement("style");
   // Undertale already ships its own joystick + Z/X touch interface in its game page.
   // Do not mount the generic shell controls over it.
   if (!isUndertaleGame) document.body.append(touchControls);
+  let controlsMoveMode = false;
+  controlsToggle.addEventListener("click", () => {
+    if (isUndertaleGame) {
+      const root = document.getElementById("undertale-mobile-controls");
+      if (root) root.hidden = !root.hidden;
+      const visible = Boolean(root && !root.hidden);
+      controlsToggle.setAttribute("aria-expanded", String(visible));
+      controlsToggle.querySelector("span").textContent = visible ? "Hide controls" : "Show controls";
+    } else {
+      touchControls.hidden = !touchControls.hidden;
+      controlsToggle.setAttribute("aria-expanded", String(!touchControls.hidden));
+      controlsToggle.querySelector("span").textContent = touchControls.hidden ? "Show controls" : "Hide controls";
+    }
+  });
+  moveToggle.addEventListener("click", () => {
+    if (isUndertaleGame) {
+      document.getElementById("ut-controls-move")?.click();
+      const nativeMove = document.getElementById("ut-controls-move");
+      controlsMoveMode = nativeMove?.getAttribute("aria-pressed") === "true";
+    } else {
+      controlsMoveMode = !controlsMoveMode;
+      touchControls.classList.toggle("is-moving", controlsMoveMode);
+    }
+    moveToggle.setAttribute("aria-pressed", String(controlsMoveMode));
+    moveToggle.querySelector("span").textContent = controlsMoveMode ? "Done" : "Move";
+  });
+  if (!isUndertaleGame && matchMedia("(hover:none) and (pointer:coarse)").matches) {
+    let drag = null;
+    const saved = (() => { try { return JSON.parse(localStorage.getItem("excruciating-controls:" + location.pathname) || "null"); } catch (_) { return null; } })();
+    if (saved && Number.isFinite(saved.x) && Number.isFinite(saved.y)) touchControls.style.transform = "translate(" + saved.x + "px," + saved.y + "px)";
+    touchControls.addEventListener("pointerdown", event => {
+      if (!controlsMoveMode) return;
+      event.preventDefault();
+      drag = { id:event.pointerId, x:event.clientX, y:event.clientY, ox:Number(touchControls.dataset.x||0), oy:Number(touchControls.dataset.y||0) };
+      touchControls.setPointerCapture?.(event.pointerId);
+    });
+    touchControls.addEventListener("pointermove", event => {
+      if (!drag || drag.id !== event.pointerId) return;
+      const x=drag.ox+event.clientX-drag.x, y=drag.oy+event.clientY-drag.y;
+      touchControls.dataset.x=String(x); touchControls.dataset.y=String(y);
+      touchControls.style.transform="translate(" + x + "px," + y + "px)";
+    });
+    const endDrag = event => {
+      if (!drag || drag.id !== event.pointerId) return;
+      try { localStorage.setItem("excruciating-controls:" + location.pathname, JSON.stringify({x:Number(touchControls.dataset.x||0),y:Number(touchControls.dataset.y||0)})); } catch (_) {}
+      drag=null;
+    };
+    touchControls.addEventListener("pointerup",endDrag);
+    touchControls.addEventListener("pointercancel",endDrag);
+  }
   const lookSurface = document.createElement("div");
   lookSurface.id = "excruciating-eagler-look-surface";
   lookSurface.hidden = true;
