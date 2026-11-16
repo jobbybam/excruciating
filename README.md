@@ -26,6 +26,10 @@ Follow [ADDING_GAMES.md](ADDING_GAMES.md). In brief:
 
 Keep all local asset paths working. Do not copy proprietary games or assets just because a browser archive or GitHub repository contains them.
 
+## Mobile controls
+
+Game pages receive the shared toolbar from the Pages middleware. Touch devices can show/hide and reposition the shared controls. Game-specific profiles are used where needed: Undertale keeps its native joystick and Z/X buttons under the shared toolbar, while Slope uses left/right steering. Games with their own touch-first interactions keep those controls instead of receiving a duplicate overlay.
+
 ## Cloudflare build
 
 The build command is `npm run build`. It creates a clean `dist/` deployment directory, copies the static site into it, splits any Deltarune archive file larger than Cloudflare Pages' 25 MiB per-file limit into 20 MiB pieces, and updates only the deployment copy of the Deltarune loader's archive map. The loader fetches those pieces and concatenates them in their original order into a Blob before starting the game.
