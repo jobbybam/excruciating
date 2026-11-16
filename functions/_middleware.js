@@ -11,5 +11,15 @@ export async function onRequest({ request, next }) {
     ? "default-src 'self' data: blob: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https: blob:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https:; connect-src 'self' data: blob: https: wss:; media-src 'self' data: blob: https:; font-src 'self' data: https:; worker-src 'self' blob:; frame-src 'self' blob: https:; object-src 'none'; base-uri 'self'; frame-ancestors 'self'"
     : "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https:; connect-src 'self'; frame-src 'self' https://raw.githack.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self'";
   headers.set("Content-Security-Policy", policy);
+  if (gameRoute && (headers.get("Content-Type") || "").includes("text/html")) {
+    const transformed = new HTMLRewriter()
+      .on("body", {
+        element(element) {
+          element.append('<script src="/game-shell.js" defer></script>', { html: true });
+        }
+      })
+      .transform(new Response(response.body, { status: response.status, statusText: response.statusText, headers }));
+    return transformed;
+  }
   return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
 }
