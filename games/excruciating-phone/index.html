@@ -3,48 +3,332 @@
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
   
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080808"><title>Excruciating Phone</title><style>
-:root{color-scheme:dark;--bg:#080808;--panel:#111;--line:#292929;--muted:#929292;--accent:#fff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f5f5f5;font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;min-height:100vh}button,input,textarea{font:inherit}button{cursor:pointer;border:1px solid #353535;background:#191919;color:#fff;border-radius:10px;padding:10px 15px;font-weight:650}button:hover{background:#242424;border-color:#555}button.primary{background:#f3f3f3;color:#080808;border-color:#f3f3f3}button:disabled{opacity:.45;cursor:not-allowed}.wrap{width:min(1100px,calc(100% - 32px));margin:auto;padding:25px 0 50px}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:35px}.brand{font-size:14px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:#fff}.brand span{color:#777}.back{color:#aaa;text-decoration:none}.hero{margin:40px auto 28px;text-align:center;max-width:650px}.eyebrow{font-size:10px;letter-spacing:.2em;color:#888;font-weight:800}.hero h1{font-size:clamp(38px,8vw,70px);letter-spacing:-.07em;line-height:1;margin:12px 0}.hero p{color:#999}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px}.home-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:650px;margin:28px auto}.field{display:grid;gap:7px;margin:12px 0;color:#aaa;font-size:12px}.field input,.field textarea{width:100%;background:#090909;border:1px solid #333;border-radius:9px;padding:12px;color:#fff;outline:none}.field input:focus,.field textarea:focus{border-color:#777}.muted{color:var(--muted)}.hidden{display:none!important}.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.spread{justify-content:space-between}.lobby-grid{display:grid;grid-template-columns:1fr 280px;gap:16px}.players{display:grid;gap:8px}.player{display:flex;justify-content:space-between;padding:10px;border:1px solid #292929;border-radius:9px}.pill{font-size:10px;color:#aaa;border:1px solid #333;padding:3px 7px;border-radius:99px}.stage{max-width:800px;margin:25px auto}.stage h2{font-size:24px;letter-spacing:-.04em}.prompt{font-size:23px;font-weight:750;line-height:1.3;margin:16px 0}.canvas-wrap{background:#fff;border-radius:12px;overflow:hidden;touch-action:none}.canvas-wrap canvas{display:block;width:100%;height:auto;touch-action:none;cursor:crosshair}.tools{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.tools input[type=color]{height:40px;width:48px;background:#181818;border:1px solid #333;border-radius:8px;padding:3px}.tools input[type=range]{width:110px}.book{display:grid;gap:12px}.book-item{padding:14px;background:#151515;border:1px solid #292929;border-radius:12px}.book-item img{max-width:100%;border-radius:8px;background:white}.status{color:#aaa;min-height:22px;font-size:12px}.footer{margin-top:40px;text-align:center;color:#666;font-size:11px}@media(max-width:700px){.lobby-grid{grid-template-columns:1fr}.home-actions{grid-template-columns:1fr}.wrap{width:min(100% - 22px,1100px)}.panel{padding:16px}.top{margin-bottom:20px}}
+:root{color-scheme:dark;--bg:#080808;--panel:#111;--line:#292929;--muted:#929292;--accent:#fff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f5f5f5;font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;min-height:100vh}button,input,textarea{font:inherit}button{cursor:pointer;border:1px solid #353535;background:#191919;color:#fff;border-radius:10px;padding:10px 15px;font-weight:650}button:hover{background:#242424;border-color:#555}button.primary{background:#f3f3f3;color:#080808;border-color:#f3f3f3}button:disabled{opacity:.45;cursor:not-allowed}.wrap{width:min(1100px,calc(100% - 32px));margin:auto;padding:25px 0 50px}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:35px}.brand{font-size:14px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:#fff}.brand span{color:#777}.back{color:#aaa;text-decoration:none}.hero{margin:40px auto 28px;text-align:center;max-width:650px}.eyebrow{font-size:10px;letter-spacing:.2em;color:#888;font-weight:800}.hero h1{font-size:clamp(38px,8vw,70px);letter-spacing:-.07em;line-height:1;margin:12px 0}.hero p{color:#999}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px}.home-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:650px;margin:28px auto}.field{display:grid;gap:7px;margin:12px 0;color:#aaa;font-size:12px}.field input,.field textarea{width:100%;background:#090909;border:1px solid #333;border-radius:9px;padding:12px;color:#fff;outline:none}.field input:focus,.field textarea:focus{border-color:#777}.muted{color:var(--muted)}.hidden{display:none!important}.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.spread{justify-content:space-between}.lobby-grid{display:grid;grid-template-columns:1fr 280px;gap:16px}.players{display:grid;gap:8px}.player{display:flex;justify-content:space-between;padding:10px;border:1px solid #292929;border-radius:9px}.pill{font-size:10px;color:#aaa;border:1px solid #333;padding:3px 7px;border-radius:99px}.stage{max-width:800px;margin:25px auto}.stage h2{font-size:24px;letter-spacing:-.04em}.prompt{font-size:23px;font-weight:750;line-height:1.3;margin:16px 0}.canvas-wrap{background:#fff;border-radius:12px;overflow:hidden;touch-action:none}.canvas-wrap canvas{display:block;width:100%;height:auto;touch-action:none;cursor:crosshair}.tools{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.tools input[type=color]{height:40px;width:48px;background:#181818;border:1px solid #333;border-radius:8px;padding:3px}.tools input[type=range]{width:110px}.book{display:grid;gap:12px}.book-item{padding:14px;background:#151515;border:1px solid #292929;border-radius:12px}.book-item img{max-width:100%;border-radius:8px;background:white}.status{color:#aaa;min-height:22px;font-size:12px}.timer-low{border-color:#a44;color:#ff9b9b}#timerSettings{margin:14px 0}#timerSettings input{width:100%;background:#090909;border:1px solid #333;border-radius:9px;padding:10px;color:#fff}#startRequirement{min-height:22px;margin:12px 0}.footer{margin-top:40px;text-align:center;color:#666;font-size:11px}@media(max-width:700px){.lobby-grid{grid-template-columns:1fr}.home-actions{grid-template-columns:1fr}.wrap{width:min(100% - 22px,1100px)}.panel{padding:16px}.top{margin-bottom:20px}}
 </style></head><body><div class="wrap"><header class="top"><a class="brand" href="/">EXCRUCIATING<span> / PHONE</span></a><a class="back" href="/">← Games</a></header>
 <section id="home"><div class="hero"><div class="eyebrow">THE DRAWING TELEPHONE GAME</div><h1>Excruciating Phone</h1><p>Write it. Draw it. Pass it on. Watch it fall apart.</p></div><div class="home-actions"><div class="panel"><h2>Create a room</h2><p class="muted">Start a classic telephone game and invite your friends.</p><label class="field">Your name<input id="hostName" maxlength="18" placeholder="Player name"></label><button class="primary" id="create">Create room</button></div><div class="panel"><h2>Join a room</h2><p class="muted">Enter the room code shared by the host.</p><label class="field">Your name<input id="joinName" maxlength="18" placeholder="Player name"></label><label class="field">Room code<input id="roomCode" maxlength="6" placeholder="ABC123" autocapitalize="characters"></label><button id="join">Join room</button></div></div><p class="status" id="homeStatus" style="text-align:center"></p></section>
-<section id="lobby" class="hidden"><div class="row spread"><div><div class="eyebrow">ROOM LOBBY</div><h1 style="margin:5px 0">Room <span id="codeLabel"></span></h1><p class="muted">Share this code with your friends.</p></div><button id="copyCode">Copy invite code</button></div><div class="lobby-grid"><div class="panel"><h2>Ready when you are</h2><p class="muted">Everyone writes a starting sentence. Each page then alternates between a sentence and a drawing.</p><label class="field">Players needed<select id="roundPlayers" style="background:#090909;color:white;padding:10px;border:1px solid #333;border-radius:8px"><option value="3">3 or more</option><option value="4">4 or more</option><option value="5">5 or more</option></select></label><button class="primary" id="start" disabled>Start game</button><p class="status" id="lobbyStatus"></p></div><div class="panel"><div class="row spread"><strong>Players</strong><span class="pill" id="playerCount">0 online</span></div><div class="players" id="players"></div></div></div></section>
-<section id="play" class="stage hidden"><div class="row spread"><span class="pill" id="roundLabel">ROUND</span><span class="muted" id="progress"></span></div><h2 id="taskTitle">Your turn</h2><p class="muted" id="taskHint"></p><div id="writeTask" class="panel hidden"><label class="field">Write a sentence<textarea id="sentence" maxlength="120" rows="3" placeholder="Something wonderfully ridiculous…"></textarea></label><button class="primary" id="submitSentence">Pass sentence</button></div><div id="drawTask" class="hidden"><div class="prompt" id="drawPrompt"></div><div class="tools"><button id="pen" class="primary">Pen</button><button id="eraser">Eraser</button><input id="colour" type="color" value="#171717" aria-label="Pen colour"><label class="muted">Size <input id="size" type="range" min="2" max="24" value="5"></label><button id="undo">Undo</button><button id="clear">Clear</button></div><div class="canvas-wrap"><canvas id="canvas" width="900" height="520"></canvas></div><div class="row" style="margin-top:12px"><button class="primary" id="submitDrawing">Pass drawing</button></div></div><div id="waitTask" class="panel hidden"><h2>You're all caught up.</h2><p class="muted">Waiting for the other players to finish their pages…</p></div><p class="status" id="playStatus"></p></section>
+<section id="lobby" class="hidden"><div class="row spread"><div><div class="eyebrow">ROOM LOBBY</div><h1 style="margin:5px 0">Room <span id="codeLabel"></span></h1><p class="muted">Share this code with your friends.</p></div><button id="copyCode">Copy invite code</button></div><div class="lobby-grid"><div class="panel"><h2>Ready when you are</h2><p class="muted">Everyone writes a starting sentence. Each page then alternates between a sentence and a drawing.</p><p id="startRequirement" class="muted">You need 2 more players to start.</p><div id="timerSettings"><label class="field">Turn timer (seconds)<input id="turnTimer" type="number" min="15" max="600" step="5" value="60"></label><p class="muted">Host only · Each turn advances when time runs out.</p></div><button class="primary" id="start" disabled>Start game</button><p class="status" id="lobbyStatus"></p></div><div class="panel"><div class="row spread"><strong>Players</strong><span class="pill" id="playerCount">0 online</span></div><div class="players" id="players"></div></div></div></section>
+<section id="play" class="stage hidden"><div class="row spread"><span class="pill" id="roundLabel">ROUND</span><span class="pill" id="timerDisplay">01:00</span><span class="muted" id="progress"></span></div><h2 id="taskTitle">Your turn</h2><p class="muted" id="taskHint"></p><div id="writeTask" class="panel hidden"><label class="field">Write a sentence<textarea id="sentence" maxlength="120" rows="3" placeholder="Something wonderfully ridiculous…"></textarea></label><button class="primary" id="submitSentence">Pass sentence</button></div><div id="drawTask" class="hidden"><div class="prompt" id="drawPrompt"></div><div class="tools"><button id="pen" class="primary">Pen</button><button id="eraser">Eraser</button><input id="colour" type="color" value="#171717" aria-label="Pen colour"><label class="muted">Size <input id="size" type="range" min="2" max="24" value="5"></label><button id="undo">Undo</button><button id="clear">Clear</button></div><div class="canvas-wrap"><canvas id="canvas" width="900" height="520"></canvas></div><div class="row" style="margin-top:12px"><button class="primary" id="submitDrawing">Pass drawing</button></div></div><div id="waitTask" class="panel hidden"><h2>You're all caught up.</h2><p class="muted">Waiting for the other players to finish their pages…</p></div><p class="status" id="playStatus"></p></section>
 <section id="results" class="stage hidden"><div class="eyebrow">THE REVEAL</div><h1>Look what happened.</h1><p class="muted">Every sentence and drawing, in order.</p><div class="book" id="books"></div><button class="primary" id="backLobby" style="margin-top:18px">Back to lobby</button></section><p class="footer">EXCRUCIATING PHONE · CLASSIC MODE</p></div>
 <script>
-(()=>{const $=id=>document.getElementById(id);const API='/api/phone-signal';let id=crypto.randomUUID(),name='',room='',host=false,pcMap=new Map(),channels=new Map(),players=[],state=null,polling=false,closed=false,drawMode='pen',undoStack=[],drawing=false,last=null,audio=null;
-const ice={iceServers:[{urls:'stun:stun.l.google.com:19302'}]};
-function sound(freq=520,duration=.08,type='sine'){try{audio??=new(window.AudioContext||window.webkitAudioContext)();const o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.07,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+duration)}catch{}}
-function show(id){['home','lobby','play','results'].forEach(x=>$(x).classList.toggle('hidden',x!==id))}
-function code(){return Math.random().toString(36).slice(2,8).toUpperCase()}
-async function signal(to,payload){const r=await fetch(API,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({room,from:id,to,payload})});if(!r.ok)throw Error('Signalling failed');}
-async function poll(){if(polling||closed)return;polling=true;try{const recipients=host?['host',id]:[id];for(const recipient of recipients){const r=await fetch(API+'?room='+encodeURIComponent(room)+'&player='+encodeURIComponent(recipient));if(r.ok){const d=await r.json();for(const m of d.messages||[])await receive(m)}}}catch(e){$('playStatus').textContent=e.message}finally{polling=false}}
-async function receive(m){const {from,payload}=m;if(payload.type==='hello'&&host){players.push({id:from,name:payload.name});renderPlayers();await makePeer(from,true);await signal(from,{type:'welcome',players,state});return}if(payload.type==='welcome'){players=payload.players||[];if(!players.some(p=>p.id===id))players.push({id,name});state=payload.state;renderPlayers();if(state)renderState();return}if(payload.type==='offer'){const pc=peer(from,false);await pc.setRemoteDescription(payload.sdp);const answer=await pc.createAnswer();await pc.setLocalDescription(answer);await signal(from,{type:'answer',sdp:pc.localDescription});return}if(payload.type==='answer'){const pc=pcMap.get(from);if(pc)await pc.setRemoteDescription(payload.sdp);return}if(payload.type==='candidate'){const pc=pcMap.get(from);if(pc&&payload.candidate)await pc.addIceCandidate(payload.candidate).catch(()=>{});return}}
-function peer(pid,offerer){let pc=pcMap.get(pid);if(pc)return pc;pc=new RTCPeerConnection(ice);pcMap.set(pid,pc);pc.onicecandidate=e=>{if(e.candidate)signal(pid,{type:'candidate',candidate:e.candidate.toJSON()})};pc.ondatachannel=e=>attach(pid,e.channel);if(offerer){const ch=pc.createDataChannel('phone',{ordered:true});attach(pid,ch)}return pc}
-function attach(pid,ch){channels.set(pid,ch);ch.onopen=()=>{sound(660);if(host)broadcast({type:'players',players});};ch.onmessage=e=>{try{const msg=JSON.parse(e.data);if(host&&msg.type==='submit'){applySubmission(pid,msg)}else if(msg.type==='state'){state=msg.state;renderState()}}catch{}}}
-async function makePeer(pid,offerer){const pc=peer(pid,offerer);if(offerer){const offer=await pc.createOffer();await pc.setLocalDescription(offer);await signal(pid,{type:'offer',sdp:pc.localDescription})}}
-function broadcast(msg){for(const ch of channels.values())if(ch.readyState==='open')ch.send(JSON.stringify(msg))}
-function sendHost(msg){if(host){applySubmission(id,msg);return}const ch=[...channels.values()][0];if(ch?.readyState==='open')ch.send(JSON.stringify(msg));else $('playStatus').textContent='Reconnecting to host…'}
-function renderPlayers(){$('players').innerHTML=players.map(p=>'<div class="player"><span>'+esc(p.name)+'</span><span class="pill">'+(p.id===id?'YOU':p.id===players[0]?.id?'HOST':'READY')+'</span></div>').join('');$('playerCount').textContent=players.length+' online';$('start').disabled=!host||players.length<3}
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function snapshot(){if(host)broadcast({type:'state',state});else sendHost({type:'request-state'})}
-function begin(){const order=[...players].sort((a,b)=>a.id.localeCompare(b.id));state={round:0,order,books:order.map(p=>({owner:p.id,holder:p.id,entries:[],current:null,done:false})),phase:'write',submissions:{}};deal();broadcast({type:'state',state});renderState()}
-function deal(){state.phase='write';state.submissions={};for(let i=0;i<state.books.length;i++){const book=state.books[i];book.current=null;book.done=false}}
-function applySubmission(pid,msg){if(!host||!state)return;state.submissions[pid]=msg;if(Object.keys(state.submissions).length>=state.order.length){const round=state.round;for(const book of state.books){const holder=state.order.find(p=>p.id===book.holder);const sub=state.submissions[book.holder];if(sub)book.entries.push({type:state.phase==='write'?'text':'drawing',value:sub.value,author:holder?.name||'Player'});const currentIndex=state.order.findIndex(p=>p.id===book.holder);book.holder=state.order[(currentIndex+1)%state.order.length].id;}state.round++;if(state.round>=state.order.length*2){state.phase='results'}else{state.phase=state.round%2===0?'write':'draw';state.submissions={}}broadcast({type:'state',state});renderState()}else{broadcast({type:'progress',count:Object.keys(state.submissions).length,total:state.order.length});}}
-function renderState(){if(!state)return;const my=state.books.find(b=>b.holder===id);if(state.phase==='results'){show('results');$('books').innerHTML=state.books.map(b=>'<div class="book-item"><strong>'+esc(state.order.find(p=>p.id===b.owner)?.name||'Player')+'</strong>'+b.entries.map(e=>e.type==='text'?'<p>'+esc(e.value)+'</p>':'<img alt="Player drawing" src="'+e.value+'">').join('')+'</div>').join('');return}show('play');$('roundLabel').textContent='ROUND '+(state.round+1);$('progress').textContent='BOOK '+(state.books.findIndex(b=>b.owner===id)+1)+' / '+state.books.length;if(!my){$('waitTask').classList.remove('hidden');return}if(my.entries.length!==state.round){$('taskTitle').textContent='Waiting for your turn';$('writeTask').classList.add('hidden');$('drawTask').classList.add('hidden');$('waitTask').classList.remove('hidden');return}$('waitTask').classList.add('hidden');if(state.phase==='write'){$('taskTitle').textContent='Write a sentence';$('taskHint').textContent='Start the telephone chain with a sentence.';$('writeTask').classList.remove('hidden');$('drawTask').classList.add('hidden')}else{$('taskTitle').textContent='Draw what you see';$('taskHint').textContent='Try your best. No letters or numbers.';$('writeTask').classList.add('hidden');$('drawTask').classList.remove('hidden');const previous=my.entries.at(-1);$('drawPrompt').textContent=previous?.value||'Draw something.';resetCanvas()}}
-$('create').onclick=async()=>{name=$('hostName').value.trim()||'Host';room=code();host=true;players=[{id,name}];show('lobby');$('codeLabel').textContent=room;renderPlayers();$('lobbyStatus').textContent='Room created. Waiting for friends.';sound(620)};
-$('join').onclick=async()=>{name=$('joinName').value.trim()||'Player';room=$('roomCode').value.trim().toUpperCase();if(!/^[A-Z0-9]{6}$/.test(room)){$('homeStatus').textContent='Enter a valid six-character room code.';return}host=false;players=[{id,name}];show('lobby');$('codeLabel').textContent=room;$('lobbyStatus').textContent='Connecting to host…';await signal('host',{type:'hello',name});setInterval(poll,1200);sound(460)};
-$('copyCode').onclick=()=>navigator.clipboard.writeText(room).then(()=>$('lobbyStatus').textContent='Invite code copied.');
-$('start').onclick=()=>{if(host&&players.length>=3){begin();sound(780)}};
-$('submitSentence').onclick=()=>{const value=$('sentence').value.trim();if(!value)return;$('sentence').value='';sendHost({type:'submit',value});sound(540)};
-$('submitDrawing').onclick=()=>{const value=$('canvas').toDataURL('image/jpeg',.72);sendHost({type:'submit',value});sound(700)};
-const canvas=$('canvas'),ctx=canvas.getContext('2d');function resetCanvas(){ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);undoStack=[];saveCanvas()}
-function saveCanvas(){undoStack.push(canvas.toDataURL());if(undoStack.length>30)undoStack.shift()}
-function pos(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height}}
-canvas.onpointerdown=e=>{drawing=true;canvas.setPointerCapture(e.pointerId);last=pos(e);saveCanvas();ctx.beginPath();ctx.moveTo(last.x,last.y)};
-canvas.onpointermove=e=>{if(!drawing)return;const p=pos(e);ctx.strokeStyle=drawMode==='eraser'?'#fff':$('colour').value;ctx.lineWidth=Number($('size').value)*(drawMode==='eraser'?3:1);ctx.lineCap='round';ctx.lineJoin='round';ctx.lineTo(p.x,p.y);ctx.stroke();last=p};
-canvas.onpointerup=()=>drawing=false;canvas.onpointercancel=()=>drawing=false;
-$('pen').onclick=()=>drawMode='pen';$('eraser').onclick=()=>drawMode='eraser';$('undo').onclick=()=>{if(undoStack.length>1){undoStack.pop();const im=new Image();im.onload=()=>ctx.drawImage(im,0,0);im.src=undoStack.at(-1)}};$('clear').onclick=resetCanvas;
-$('backLobby').onclick=()=>{if(host){state=null;broadcast({type:'state',state:null})}show('lobby')};
-setInterval(()=>{if(room)poll()},1200);
-window.addEventListener('beforeunload',()=>{closed=true;for(const pc of pcMap.values())pc.close()});
+(()=>{
+"use strict";
+const $=id=>document.getElementById(id);
+const API="/api/phone-signal";
+const MIN_PLAYERS=3,MAX_PLAYERS=8,CONNECT_TIMEOUT=25000;
+const id=(crypto.randomUUID?crypto.randomUUID():("p-"+Math.random().toString(36).slice(2)+Date.now().toString(36)));
+const ice={iceServers:[{urls:"stun:stun.l.google.com:19302"},{urls:"stun:stun1.l.google.com:19302"},{urls:"stun:stun2.l.google.com:19302"}]};
+let name="",room="",host=false,hostId="",players=[],state=null;
+let pcMap=new Map(),channels=new Map(),pendingCandidates=new Map(),incomingChunks=new Map();
+let polling=false,pollTimer=null,connectionTimer=null,connectionExpiry=null,hostPlayerTimers=new Map(),timerLoop=null;
+let closed=false,welcomed=false,clockOffset=0,taskKey="",drawMode="pen",undoStack=[],drawing=false,last=null,audio=null;
+const canvas=$("canvas"),ctx=canvas.getContext("2d");
+function now(){return Date.now()+clockOffset}
+function esc(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function sound(freq=520,duration=.08,type="sine"){try{audio??=new(window.AudioContext||window.webkitAudioContext)();if(audio.state==="suspended")audio.resume();const o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.055,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+duration)}catch{}}
+function show(section){["home","lobby","play","results"].forEach(x=>$(x).classList.toggle("hidden",x!==section))}
+function roomCode(){return Math.random().toString(36).slice(2,8).toUpperCase()}
+function setStatus(text){const target=$("lobby").classList.contains("hidden")?$("playStatus"):$("lobbyStatus");if(target)target.textContent=text||""}
+async function signal(to,payload){
+ const response=await fetch(API,{method:"POST",cache:"no-store",headers:{"content-type":"application/json"},body:JSON.stringify({room,from:id,to,payload})});
+ if(!response.ok){const data=await response.json().catch(()=>({}));throw new Error(data.error||"Could not contact the room server.");}
+}
+async function poll(){
+ if(polling||closed||!room)return;
+ polling=true;
+ try{
+  const recipients=host?["host",id]:[id];
+  for(const recipient of recipients){
+   const response=await fetch(API+"?room="+encodeURIComponent(room)+"&player="+encodeURIComponent(recipient),{cache:"no-store"});
+   if(!response.ok)throw new Error("Room connection interrupted ("+response.status+").");
+   const data=await response.json();
+   for(const message of data.messages||[])await receiveSignal(message);
+  }
+ }catch(error){if(room)setStatus(error.message||"Connection interrupted.");}
+ finally{polling=false;}
+}
+function startPolling(){if(pollTimer)clearInterval(pollTimer);pollTimer=setInterval(()=>poll(),700);poll()}
+function stopRoom(){
+ if(pollTimer)clearInterval(pollTimer);pollTimer=null;
+ if(connectionTimer)clearTimeout(connectionTimer);connectionTimer=null;
+ if(connectionExpiry)clearTimeout(connectionExpiry);connectionExpiry=null;
+ for(const timeout of hostPlayerTimers.values())clearTimeout(timeout);hostPlayerTimers.clear();
+ for(const pc of pcMap.values())try{pc.close()}catch{}
+ pcMap.clear();channels.clear();pendingCandidates.clear();incomingChunks.clear();
+ room="";state=null;players=[];welcomed=false;taskKey="";clockOffset=0;
+}
+function updatePlayer(pid,patch){
+ const player=players.find(p=>p.id===pid);if(player)Object.assign(player,patch);
+}
+function connected(pid){return pid===id&&host ? true : players.some(p=>p.id===pid&&p.connected===true)}
+function allConnected(){return players.length>=MIN_PLAYERS&&players.every(p=>p.id===id&&host||p.connected===true)}
+function renderPlayers(){
+ $("players").innerHTML=players.map(p=>'<div class="player"><span>'+esc(p.name)+(p.id===hostId?' <span class="pill">HOST</span>':'')+'</span><span class="pill">'+(p.id===id?"YOU":p.connected?"CONNECTED":"CONNECTING")+'</span></div>').join("");
+ $("playerCount").textContent=players.length+" / "+MAX_PLAYERS+" players";
+ $("start").hidden=!host;
+ $("timerSettings").hidden=!host;
+ $("backLobby").hidden=!host;
+ const missing=Math.max(0,MIN_PLAYERS-players.length);
+ let message="";
+ if(missing>0)message="You need "+missing+" more player"+(missing===1?"":"s")+" to start.";
+ else if(!allConnected()){
+  const waiting=players.filter(p=>p.id!==id&&!p.connected).length;
+  message="Waiting for "+waiting+" player"+(waiting===1?"":"s")+" to connect…";
+ }else message=host?"Everyone is connected. Ready to start.":"Everyone is connected. Waiting for the host to start.";
+ $("startRequirement").textContent=message;
+ $("start").disabled=!host||missing>0||!allConnected()||Boolean(state);
+ $("start").textContent=state?"Game in progress":"Start game";
+ if(!host&&$("lobbyStatus").textContent==="")$("lobbyStatus").textContent=message;
+}
+function peer(pid,offerer){
+ let pc=pcMap.get(pid);if(pc)return pc;
+ pc=new RTCPeerConnection(ice);pcMap.set(pid,pc);
+ pc.onicecandidate=event=>{if(event.candidate)signal(pid,{type:"candidate",candidate:event.candidate.toJSON()}).catch(()=>{})};
+ pc.ondatachannel=event=>attach(pid,event.channel);
+ pc.onconnectionstatechange=()=>{
+  const status=pc.connectionState;
+  if(status==="connected"){updatePlayer(pid,{connected:true});renderPlayers();if(host)broadcast({type:"players",players,hostId});}
+  else if(status==="failed"||status==="closed"){updatePlayer(pid,{connected:false});renderPlayers();if(host)broadcast({type:"players",players,hostId});else $("lobbyStatus").textContent="Connection to the host was lost. Rejoin the room to continue.";}
+ };
+ if(offerer){const channel=pc.createDataChannel("phone",{ordered:true});attach(pid,channel);}
+ return pc;
+}
+async function flushCandidates(pid){
+ const pc=pcMap.get(pid),list=pendingCandidates.get(pid)||[];
+ if(!pc||!pc.remoteDescription||!list.length)return;
+ pendingCandidates.delete(pid);
+ for(const candidate of list){try{await pc.addIceCandidate(candidate)}catch{}}
+}
+function sendData(pid,message){
+ const channel=channels.get(pid);if(!channel||channel.readyState!=="open")return false;
+ const data=JSON.stringify(message);
+ const max=Math.min(48000,Math.max(12000,(pcMap.get(pid)?.sctp?.maxMessageSize||60000)-1200));
+ if(data.length<=max){channel.send(data);return true;}
+ const chunkSize=12000,total=Math.ceil(data.length/chunkSize),chunkId=crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random();
+ for(let index=0;index<total;index++)channel.send(JSON.stringify({__phoneChunk:true,id:chunkId,index,total,data:data.slice(index*chunkSize,(index+1)*chunkSize)}));
+ return true;
+}
+function handleData(pid,raw){
+ let message;try{message=JSON.parse(raw)}catch{return}
+ if(message.hostNow)clockOffset=Number(message.hostNow)-Date.now();
+ if(host){
+  if(message.type==="submit")applySubmission(pid,message);
+  else if(message.type==="ready"){updatePlayer(pid,{connected:true});renderPlayers();sendData(pid,{type:"players",players,hostId,hostNow:Date.now()});if(state)sendData(pid,{type:"state",state,hostNow:Date.now()});}
+  else if(message.type==="request-state"){sendData(pid,{type:"players",players,hostId,hostNow:Date.now()});sendData(pid,{type:"state",state,hostNow:Date.now()});}
+  return;
+ }
+ if(message.type==="players"){players=message.players||players;hostId=message.hostId||hostId;renderPlayers();}
+ else if(message.type==="state"){state=message.state||null;taskKey="";if(state)renderState();else show("lobby");}
+ else if(message.type==="progress"){
+  if(state){state.submissions=state.submissions||{};(message.submittedIds||[]).forEach(pid=>state.submissions[pid]={pending:true});renderState();$("playStatus").textContent=message.count+" of "+message.total+" players submitted.";}
+ }
+ else if(message.type==="room-closed"){stopRoom();show("home");$("homeStatus").textContent="The host closed this room.";}
+}
+function attach(pid,channel){
+ channels.set(pid,channel);
+ channel.onopen=()=>{
+  updatePlayer(pid,{connected:true});renderPlayers();sound(660);
+  if(host){broadcast({type:"players",players,hostId});sendData(pid,{type:"state",state,hostNow:Date.now()});}
+  else{welcomed=true;if(connectionTimer)clearTimeout(connectionTimer);connectionTimer=null;if(connectionExpiry)clearTimeout(connectionExpiry);connectionExpiry=null;sendData(pid,{type:"ready",hostNow:Date.now()});}
+ };
+ channel.onmessage=event=>{
+  let packet;try{packet=JSON.parse(event.data)}catch{return}
+  if(packet&&packet.__phoneChunk){
+   if(!Number.isInteger(packet.index)||!Number.isInteger(packet.total)||packet.total>2000||packet.index<0||packet.index>=packet.total)return;
+   let entry=incomingChunks.get(packet.id);if(!entry){entry={total:packet.total,parts:new Array(packet.total),received:0};incomingChunks.set(packet.id,entry);}
+   if(entry.total!==packet.total)return;
+   if(entry.parts[packet.index]===undefined){entry.parts[packet.index]=packet.data;entry.received++;}
+   if(entry.received===entry.total){incomingChunks.delete(packet.id);handleData(pid,entry.parts.join(""));}
+  }else handleData(pid,event.data);
+ };
+ channel.onclose=()=>{updatePlayer(pid,{connected:false});renderPlayers();if(host)broadcast({type:"players",players,hostId});};
+ channel.onerror=()=>{updatePlayer(pid,{connected:false});renderPlayers();};
+}
+async function makePeer(pid){
+ const pc=peer(pid,true),offer=await pc.createOffer();await pc.setLocalDescription(offer);
+ await signal(pid,{type:"offer",sdp:pc.localDescription});
+}
+async function receiveSignal(message){
+ const from=message.from,payload=message.payload||{};
+ if(payload.type==="hello"&&host){
+  if(state){await signal(from,{type:"room-locked"});return;}
+  if(players.some(p=>p.id===from))return;
+  if(players.length>=MAX_PLAYERS){await signal(from,{type:"room-full"});return;}
+  players.push({id:from,name:String(payload.name||"Player").slice(0,18),connected:false});renderPlayers();
+  const timeout=setTimeout(()=>{const p=players.find(x=>x.id===from);if(p&&!p.connected){players=players.filter(x=>x.id!==from);const pc=pcMap.get(from);if(pc)pc.close();pcMap.delete(from);channels.delete(from);renderPlayers();broadcast({type:"players",players,hostId});}},CONNECT_TIMEOUT);
+  hostPlayerTimers.set(from,timeout);
+  try{await makePeer(from);await signal(from,{type:"welcome",players,hostId:id,state,hostNow:Date.now()});}
+  catch(error){players=players.filter(x=>x.id!==from);renderPlayers();await signal(from,{type:"connection-error",message:"The host could not establish a connection."}).catch(()=>{});}
+  return;
+ }
+ if(payload.type==="welcome"&&!host){
+  welcomed=true;hostId=payload.hostId||from;players=payload.players||[{id:hostId,name:"Host",connected:true},{id,name,connected:false}];
+  if(!players.some(p=>p.id===id))players.push({id,name,connected:true});
+  if(payload.hostNow)clockOffset=Number(payload.hostNow)-Date.now();
+  state=payload.state||null;renderPlayers();if(state)renderState();
+  return;
+ }
+ if(payload.type==="room-locked"||payload.type==="room-full"||payload.type==="connection-error"){
+  if(connectionTimer)clearTimeout(connectionTimer);connectionTimer=null;
+  stopRoom();show("home");
+  $("homeStatus").textContent=payload.type==="room-locked"?"This room has already started. Ask the host to create a new room.":payload.type==="room-full"?"This room is full.":"The host could not establish a connection. Please try again.";
+  return;
+ }
+ if(payload.type==="offer"&&!host){
+  const pc=peer(from,false);await pc.setRemoteDescription(payload.sdp);await flushCandidates(from);
+  const answer=await pc.createAnswer();await pc.setLocalDescription(answer);
+  await signal(from,{type:"answer",sdp:pc.localDescription});return;
+ }
+ if(payload.type==="answer"&&host){
+  const pc=pcMap.get(from);if(pc){await pc.setRemoteDescription(payload.sdp);await flushCandidates(from);}return;
+ }
+ if(payload.type==="candidate"){
+  const pc=pcMap.get(from);
+  if(!pc||!pc.remoteDescription){const list=pendingCandidates.get(from)||[];list.push(payload.candidate);pendingCandidates.set(from,list);}
+  else{try{await pc.addIceCandidate(payload.candidate)}catch{}}
+ }
+}
+function broadcast(message){
+ const packet={...message,hostNow:Date.now()};
+ for(const pid of channels.keys())sendData(pid,packet);
+}
+function sendHost(message){
+ if(host){applySubmission(id,message);return true;}
+ const channel=channels.get(hostId);
+ if(!channel||channel.readyState!=="open"){$("playStatus").textContent="Connection to the host was lost. Rejoin the room.";return false;}
+ if(!sendData(hostId,message))return false;
+ state.submissions=state.submissions||{};state.submissions[id]={pending:true};renderState();
+ $("playStatus").textContent="Submitted. Waiting for the other players…";
+ return true;
+}
+function safeTimerSeconds(){const value=Number($("turnTimer").value);return Number.isFinite(value)?Math.min(600,Math.max(15,Math.round(value/5)*5)):60}
+function begin(){
+ if(!host||state||players.length<MIN_PLAYERS||!allConnected())return;
+ const seconds=safeTimerSeconds(),order=[...players].sort((a,b)=>a.id.localeCompare(b.id));
+ state={round:0,order,books:order.map(p=>({owner:p.id,holder:p.id,entries:[]})),phase:"write",submissions:{},timerSeconds:seconds,deadlineAt:now()+seconds*1000};
+ taskKey="";broadcast({type:"state",state});renderState();sound(780);
+}
+function applySubmission(pid,message){
+ if(!host||!state||state.phase==="results"||state.submissions[pid])return;
+ const book=state.books.find(b=>b.holder===pid&&b.entries.length===state.round);
+ if(!book)return;
+ let value=typeof message.value==="string"?message.value:"";
+ if(state.phase==="write")value=value.slice(0,120);
+ else if(!value.startsWith("data:image/jpeg;base64,")||value.length>180000)value="";
+ state.submissions[pid]={value};
+ broadcast({type:"progress",count:Object.keys(state.submissions).length,total:state.order.length,submittedIds:Object.keys(state.submissions)});
+ $("playStatus").textContent=Object.keys(state.submissions).length+" of "+state.order.length+" players submitted.";
+ if(Object.keys(state.submissions).length>=state.order.length)advanceRound();
+ else renderState();
+}
+function advanceRound(){
+ if(!host||!state||state.phase==="results")return;
+ for(const book of state.books){
+  const current=state.order.find(p=>p.id===book.holder);
+  const submission=state.submissions[book.holder];
+  book.entries.push({type:state.phase==="write"?"text":"drawing",value:submission?submission.value:null,author:current?.name||"Player"});
+  const index=state.order.findIndex(p=>p.id===book.holder);
+  book.holder=state.order[(index+1)%state.order.length].id;
+ }
+ state.round++;
+ if(state.round>=state.order.length*2){state.phase="results";state.deadlineAt=null;state.submissions={};}
+ else{state.phase=state.round%2===0?"write":"draw";state.submissions={};state.deadlineAt=now()+state.timerSeconds*1000;}
+ taskKey="";broadcast({type:"state",state});renderState();sound(state.phase==="results"?880:600);
+}
+function formatTime(ms){const seconds=Math.max(0,Math.ceil(ms/1000));return String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0")}
+function updateTimer(){
+ if(!state||state.phase==="results"||!state.deadlineAt){$("timerDisplay").textContent="—";return;}
+ const remaining=state.deadlineAt-now();$("timerDisplay").textContent=formatTime(remaining);
+ $("timerDisplay").classList.toggle("timer-low",remaining<=10000);
+ if(host&&remaining<=0)advanceRound();
+}
+function startTimerLoop(){if(timerLoop)clearInterval(timerLoop);timerLoop=setInterval(updateTimer,200)}
+function renderState(){
+ if(!state){show("lobby");return;}
+ if(state.phase==="results"){
+  show("results");$("books").innerHTML=state.books.map(book=>{
+   const owner=state.order.find(p=>p.id===book.owner);
+   const entries=book.entries.map(entry=>{
+    if(entry.type==="text")return "<p>"+esc(entry.value||"(No sentence submitted.)")+"</p>";
+    if(entry.value&&entry.value.startsWith("data:image/jpeg;base64,"))return '<img alt="Player drawing" src="'+entry.value+'">';
+    return '<p class="muted">(No drawing submitted.)</p>';
+   }).join("");
+   return '<div class="book-item"><strong>'+esc(owner?.name||"Player")+"</strong>"+entries+"</div>";
+  }).join("");
+  $("roundLabel").textContent="COMPLETE";$("progress").textContent="THE REVEAL";updateTimer();return;
+ }
+ show("play");$("roundLabel").textContent="ROUND "+(state.round+1);$("progress").textContent="BOOK "+(Math.max(0,state.books.findIndex(b=>b.owner===id)+1))+" / "+state.books.length;
+ const book=state.books.find(b=>b.holder===id);
+ if(!book||book.entries.length!==state.round){
+  $("taskTitle").textContent="You're all caught up";$("taskHint").textContent="Waiting for the other players to finish their pages."; $("writeTask").classList.add("hidden");$("drawTask").classList.add("hidden");$("waitTask").classList.remove("hidden");updateTimer();return;
+ }
+ if(state.submissions&&state.submissions[id]){
+  $("taskTitle").textContent="Turn submitted";$("taskHint").textContent="Your page has been passed on."; $("writeTask").classList.add("hidden");$("drawTask").classList.add("hidden");$("waitTask").classList.remove("hidden");$("playStatus").textContent="Waiting for the other players…";updateTimer();return;
+ }
+ $("waitTask").classList.add("hidden");
+ const nextKey=state.round+":"+book.owner+":"+state.phase;
+ if(nextKey!==taskKey){
+  taskKey=nextKey;$("sentence").value="";
+  if(state.phase==="draw"){const previous=book.entries[book.entries.length-1];$("drawPrompt").textContent=previous?.value||"Draw something.";resetCanvas();}
+ }
+ if(state.phase==="write"){
+  $("taskTitle").textContent="Write a sentence";$("taskHint").textContent="Start or continue the telephone chain. You have "+state.timerSeconds+" seconds."; $("writeTask").classList.remove("hidden");$("drawTask").classList.add("hidden");
+ }else{
+  $("taskTitle").textContent="Draw what you see";$("taskHint").textContent="Try your best. No letters or numbers."; $("writeTask").classList.add("hidden");$("drawTask").classList.remove("hidden");
+ }
+ setTaskControls(true);updateTimer();
+}
+function setTaskControls(enabled){
+ $("submitSentence").disabled=!enabled;$("submitDrawing").disabled=!enabled;
+ $("sentence").disabled=!enabled;
+ ["pen","eraser","colour","size","undo","clear"].forEach(key=>$(key).disabled=!enabled);
+ canvas.style.pointerEvents=enabled?"auto":"none";canvas.style.opacity=enabled?"1":".7";
+}
+function resetCanvas(){ctx.fillStyle="#fff";ctx.fillRect(0,0,canvas.width,canvas.height);undoStack=[];saveCanvas();setTaskControls(true)}
+function saveCanvas(){undoStack.push(canvas.toDataURL("image/jpeg",.7));if(undoStack.length>30)undoStack.shift()}
+function pos(event){const rect=canvas.getBoundingClientRect();return{x:(event.clientX-rect.left)*canvas.width/rect.width,y:(event.clientY-rect.top)*canvas.height/rect.height}}
+canvas.onpointerdown=event=>{if(!state||state.phase!=="draw"||state.submissions?.[id])return;drawing=true;canvas.setPointerCapture(event.pointerId);last=pos(event);saveCanvas();ctx.beginPath();ctx.moveTo(last.x,last.y)};
+canvas.onpointermove=event=>{if(!drawing)return;const point=pos(event);ctx.strokeStyle=drawMode==="eraser"?"#fff":$("colour").value;ctx.lineWidth=Number($("size").value)*(drawMode==="eraser"?3:1);ctx.lineCap="round";ctx.lineJoin="round";ctx.lineTo(point.x,point.y);ctx.stroke();last=point};
+canvas.onpointerup=()=>{drawing=false};canvas.onpointercancel=()=>{drawing=false};
+$("pen").onclick=()=>{drawMode="pen";$("pen").classList.add("primary");$("eraser").classList.remove("primary")};
+$("eraser").onclick=()=>{drawMode="eraser";$("eraser").classList.add("primary");$("pen").classList.remove("primary")};
+$("undo").onclick=()=>{if(undoStack.length>1){undoStack.pop();const image=new Image();image.onload=()=>ctx.drawImage(image,0,0);image.src=undoStack[undoStack.length-1]}};
+$("clear").onclick=()=>resetCanvas();
+$("submitSentence").onclick=()=>{const value=$("sentence").value.trim();if(!value)return;$("submitSentence").disabled=true;sendHost({type:"submit",value});sound(540)};
+$("submitDrawing").onclick=()=>{
+ const small=document.createElement("canvas");small.width=640;small.height=370;small.getContext("2d").drawImage(canvas,0,0,640,370);
+ const value=small.toDataURL("image/jpeg",.55);$("submitDrawing").disabled=true;sendHost({type:"submit",value});sound(700);
+};
+$("create").onclick=()=>{
+ name=$("hostName").value.trim().slice(0,18)||"Host";room=roomCode();host=true;hostId=id;players=[{id,name,connected:true}];state=null;welcomed=true;
+ show("lobby");$("codeLabel").textContent=room;$("lobbyStatus").textContent="Room created. Share the code to invite players.";
+ $("turnTimer").value="60";renderPlayers();startPolling();startTimerLoop();sound(620);
+};
+$("join").onclick=async()=>{
+ name=$("joinName").value.trim().slice(0,18)||"Player";room=$("roomCode").value.trim().toUpperCase();
+ if(!/^[A-Z0-9]{6}$/.test(room)){$("homeStatus").textContent="Enter a valid six-character room code.";return;}
+ if(!window.RTCPeerConnection){$("homeStatus").textContent="This browser does not support peer-to-peer connections.";return;}
+ host=false;hostId="";players=[{id,name,connected:false}];state=null;welcomed=false;
+ show("lobby");$("codeLabel").textContent=room;$("lobbyStatus").textContent="Connecting to host…";renderPlayers();startPolling();startTimerLoop();
+ if(connectionTimer)clearTimeout(connectionTimer);
+ connectionTimer=setTimeout(()=>{
+  if(!welcomed||!channels.get(hostId)||channels.get(hostId).readyState!=="open"){
+   stopRoom();show("home");$("homeStatus").textContent="Couldn't connect to the host. Check the room code and ask the host to keep the room open, then try again.";
+  }
+ },CONNECT_TIMEOUT);
+ try{await signal("host",{type:"hello",name})}catch(error){stopRoom();show("home");$("homeStatus").textContent=error.message||"Couldn't join this room.";}
+ sound(460);
+};
+$("copyCode").onclick=async()=>{
+ try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(room);$("lobbyStatus").textContent="Invite code copied.";}
+ else{window.prompt("Copy this room code:",room);}}catch{$("lobbyStatus").textContent="Room code: "+room;}
+};
+$("start").onclick=begin;
+$("turnTimer").addEventListener("change",()=>{const seconds=safeTimerSeconds();$("turnTimer").value=String(seconds);$("lobbyStatus").textContent="Turn timer set to "+seconds+" seconds.";});
+$("backLobby").onclick=()=>{
+ if(!host)return;
+ state=null;taskKey="";broadcast({type:"state",state:null});show("lobby");renderPlayers();$("lobbyStatus").textContent="Room reset. Everyone can start a new game when ready.";
+};
+window.addEventListener("beforeunload",()=>{closed=true;stopRoom();});
+startTimerLoop();
 })();
 </script></body></html>
