@@ -1,0 +1,185 @@
+name: Import selected mobile-first games from 3kh0
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/import-requested-mobile-games.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: excruciating-mobile-game-import
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch only selected mobile-oriented folders from 3kh0 GitLab
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --depth 1 --filter=blob:none --no-checkout https://gitlab.com/3kh0/3kh0-assets.git /tmp/3kh0-assets
+          git -C /tmp/3kh0-assets sparse-checkout init --cone
+          git -C /tmp/3kh0-assets sparse-checkout set aquapark-slides crossyroad fruitninja tiny-fishing
+          git -C /tmp/3kh0-assets checkout
+
+      - name: Import touch-friendly games and use real game artwork
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, re, shutil
+          from pathlib import Path
+
+          source = Path("/tmp/3kh0-assets")
+          selected = [
+              ("aquapark-slides", "Aquapark Slides", "Arcade"),
+              ("crossyroad", "Crossy Road", "Arcade"),
+              ("fruitninja", "Fruit Ninja", "Arcade"),
+              ("tiny-fishing", "Tiny Fishing", "Arcade"),
+          ]
+          catalogue_path = Path("catalog/games.json")
+          catalogue = json.loads(catalogue_path.read_text(encoding="utf-8"))
+          entries = {game["slug"]: game for game in catalogue.get("games", [])}
+
+          def find_real_art(folder):
+              candidates = []
+              for file in folder.rglob("*"):
+                  if not file.is_file() or file.suffix.lower() not in {".png", ".jpg", ".jpeg", ".webp", ".ico"}:
+                      continue
+                  name = file.name.lower()
+                  if any(token in name for token in ("favicon", "icon", "thumb", "thumbnail", "cover", "logo", "title", "splash")):
+                      candidates.append(file)
+              if not candidates:
+                  return None
+              priority = {"favicon": 0, "icon": 1, "thumb": 2, "thumbnail": 3, "cover": 4, "logo": 5, "title": 6, "splash": 7}
+              return sorted(
+                  candidates,
+                  key=lambda file: (
+                      min((priority[token] for token in priority if token in file.name.lower()), default=20),
+                      len(file.relative_to(folder).parts),
+                      file.as_posix()
+                  )
+              )[0]
+
+          imported = []
+          for slug, title, category in selected:
+              src = source / slug
+              if not (src / "index.html").is_file():
+                  print(f"Skipped {slug}: source folder has no root index.html.")
+                  continue
+              if any(file.stat().st_size > 25 * 1024 * 1024 for file in src.rglob("*") if file.is_file()):
+                  print(f"Skipped {slug}: at least one asset exceeds Cloudflare Pages' 25 MiB per-file limit.")
+                  continue
+              art = find_real_art(src)
+              if art is None:
+                  print(f"Skipped {slug}: no real game artwork found; no placeholder favicon will be generated.")
+                  continue
+
+              destination = Path("games") / slug
+              if destination.exists():
+                  shutil.rmtree(destination)
+              shutil.copytree(src, destination, ignore=shutil.ignore_patterns(".git", ".github", "node_modules"))
+
+              relative_art = art.relative_to(src).as_posix()
+              mime = {
+                  ".ico": "image/x-icon",
+                  ".png": "image/png",
+                  ".jpg": "image/jpeg",
+                  ".jpeg": "image/jpeg",
+                  ".webp": "image/webp"
+              }[art.suffix.lower()]
+
+              for html_file in destination.rglob("*.html"):
+                  try:
+                      html = html_file.read_text(encoding="utf-8")
+                  except UnicodeDecodeError:
+                      continue
+                  html = html.replace(
+                      f"https://raw.githack.com/3kh0/3kh0-assets/main/{slug}/",
+                      f"/games/{slug}/"
+                  ).replace(
+                      f"https://raw.githubusercontent.com/3kh0/3kh0-assets/main/{slug}/",
+                      f"/games/{slug}/"
+                  )
+                  html = re.sub(
+                      r'<script\b[^>]*src=["\'][^"\']*(?:google-analytics|googletagmanager|cloudflareinsights)[^"\']*["\'][^>]*>\s*</script\s*>',
+                      "",
+                      html,
+                      flags=re.I
+                  )
+                  html = re.sub(r'<link\b[^>]*\brel=["\'](?:shortcut\s+)?icon["\'][^>]*>', "", html, flags=re.I)
+                  if re.search(r"<head\b[^>]*>", html, re.I):
+                      icon_link = f'<link rel="icon" type="{mime}" href="./{relative_art}">'
+                      html = re.sub(r"(<head\b[^>]*>)", lambda match: match.group(1) + "\n  " + icon_link, html, count=1, flags=re.I)
+                      if not re.search(r'<meta\b[^>]*name=["\']viewport["\']', html, re.I):
+                          html = html.replace(
+                              "</head>",
+                              '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"></head>',
+                              1
+                          )
+                  html_file.write_text(html, encoding="utf-8")
+
+              (destination / "ATTRIBUTION.md").write_text(
+                  f"# {title}\n\n"
+                  "Game files sourced from the archived 3kh0 Assets collection. The original project README states that archived games may be reused; credit is retained here. Game trademarks and any third-party rights remain with their respective owners.\n\n"
+                  f"Source: https://gitlab.com/3kh0/3kh0-assets/-/tree/main/{slug}\n",
+                  encoding="utf-8"
+              )
+              artwork_path = f"/games/{slug}/{relative_art}"
+              entries[slug] = {
+                  "slug": slug,
+                  "title": title,
+                  "category": category,
+                  "description": f"Locally hosted, touch-oriented {title}.",
+                  "url": f"/games/{slug}/index.html",
+                  "thumbnail": artwork_path,
+                  "icon": artwork_path,
+                  "source_url": f"https://gitlab.com/3kh0/3kh0-assets/-/tree/main/{slug}",
+                  "license": "Archived 3kh0 Assets README permits reuse; third-party rights remain with their owners.",
+                  "attribution": "Sourced from 3kh0 Assets; credit retained and third-party game rights belong to their respective owners.",
+                  "published": True
+              }
+              imported.append(title)
+
+          if not imported:
+              raise SystemExit("No selected game passed the local-page, file-size and real-artwork checks.")
+
+          catalogue["games"] = list(entries.values())
+          catalogue["version"] = int(catalogue.get("version", 1)) + 1
+          catalogue["source"] = "Locally hosted games, including selected mobile-oriented 3kh0 Assets imports."
+          catalogue_path.write_text(json.dumps(catalogue, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print("Imported:", ", ".join(imported))
+          PY
+
+      - name: Confirm the catalogue points to local launch pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          catalogue = json.loads(Path("catalog/games.json").read_text(encoding="utf-8"))
+          for slug in ("aquapark-slides", "crossyroad", "fruitninja", "tiny-fishing"):
+              game = next((item for item in catalogue["games"] if item.get("slug") == slug), None)
+              if game and not (Path(".") / game["url"].lstrip("/")).is_file():
+                  raise SystemExit(f"Missing local launch page for {slug}")
+          PY
+
+      - name: Commit selected mobile games
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add catalog/games.json games/aquapark-slides games/crossyroad games/fruitninja games/tiny-fishing
+          git commit -m "Add selected mobile-first 3kh0 games"
+          git push origin main
