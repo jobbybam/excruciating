@@ -6,6 +6,12 @@
 
   const source = container.dataset.swf || "game.swf";
   const base = new URL("./", location.href);
+  window.ExcruciatingGameReady = false;
+  window.ExcruciatingGameLoadFailed = false;
+  const markReady = () => {
+    window.ExcruciatingGameReady = true;
+    window.dispatchEvent(new Event("excruciating:game-ready"));
+  };
   const showError = (message) => {
     errorPanel.hidden = false;
     errorPanel.textContent = message;
@@ -34,6 +40,7 @@
     const manifestResponse = await fetch(new URL(source + ".parts.json", base), { cache: "force-cache" });
     if (!manifestResponse.ok) {
       await api.load({ url: new URL(source, base).href });
+      markReady();
       return;
     }
 
@@ -54,9 +61,12 @@
       offset += buffer.byteLength;
     }
     await api.load({ data, swfFileName: source, base: base.href });
+    markReady();
   }
 
   loadGame().catch((error) => {
+    window.ExcruciatingGameLoadFailed = true;
+    window.dispatchEvent(new Event("excruciating:game-failed"));
     console.error("Could not start the locally hosted Ruffle game.", error);
     showError("This game could not start. Reload the page, or try again when the local game files are available.");
   });

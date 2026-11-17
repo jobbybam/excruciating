@@ -1,5 +1,7 @@
 (() => {
   "use strict";
+  if (window.__excruciatingGameShellLoaded) return;
+  window.__excruciatingGameShellLoaded = true;
 
   const styles = document.createElement("style");
   styles.textContent = `
@@ -156,6 +158,7 @@ const gameShellUiStyle=document.createElement("style");
       return;
     }
     const status=overlay.querySelector(".status"),startedAt=Date.now();
+    const requiresExplicitLoad = /^\/games\/henry-(?:breaking-the-bank|escaping-the-prison|stealing-the-diamond|infiltrating-the-airship|fleeing-the-complex)(?:\/|$)/.test(location.pathname) || document.body?.dataset.excruciatingLoader === "explicit";
     let progress=4,loaded=document.readyState==="complete",stableSince=0,finished=false,errorShown=false;
     const isVisible=element=>{
       if(!element)return false;
@@ -171,6 +174,7 @@ const gameShellUiStyle=document.createElement("style");
       return candidates.some(element=>element.id!=="excruciating-loader"&&isVisible(element)&&/loading|downloading|starting|initializing|cached/i.test(element.textContent||""));
     };
     const ready=()=>{
+      if(requiresExplicitLoad) return window.ExcruciatingGameReady === true;
       if(!loaded)return false;
       if(explicitLoaderActive())return false;
       return hasVisibleGame()||Date.now()-startedAt>3200;
@@ -204,6 +208,10 @@ const gameShellUiStyle=document.createElement("style");
     };
     const check=()=>{
       if(finished)return;
+      if(requiresExplicitLoad && window.ExcruciatingGameLoadFailed){
+        showLoadError();
+        return;
+      }
       if(ready()){
         if(!stableSince)stableSince=Date.now();
         if(Date.now()-stableSince>=750)finish();
@@ -222,6 +230,8 @@ const gameShellUiStyle=document.createElement("style");
     const observer=new MutationObserver(check);
     observer.observe(document.body||document.documentElement,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["class","style","hidden"]});
     window.addEventListener("load",()=>{loaded=true;check();},{once:true});
+    window.addEventListener("excruciating:game-ready",check);
+    window.addEventListener("excruciating:game-failed",check);
     if(loaded)check();
     const poll=setInterval(()=>{check();if(finished)clearInterval(poll);},200);
   }
@@ -323,7 +333,7 @@ const gameShellUiStyle=document.createElement("style");
   const isUndertaleControls = isUndertaleGame || isBadTimeGame;
   const touchDevice = matchMedia("(hover:none) and (pointer:coarse)").matches;
   // These games provide their own touch controls; do not overlay a competing control scheme.
-  touchControls.hidden = true;
+  touchControls.hidden = !(isEaglerGame && touchDevice);
   touchControls.classList.toggle("eagler-controls", isEaglerGame);
   touchControls.classList.toggle("fnf-controls", isFunkinGame);
   touchControls.setAttribute("aria-label", isEaglerGame ? "Eaglercraft touch controls" : isFunkinGame ? "Friday Night Funkin touch controls" : "Optional touch game controls");
@@ -362,6 +372,7 @@ const gameShellUiStyle=document.createElement("style");
       controlsToggle.querySelector("span").textContent = visible ? "Hide controls" : "Show controls";
     } else {
       touchControls.hidden = !touchControls.hidden;
+      if (isEaglerGame) lookSurface.hidden = touchControls.hidden;
       controlsToggle.setAttribute("aria-expanded", String(!touchControls.hidden));
       controlsToggle.querySelector("span").textContent = touchControls.hidden ? "Show controls" : "Hide controls";
     }
@@ -410,6 +421,14 @@ const gameShellUiStyle=document.createElement("style");
   lookSurface.id = "excruciating-eagler-look-surface";
   lookSurface.hidden = true;
   lookSurface.setAttribute("aria-label", "Drag to look around in Eaglercraft");
+  if (isEaglerGame) {
+    document.body.append(lookSurface);
+    lookSurface.hidden = !touchDevice;
+    if (touchDevice) {
+      controlsToggle.setAttribute("aria-expanded", "true");
+      controlsToggle.querySelector("span").textContent = "Hide controls";
+    }
+  }
 
   const keyInfo = {
     ArrowUp: ["ArrowUp", "ArrowUp", 38], ArrowDown: ["ArrowDown", "ArrowDown", 40],
@@ -443,7 +462,8 @@ const gameShellUiStyle=document.createElement("style");
     const buttons = type === "mouseup" ? 0 : button === 0 ? 1 : button === 2 ? 2 : 0;
     const event = new MouseEvent(type, { view: window, bubbles: true, cancelable: true, clientX: x, clientY: y, button, buttons });
     try { Object.defineProperties(event, { movementX: { value: dx }, movementY: { value: dy } }); } catch (_) {}
-    document.dispatchEvent(event);
+    const target = document.querySelector("canvas") || document.body || document;
+    target.dispatchEvent(event);
   }
   const heldMouseButtons = new Set();
   function releaseAllVirtualInputs() {
