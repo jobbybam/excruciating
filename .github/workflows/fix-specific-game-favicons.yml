@@ -1,0 +1,139 @@
+name: Assign actual game artwork as favicons
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/fix-specific-game-favicons.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: excruciating-manual-game-favicons
+  cancel-in-progress: false
+
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Replace placeholder initials with real game artwork already in each game folder
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+
+          # Each entry is an existing, title-specific asset from that game's own
+          # folder. This workflow never creates artwork or placeholder icons.
+          artwork = {
+              "99balls": "99-balls-evo.jpg",
+              "bad-ice-cream": "bad-ice-cream.png",
+              "basket-random": "splash.jpeg",
+              "bitlife": "logo.png",
+              "bloonstd": "bloonstd.jpg",
+              "circlo": "img/icon.png",
+              "cookie-clicker": "img/favicon.ico",
+              "doodle-jump": "doodle.png",
+              "drift-boss": "media/graphics/splash/mobile/cover-start.jpg",
+              "ducklife1": "ducklife.png",
+              "ducklife2": "ducklife2.png",
+              "elasticman": "elasticman.jpg",
+              "flappy-bird": "assets/thumb.png",
+              "geodash": "geoscratchicon.png",
+              "idle-breakout": "assets/favicon.png",
+              "monkey-mart": "bg_loading.png",
+              "monster-tracks": "thumb.jpg",
+              "om-bounce": "assets/icon.png",
+              "paperio2": "images/icon512.png",
+              "polytrack": "images/icon.svg",
+              "rooftop-snipers": "img/thumb.png",
+              "slope": "slope4.jpeg",
+              "sort-the-court": "img/icon.png",
+              "stickman-hook": "images/48b008015901097a88b7803f4ad868da-title.png",
+              "the-final-earth": "images.png",
+              "ctr": "images/favicon.ico"
+          }
+
+          catalogue_path = Path("catalog/games.json")
+          catalogue = json.loads(catalogue_path.read_text(encoding="utf-8"))
+          by_slug = {game["slug"]: game for game in catalogue.get("games", [])}
+          failed = []
+          changed = []
+
+          for slug, relative_asset in artwork.items():
+              game = by_slug.get(slug)
+              folder = Path("games") / slug
+              page = folder / "index.html"
+              asset = folder / relative_asset
+              if game is None or not page.is_file() or not asset.is_file():
+                  failed.append(f"{slug}: missing catalogue entry, page or mapped artwork ({relative_asset})")
+                  continue
+
+              extension = asset.suffix.lower()
+              mime = {
+                  ".ico": "image/x-icon",
+                  ".png": "image/png",
+                  ".jpg": "image/jpeg",
+                  ".jpeg": "image/jpeg",
+                  ".webp": "image/webp",
+                  ".svg": "image/svg+xml"
+              }.get(extension)
+              if not mime:
+                  failed.append(f"{slug}: unsupported artwork format {extension}")
+                  continue
+
+              href = f"/games/{slug}/{relative_asset}"
+              html = page.read_text(encoding="utf-8")
+              html = re.sub(
+                  r'<link\b[^>]*\brel=["\'](?:shortcut\s+)?icon["\'][^>]*>',
+                  "",
+                  html,
+                  flags=re.I
+              )
+              icon_link = f'<link rel="icon" type="{mime}" href="{href}">'
+              if not re.search(r"<head\b[^>]*>", html, re.I):
+                  failed.append(f"{slug}: no head element to attach the favicon")
+                  continue
+              html = re.sub(
+                  r"(<head\b[^>]*>)",
+                  lambda match: match.group(1) + "\n  " + icon_link,
+                  html,
+                  count=1,
+                  flags=re.I
+              )
+              page.write_text(html, encoding="utf-8")
+              game["icon"] = href
+
+              # Remove only the known generic SVGs that this mapping supersedes.
+              for obsolete in (folder / "favicon.svg", Path("favicons") / f"{slug}.svg"):
+                  if obsolete.is_file():
+                      obsolete.unlink()
+              changed.append(f"{slug} -> {relative_asset}")
+
+          if failed:
+              raise SystemExit("Some real game icons could not be assigned:\n" + "\n".join(failed))
+
+          catalogue_path.write_text(json.dumps(catalogue, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print("Assigned actual game artwork:")
+          print("\n".join(changed))
+          print("No placeholder artwork was generated.")
+          PY
+      - name: Commit manually mapped favicon assignments
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add catalog/games.json
+          git add -u games favicons
+          for folder in 99balls bad-ice-cream basket-random bitlife bloonstd circlo cookie-clicker doodle-jump drift-boss ducklife1 ducklife2 elasticman flappy-bird geodash idle-breakout monkey-mart monster-tracks om-bounce paperio2 polytrack rooftop-snipers slope sort-the-court stickman-hook the-final-earth ctr; do
+            git add "games/$folder/index.html"
+          done
+          git commit -m "Assign actual game artwork to individual favicons"
+          git push origin main
