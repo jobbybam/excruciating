@@ -1,125 +1,57 @@
-name: Add local favicons to hosted games
+name: Validate manually assigned game favicons
 
 on:
   push:
     branches: [main]
     paths:
       - ".github/workflows/ensure-game-favicons.yml"
+      - "catalog/games.json"
       - "games/**/index.html"
+      - "favicons/**"
+  pull_request:
+    branches: [main]
   workflow_dispatch:
-  workflow_run:
-    workflows:
-      - Import requested local games
-      - Import uploaded EaglercraftX 1.8 build
-      - Import requested 3kh0 games
-      - Import games
-    types: [completed]
 
 permissions:
-  contents: write
-
-concurrency:
-  group: excruciating-game-favicons
-  cancel-in-progress: false
+  contents: read
 
 jobs:
-  favicons:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-          filter: blob:none
-          sparse-checkout: |
-            games/*/index.html
-            games/*/favicon.svg
-            games/*/favicon.ico
-            games/*/favicon.png
-            games/*/icon-256.png
-            games/*/stack.png
-            games/*/img/snake.png
-            games/*/img/og-icon.png
-            games/*/icons/icon-256.png
-            games/*/icons/icon-512.png
-            games/google-snake/img/snake.png
-            games/draw-the-hill/icons/icon-512.png
-            games/stack/stack.png
-            games/temple-run-2/img/og-icon.png
-          sparse-checkout-cone-mode: false
-      - name: Create a favicon for every game page missing one
+      - name: Verify assigned local favicons without generating replacements
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
+          import json, re
           from pathlib import Path
-          import hashlib, re
-
-          root = Path("games")
-          changed = []
-          for folder in sorted(root.iterdir()):
-              if not folder.is_dir() or folder.name == "ruffle":
+          root = Path(".")
+          catalogue = json.loads((root / "catalog/games.json").read_text(encoding="utf-8"))
+          missing = []
+          checked = 0
+          for game in catalogue.get("games", []):
+              if game.get("published") is False or not str(game.get("url", "")).startswith("/games/"):
                   continue
-              page = folder / "index.html"
+              page = root / game["url"].lstrip("/")
               if not page.is_file():
+                  missing.append(f"{game.get('slug')}: launch page missing")
                   continue
-
-              native_icons = [
-                  "favicon.ico", "favicon.png", "icon.png", "icon-256.png",
-                  "stack.png", "img/favicon.ico", "img/favicon.png", "img/snake.png",
-                  "img/og-icon.png", "icons/icon-256.png", "icons/icon-512.png", "favicon.svg"
-              ]
-              chosen = next((folder / name for name in native_icons if (folder / name).is_file()), None)
-              moto_labels = {"motox3m": "M3", "motox3m2": "M2", "motox3m-pool": "MP", "motox3m-spooky": "MS", "motox3m-winter": "MW"}
-              if chosen is None or (chosen.name == "favicon.svg" and folder.name in moto_labels):
-                  icon = folder / "favicon.svg"
-                  label = moto_labels.get(folder.name, re.sub(r"[^A-Za-z0-9]", "", folder.name)[:2].upper() or "G")
-                  digest = hashlib.sha256(folder.name.encode("utf-8")).digest()
-                  hue = int.from_bytes(digest[:2], "big") % 360
-                  svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-            <rect width="64" height="64" rx="15" fill="hsl({hue} 32% 17%)"/>
-            <path d="M8 8h48v48H8z" fill="none" stroke="hsl({hue} 45% 68%)" stroke-opacity=".35" stroke-width="2"/>
-            <text x="32" y="42" text-anchor="middle" font-family="Arial,sans-serif" font-size="{25 if len(label) == 2 else 34}" font-weight="700" fill="#fff">{label}</text>
-          </svg>'''
-                  if not icon.exists():
-                      icon.write_text(svg + "\n", encoding="utf-8")
-                      changed.append(str(icon))
-                  chosen = icon
-
-              suffix = chosen.suffix.lower()
-              mime = {".ico": "image/x-icon", ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".svg": "image/svg+xml"}.get(suffix, "image/x-icon")
-              href = "./" + chosen.relative_to(folder).as_posix()
-              html = page.read_text(encoding="utf-8")
-              html = re.sub(r"""<link\b[^>]*\brel\s*=\s*["'](?:shortcut\s+)?icon["'][^>]*>""", "", html, flags=re.I)
-              link = f'<link rel="icon" type="{mime}" href="{href}">'
-              if re.search(r'<head\b[^>]*>', html, re.I):
-                  html = re.sub(r"""(<head\b[^>]*>)""", r"""\1\n  """ + link, html, count=1, flags=re.I)
-              else:
-                  html = link + "\n" + html
-              page.write_text(html, encoding="utf-8")
-              changed.append(str(page))
-
-          print(f"Added or linked {len(changed)} favicon assets/HTML updates.")
-          for path in changed:
-              print(path)
+              html = page.read_text(encoding="utf-8", errors="replace")
+              match = re.search(r'<link\b(?=[^>]*\brel=["\'](?:shortcut\s+)?icon["\'])[^>]*\bhref=["\']([^"\']+)["\']', html, re.I)
+              if not match:
+                  missing.append(f"{game.get('slug')}: favicon link missing")
+                  continue
+              href = match.group(1)
+              if href.startswith(("http://", "https://", "//", "data:")):
+                  missing.append(f"{game.get('slug')}: favicon is not local ({href})")
+                  continue
+              target = root / href.lstrip("/") if href.startswith("/") else page.parent / href
+              if not target.is_file():
+                  missing.append(f"{game.get('slug')}: favicon asset missing ({href})")
+              checked += 1
+          if missing:
+              raise SystemExit("Favicon validation failed:\n" + "\n".join(missing))
+          print(f"Verified {checked} local favicon links. No files were generated or modified.")
           PY
-      - name: Commit favicon updates
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add games/
-          git commit -m "Add missing local game favicons" || echo "All game favicons are already present."
-          for attempt in 1 2 3 4 5; do
-            git fetch origin main
-            if git rebase origin/main; then
-              if git push origin main; then
-                exit 0
-              fi
-            else
-              git rebase --abort || true
-            fi
-            sleep 2
-          done
-          echo "Unable to push favicon updates after five retries."
-          exit 1
