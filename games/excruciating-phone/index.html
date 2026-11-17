@@ -29,8 +29,13 @@ function sound(freq=520,duration=.08,type="sine"){try{audio??=new(window.AudioCo
 function show(section){["home","lobby","play","results"].forEach(x=>$(x).classList.toggle("hidden",x!==section))}
 function roomCode(){return Math.random().toString(36).slice(2,8).toUpperCase()}
 function setStatus(text){const target=$("lobby").classList.contains("hidden")?$("playStatus"):$("lobbyStatus");if(target)target.textContent=text||""}
+async function fetchSignal(url,options={}){
+ const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),8000);
+ try{return await fetch(url,{...options,signal:controller.signal});}
+ finally{clearTimeout(timeout);}
+}
 async function signal(to,payload){
- const response=await fetch(API,{method:"POST",cache:"no-store",headers:{"content-type":"application/json"},body:JSON.stringify({room,from:id,to,payload})});
+ const response=await fetchSignal(API,{method:"POST",cache:"no-store",headers:{"content-type":"application/json"},body:JSON.stringify({room,from:id,to,payload})});
  if(!response.ok){const data=await response.json().catch(()=>({}));throw new Error(data.error||"Could not contact the room server.");}
 }
 async function poll(){
@@ -39,10 +44,13 @@ async function poll(){
  try{
   const recipients=host?["host",id]:[id];
   for(const recipient of recipients){
-   const response=await fetch(API+"?room="+encodeURIComponent(room)+"&player="+encodeURIComponent(recipient),{cache:"no-store"});
+   const response=await fetchSignal(API+"?room="+encodeURIComponent(room)+"&player="+encodeURIComponent(recipient),{cache:"no-store"});
    if(!response.ok)throw new Error("Room connection interrupted ("+response.status+").");
    const data=await response.json();
-   for(const message of data.messages||[])await receiveSignal(message);
+   for(const message of data.messages||[]){
+    try{await receiveSignal(message)}
+    catch(error){if(room)setStatus("A room message failed. Retrying connection…");}
+   }
   }
  }catch(error){if(room)setStatus(error.message||"Connection interrupted.");}
  finally{polling=false;}
@@ -166,9 +174,19 @@ async function receiveSignal(message){
  const from=message.from,payload=message.payload||{};
  if(payload.type==="hello"&&host){
   if(state){await signal(from,{type:"room-locked"});return;}
-  if(players.some(p=>p.id===from))return;
+  const existing=players.find(p=>p.id===from);
+  if(existing){
+   const channel=channels.get(from),oldPeer=pcMap.get(from);
+   if(channel?.readyState==="open"||oldPeer&&oldPeer.connectionState!=="failed"&&oldPeer.connectionState!=="closed"){
+    await signal(from,{type:"welcome",players,hostId:id,state,hostNow:Date.now()});
+    return;
+   }
+   try{oldPeer?.close()}catch{}
+   pcMap.delete(from);channels.delete(from);pendingCandidates.delete(from);
+   players=players.filter(p=>p.id!==from);
+  }
   if(players.length>=MAX_PLAYERS){await signal(from,{type:"room-full"});return;}
-  players.push({id:from,name:String(payload.name||"Player").slice(0,18),connected:false});renderPlayers();
+  players.push({id:from,name:String(payload.name||existing?.name||"Player").slice(0,18),connected:false});renderPlayers();
   scheduleDrop(from,CONNECT_TIMEOUT);
   try{await makePeer(from);await signal(from,{type:"welcome",players,hostId:id,state,hostNow:Date.now()});}
   catch(error){players=players.filter(x=>x.id!==from);renderPlayers();await signal(from,{type:"connection-error",message:"The host could not establish a connection."}).catch(()=>{});}
