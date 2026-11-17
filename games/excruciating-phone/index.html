@@ -10,6 +10,7 @@
 <section id="play" class="stage hidden"><div class="row spread"><span class="pill" id="roundLabel">ROUND</span><span class="pill" id="timerDisplay">01:00</span><span class="muted" id="progress"></span></div><h2 id="taskTitle">Your turn</h2><p class="muted" id="taskHint"></p><div id="writeTask" class="panel hidden"><label class="field">Write a sentence<textarea id="sentence" maxlength="120" rows="3" placeholder="Something wonderfully ridiculous…"></textarea></label><button class="primary" id="submitSentence">Pass sentence</button></div><div id="drawTask" class="hidden"><div class="prompt" id="drawPrompt"></div><div class="tools"><button id="pen" class="primary">Pen</button><button id="eraser">Eraser</button><input id="colour" type="color" value="#171717" aria-label="Pen colour"><label class="muted">Size <input id="size" type="range" min="2" max="24" value="5"></label><button id="undo">Undo</button><button id="clear">Clear</button></div><div class="canvas-wrap"><canvas id="canvas" width="900" height="520"></canvas></div><div class="row" style="margin-top:12px"><button class="primary" id="submitDrawing">Pass drawing</button></div></div><div id="waitTask" class="panel hidden"><h2>You're all caught up.</h2><p class="muted">Waiting for the other players to finish their pages…</p></div><p class="status" id="playStatus"></p></section>
 <section id="results" class="stage hidden"><div class="eyebrow">THE REVEAL</div><h1>Look what happened.</h1><p class="muted">Every sentence and drawing, in order.</p><div class="book" id="books"></div><button class="primary" id="backLobby" style="margin-top:18px">Back to lobby</button></section><p class="footer">EXCRUCIATING PHONE · CLASSIC MODE</p></div>
 <script>
+
 (()=>{
 "use strict";
 const $=id=>document.getElementById(id);
@@ -56,6 +57,19 @@ function stopRoom(){
  pcMap.clear();channels.clear();pendingCandidates.clear();incomingChunks.clear();
  room="";state=null;players=[];welcomed=false;taskKey="";clockOffset=0;
 }
+function clearPlayerTimer(pid){const timer=hostPlayerTimers.get(pid);if(timer)clearTimeout(timer);hostPlayerTimers.delete(pid);}
+function scheduleDrop(pid,delay=15000){
+ if(!host||pid===id||!players.some(p=>p.id===pid))return;
+ clearPlayerTimer(pid);
+ hostPlayerTimers.set(pid,setTimeout(()=>{
+  const player=players.find(p=>p.id===pid),channel=channels.get(pid);
+  if(!player||player.connected||channel?.readyState==="open")return;
+  players=players.filter(p=>p.id!==pid);hostPlayerTimers.delete(pid);
+  try{pcMap.get(pid)?.close()}catch{}
+  pcMap.delete(pid);channels.delete(pid);pendingCandidates.delete(pid);
+  renderPlayers();broadcast({type:"players",players,hostId});
+ },delay));
+}
 function updatePlayer(pid,patch){
  const player=players.find(p=>p.id===pid);if(player)Object.assign(player,patch);
 }
@@ -75,6 +89,7 @@ function renderPlayers(){
   message="Waiting for "+waiting+" player"+(waiting===1?"":"s")+" to connect…";
  }else message=host?"Everyone is connected. Ready to start.":"Everyone is connected. Waiting for the host to start.";
  $("startRequirement").textContent=message;
+ if(!host&&$("lobby").classList.contains("hidden")===false){$("lobbyStatus").textContent=welcomed?message:"Connecting to host…";}
  $("start").disabled=!host||missing>0||!allConnected()||Boolean(state);
  $("start").textContent=state?"Game in progress":"Start game";
  if(!host&&$("lobbyStatus").textContent==="")$("lobbyStatus").textContent=message;
@@ -86,8 +101,8 @@ function peer(pid,offerer){
  pc.ondatachannel=event=>attach(pid,event.channel);
  pc.onconnectionstatechange=()=>{
   const status=pc.connectionState;
-  if(status==="connected"){updatePlayer(pid,{connected:true});renderPlayers();if(host)broadcast({type:"players",players,hostId});}
-  else if(status==="failed"||status==="closed"){updatePlayer(pid,{connected:false});renderPlayers();if(host)broadcast({type:"players",players,hostId});else $("lobbyStatus").textContent="Connection to the host was lost. Rejoin the room to continue.";}
+  if(status==="connected"){clearPlayerTimer(pid);updatePlayer(pid,{connected:true});renderPlayers();if(host)broadcast({type:"players",players,hostId});}
+  else if(status==="failed"||status==="closed"||status==="disconnected"){updatePlayer(pid,{connected:false});renderPlayers();if(host){broadcast({type:"players",players,hostId});scheduleDrop(pid,status==="disconnected"?20000:12000);}else{const message="Connection to the host was lost. Return to the room and rejoin.";if(!$("play").classList.contains("hidden"))$("playStatus").textContent=message;else $("lobbyStatus").textContent=message;}}
  };
  if(offerer){const channel=pc.createDataChannel("phone",{ordered:true});attach(pid,channel);}
  return pc;
@@ -112,7 +127,7 @@ function handleData(pid,raw){
  if(message.hostNow)clockOffset=Number(message.hostNow)-Date.now();
  if(host){
   if(message.type==="submit")applySubmission(pid,message);
-  else if(message.type==="ready"){updatePlayer(pid,{connected:true});renderPlayers();sendData(pid,{type:"players",players,hostId,hostNow:Date.now()});if(state)sendData(pid,{type:"state",state,hostNow:Date.now()});}
+  else if(message.type==="ready"){clearPlayerTimer(pid);updatePlayer(pid,{connected:true});renderPlayers();sendData(pid,{type:"players",players,hostId,hostNow:Date.now()});if(state)sendData(pid,{type:"state",state,hostNow:Date.now()});}
   else if(message.type==="request-state"){sendData(pid,{type:"players",players,hostId,hostNow:Date.now()});sendData(pid,{type:"state",state,hostNow:Date.now()});}
   return;
  }
@@ -126,7 +141,7 @@ function handleData(pid,raw){
 function attach(pid,channel){
  channels.set(pid,channel);
  channel.onopen=()=>{
-  updatePlayer(pid,{connected:true});renderPlayers();sound(660);
+  clearPlayerTimer(pid);updatePlayer(pid,{connected:true});renderPlayers();sound(660);
   if(host){broadcast({type:"players",players,hostId});sendData(pid,{type:"state",state,hostNow:Date.now()});}
   else{welcomed=true;if(connectionTimer)clearTimeout(connectionTimer);connectionTimer=null;if(connectionExpiry)clearTimeout(connectionExpiry);connectionExpiry=null;sendData(pid,{type:"ready",hostNow:Date.now()});}
  };
@@ -140,7 +155,7 @@ function attach(pid,channel){
    if(entry.received===entry.total){incomingChunks.delete(packet.id);handleData(pid,entry.parts.join(""));}
   }else handleData(pid,event.data);
  };
- channel.onclose=()=>{updatePlayer(pid,{connected:false});renderPlayers();if(host)broadcast({type:"players",players,hostId});};
+ channel.onclose=()=>{updatePlayer(pid,{connected:false});renderPlayers();if(host){broadcast({type:"players",players,hostId});scheduleDrop(pid,12000);}else{const message="Connection to the host was lost. Return to the room and rejoin.";if(!$("play").classList.contains("hidden"))$("playStatus").textContent=message;else $("lobbyStatus").textContent=message;}};
  channel.onerror=()=>{updatePlayer(pid,{connected:false});renderPlayers();};
 }
 async function makePeer(pid){
@@ -154,8 +169,7 @@ async function receiveSignal(message){
   if(players.some(p=>p.id===from))return;
   if(players.length>=MAX_PLAYERS){await signal(from,{type:"room-full"});return;}
   players.push({id:from,name:String(payload.name||"Player").slice(0,18),connected:false});renderPlayers();
-  const timeout=setTimeout(()=>{const p=players.find(x=>x.id===from);if(p&&!p.connected){players=players.filter(x=>x.id!==from);const pc=pcMap.get(from);if(pc)pc.close();pcMap.delete(from);channels.delete(from);renderPlayers();broadcast({type:"players",players,hostId});}},CONNECT_TIMEOUT);
-  hostPlayerTimers.set(from,timeout);
+  scheduleDrop(from,CONNECT_TIMEOUT);
   try{await makePeer(from);await signal(from,{type:"welcome",players,hostId:id,state,hostNow:Date.now()});}
   catch(error){players=players.filter(x=>x.id!==from);renderPlayers();await signal(from,{type:"connection-error",message:"The host could not establish a connection."}).catch(()=>{});}
   return;
@@ -331,4 +345,5 @@ $("backLobby").onclick=()=>{
 window.addEventListener("beforeunload",()=>{closed=true;stopRoom();});
 startTimerLoop();
 })();
+
 </script></body></html>
