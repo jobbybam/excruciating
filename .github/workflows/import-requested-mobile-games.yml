@@ -28,7 +28,7 @@ jobs:
           set -euo pipefail
           git clone --depth 1 --filter=blob:none --no-checkout https://gitlab.com/3kh0/3kh0-assets.git /tmp/3kh0-assets
           git -C /tmp/3kh0-assets sparse-checkout init --cone
-          git -C /tmp/3kh0-assets sparse-checkout set aquapark-slides crossyroad fruitninja tiny-fishing
+          git -C /tmp/3kh0-assets sparse-checkout set crossyroad fruitninja tiny-fishing
           git -C /tmp/3kh0-assets checkout
 
       - name: Import touch-friendly games and use real game artwork
@@ -41,7 +41,6 @@ jobs:
 
           source = Path("/tmp/3kh0-assets")
           selected = [
-              ("aquapark-slides", "Aquapark Slides", "Arcade"),
               ("crossyroad", "Crossy Road", "Arcade"),
               ("fruitninja", "Fruit Ninja", "Arcade"),
               ("tiny-fishing", "Tiny Fishing", "Arcade"),
@@ -168,7 +167,7 @@ jobs:
           import json
           from pathlib import Path
           catalogue = json.loads(Path("catalog/games.json").read_text(encoding="utf-8"))
-          for slug in ("aquapark-slides", "crossyroad", "fruitninja", "tiny-fishing"):
+          for slug in ("crossyroad", "fruitninja", "tiny-fishing"):
               game = next((item for item in catalogue["games"] if item.get("slug") == slug), None)
               if game and not (Path(".") / game["url"].lstrip("/")).is_file():
                   raise SystemExit(f"Missing local launch page for {slug}")
@@ -180,6 +179,9 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add catalog/games.json games/aquapark-slides games/crossyroad games/fruitninja games/tiny-fishing
+          git add catalog/games.json
+          for folder in crossyroad fruitninja tiny-fishing; do
+            if [ -d "games/$folder" ]; then git add "games/$folder"; fi
+          done
           git commit -m "Add selected mobile-first 3kh0 games"
           git push origin main
