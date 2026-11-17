@@ -143,10 +143,10 @@ function endGuestRoom(message="The host disconnected. This game has ended."){
  if(host||!room)return;
  stopRoom();show("home");$("homeStatus").textContent=message;
 }
-function removePlayer(pid){
+async function removePlayer(pid){
  if(!host||!pid||pid===id)return;
  const player=players.find(p=>p.id===pid);if(!player)return;
- sendData(pid,{type:"removed",message:"The host removed you from the room."});
+ try{await signal(pid,{type:"removed",message:"The host removed you from the room."})}catch{}
  try{pcMap.get(pid)?.close()}catch{}
  pcMap.delete(pid);channels.delete(pid);pendingCandidates.delete(pid);clearPlayerTimer(pid);
  players=players.filter(p=>p.id!==pid);
@@ -202,6 +202,7 @@ async function makePeer(pid){
 }
 async function receiveSignal(message){
  const from=message.from,payload=message.payload||{};
+ if(payload.type==="removed"&&!host){endGuestRoom(payload.message||"The host removed you from the room.");return;}
  if(payload.type==="hello"&&host){
   if(state){await signal(from,{type:"room-locked"});return;}
   const existing=players.find(p=>p.id===from);
