@@ -230,11 +230,11 @@
       "category": "Simulation",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/bitlife/index.html",
-      "thumbnail": "/favicons/bitlife.svg",
+      "thumbnail": "/games/bitlife/logo.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/bitlife.svg"
+      "icon": "/games/bitlife/logo.png"
     },
     {
       "slug": "geodash",
@@ -242,11 +242,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/geodash/index.html",
-      "thumbnail": "/favicons/geodash.svg",
+      "thumbnail": "/games/geodash/geoscratchicon.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/geodash.svg"
+      "icon": "/games/geodash/geoscratchicon.png"
     },
     {
       "slug": "jetpack-joyride",
@@ -278,11 +278,11 @@
       "category": "Racing",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/monster-tracks/index.html",
-      "thumbnail": "/favicons/monster-tracks.svg",
+      "thumbnail": "/games/monster-tracks/thumb.jpg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/monster-tracks.svg"
+      "icon": "/games/monster-tracks/thumb.jpg"
     },
     {
       "slug": "ovo",
@@ -302,11 +302,11 @@
       "category": "Action",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/rooftop-snipers/index.html",
-      "thumbnail": "/favicons/rooftop-snipers.svg",
+      "thumbnail": "/games/rooftop-snipers/img/thumb.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/rooftop-snipers.svg"
+      "icon": "/games/rooftop-snipers/img/thumb.png"
     },
     {
       "slug": "slope",
@@ -314,11 +314,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/slope/index.html",
-      "thumbnail": "/favicons/slope.svg",
+      "thumbnail": "/games/slope/slope4.jpeg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/slope.svg"
+      "icon": "/games/slope/slope4.jpeg"
     },
     {
       "slug": "polytrack",
@@ -330,8 +330,8 @@
       "license": "Reupload permitted subject to Kodub's PolyTrack Terms of Service.",
       "attribution": "PolyTrack © Kodub. Unofficial non-commercial reupload; official game link and required notice are preserved.",
       "published": true,
-      "icon": "/favicons/polytrack.svg",
-      "thumbnail": "/favicons/polytrack.svg"
+      "icon": "/games/polytrack/images/icon.svg",
+      "thumbnail": "/games/polytrack/images/icon.svg"
     },
     {
       "slug": "motox3m-pool",
@@ -536,11 +536,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/99balls/index.html",
-      "thumbnail": "/favicons/99balls.jpg",
+      "thumbnail": "/games/99balls/99-balls-evo.jpg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/99balls.jpg"
+      "icon": "/games/99balls/99-balls-evo.jpg"
     },
     {
       "slug": "basket-random",
@@ -548,11 +548,11 @@
       "category": "Sports",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/basket-random/index.html",
-      "thumbnail": "/favicons/basket-random.jpg",
+      "thumbnail": "/games/basket-random/splash.jpeg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/basket-random.jpg"
+      "icon": "/games/basket-random/splash.jpeg"
     },
     {
       "slug": "bloonstd",
@@ -560,11 +560,11 @@
       "category": "Strategy",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/bloonstd/index.html",
-      "thumbnail": "/favicons/bloonstd.svg",
+      "thumbnail": "/games/bloonstd/bloonstd.jpg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/bloonstd.svg"
+      "icon": "/games/bloonstd/bloonstd.jpg"
     },
     {
       "slug": "fruitninja",
@@ -597,11 +597,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/idle-breakout/index.html",
-      "thumbnail": "/favicons/idle-breakout.svg",
+      "thumbnail": "/games/idle-breakout/assets/favicon.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/idle-breakout.svg"
+      "icon": "/games/idle-breakout/assets/favicon.png"
     },
     {
       "slug": "drive-mad",
@@ -621,11 +621,11 @@
       "category": "Racing",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/drift-boss/index.html",
-      "thumbnail": "/favicons/drift-boss.svg",
+      "thumbnail": "/games/drift-boss/media/graphics/splash/mobile/cover-start.jpg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/drift-boss.svg"
+      "icon": "/games/drift-boss/media/graphics/splash/mobile/cover-start.jpg"
     },
     {
       "slug": "stickman-hook",
@@ -633,11 +633,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/stickman-hook/index.html",
-      "thumbnail": "/favicons/stickman-hook.svg",
+      "thumbnail": "/games/stickman-hook/images/48b008015901097a88b7803f4ad868da-title.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/stickman-hook.svg"
+      "icon": "/games/stickman-hook/images/48b008015901097a88b7803f4ad868da-title.png"
     },
     {
       "slug": "ctr",
@@ -645,11 +645,11 @@
       "category": "Puzzle",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/ctr/index.html",
-      "thumbnail": "/favicons/ctr.svg",
+      "thumbnail": "/games/ctr/images/favicon.ico",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/ctr.svg"
+      "icon": "/games/ctr/images/favicon.ico"
     },
     {
       "slug": "ctr-holiday",
@@ -681,11 +681,11 @@
       "category": "Simulation",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/cookie-clicker/index.html",
-      "thumbnail": "/favicons/cookie-clicker.svg",
+      "thumbnail": "/games/cookie-clicker/img/favicon.ico",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/cookie-clicker.svg"
+      "icon": "/games/cookie-clicker/img/favicon.ico"
     },
     {
       "slug": "paperio2",
@@ -693,11 +693,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/paperio2/index.html",
-      "thumbnail": "/favicons/paperio2.svg",
+      "thumbnail": "/games/paperio2/images/icon512.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/paperio2.svg"
+      "icon": "/games/paperio2/images/icon512.png"
     },
     {
       "slug": "doodle-jump",
@@ -705,11 +705,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/doodle-jump/index.html",
-      "thumbnail": "/favicons/doodle-jump.svg",
+      "thumbnail": "/games/doodle-jump/doodle.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/doodle-jump.svg"
+      "icon": "/games/doodle-jump/doodle.png"
     },
     {
       "slug": "2048-multitask",
@@ -729,11 +729,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/flappy-bird/index.html",
-      "thumbnail": "/favicons/flappy-bird.svg",
+      "thumbnail": "/games/flappy-bird/assets/thumb.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/flappy-bird.svg"
+      "icon": "/games/flappy-bird/assets/thumb.png"
     },
     {
       "slug": "ducklife1",
@@ -741,11 +741,11 @@
       "category": "Adventure",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/ducklife1/index.html",
-      "thumbnail": "/favicons/ducklife1.svg",
+      "thumbnail": "/games/ducklife1/ducklife.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/ducklife1.svg"
+      "icon": "/games/ducklife1/ducklife.png"
     },
     {
       "slug": "ducklife2",
@@ -753,11 +753,11 @@
       "category": "Adventure",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/ducklife2/index.html",
-      "thumbnail": "/favicons/ducklife2.svg",
+      "thumbnail": "/games/ducklife2/ducklife2.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/ducklife2.svg"
+      "icon": "/games/ducklife2/ducklife2.png"
     },
     {
       "slug": "ducklife3",
@@ -803,11 +803,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/bad-ice-cream/index.html",
-      "thumbnail": "/favicons/bad-ice-cream.svg",
+      "thumbnail": "/games/bad-ice-cream/bad-ice-cream.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/bad-ice-cream.svg"
+      "icon": "/games/bad-ice-cream/bad-ice-cream.png"
     },
     {
       "slug": "om-bounce",
@@ -815,11 +815,11 @@
       "category": "Arcade",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/om-bounce/index.html",
-      "thumbnail": "/favicons/om-bounce.svg",
+      "thumbnail": "/games/om-bounce/assets/icon.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/om-bounce.svg"
+      "icon": "/games/om-bounce/assets/icon.png"
     },
     {
       "slug": "elasticman",
@@ -827,11 +827,11 @@
       "category": "Casual",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/elasticman/index.html",
-      "thumbnail": "/favicons/elasticman.svg",
+      "thumbnail": "/games/elasticman/elasticman.jpg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/elasticman.svg"
+      "icon": "/games/elasticman/elasticman.jpg"
     },
     {
       "slug": "sort-the-court",
@@ -839,11 +839,11 @@
       "category": "Simulation",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/sort-the-court/index.html",
-      "thumbnail": "/favicons/sort-the-court.svg",
+      "thumbnail": "/games/sort-the-court/img/icon.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/sort-the-court.svg"
+      "icon": "/games/sort-the-court/img/icon.png"
     },
     {
       "slug": "the-final-earth",
@@ -851,11 +851,11 @@
       "category": "Strategy",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/the-final-earth/index.html",
-      "thumbnail": "/favicons/the-final-earth.svg",
+      "thumbnail": "/games/the-final-earth/images.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/the-final-earth.svg"
+      "icon": "/games/the-final-earth/images.png"
     },
     {
       "slug": "circlo",
@@ -863,11 +863,11 @@
       "category": "Puzzle",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/circlo/index.html",
-      "thumbnail": "/favicons/circlo.svg",
+      "thumbnail": "/games/circlo/img/icon.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/circlo.svg"
+      "icon": "/games/circlo/img/icon.png"
     },
     {
       "slug": "connect3",
@@ -911,11 +911,11 @@
       "category": "Simulation",
       "description": "Locally hosted game imported from the 3kh0 assets collection.",
       "url": "/games/monkey-mart/index.html",
-      "thumbnail": "/favicons/monkey-mart.svg",
+      "thumbnail": "/games/monkey-mart/bg_loading.png",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/favicons/monkey-mart.svg"
+      "icon": "/games/monkey-mart/bg_loading.png"
     },
     {
       "slug": "backflip-dive-3d",
