@@ -60,4 +60,41 @@ export async function onRequestDelete({ request, env }) {
   return json({ ok: true, slug, published: false });
 }
 
-export async function onRequestPatch({request,env}) { const denied=await requireAdmin(request,env); if(denied)return denied; await ensureFeaturedTable(env); const body=await request.json().catch(()=>({})); const slug=String(body.slug||'').trim().toLowerCase(); const pin=body.featured===true; if(!slugPattern.test(slug))return json({error:'Invalid game slug.'},400); let published=false; const row=await env.DB.prepare('SELECT published FROM games WHERE slug=?').bind(slug).first(); if(row)published=Number(row.published)!==0; else {const response=await fetch(new URL('/catalog/games.json',request.url));const data=response.ok?await response.json():{games:[]};published=(data.games||[]).some(g=>g.slug===slug&&g.published!==false);} if(!published)return json({error:'Only published games can be featured.'},404); const current=await env.DB.prepare('SELECT slug FROM featured_games ORDER BY position,created_at').all(); let slugs=(current.results||[]).map(x=>x.slug).filter(x=>x!==slug); if(pin){if(slugs.length>=5)return json({error:'You can feature a maximum of five games. Unpin one first.'},409);slugs.push(slug);} await env.DB.prepare('DELETE FROM featured_games').run(); for(let i=0;i<slugs.length;i++)await env.DB.prepare('INSERT INTO featured_games (slug,position) VALUES (?,?)').bind(slugs[i],i).run(); return json({ok:true,slug,featured:pin}); }
+export async function onRequestPatch({request,env}) {
+  const denied=await requireAdmin(request,env);
+  if(denied)return denied;
+  await ensureFeaturedTable(env);
+  const body=await request.json().catch(()=>({}));
+  const slug=String(body.slug||"").trim().toLowerCase();
+  const pin=body.featured===true;
+  if(!slugPattern.test(slug))return json({error:"Invalid game slug."},400);
+
+  // Reconcile stored pins against games that are actually published. Old pins
+  // can survive catalogue removals and incorrectly consume the five-game cap.
+  let catalogue=[];
+  try {
+    const response=await fetch(new URL("/catalog/games.json",request.url));
+    if(response.ok) {
+      const data=await response.json();
+      catalogue=Array.isArray(data.games)?data.games:[];
+    }
+  } catch {}
+  const dbRows=await env.DB.prepare("SELECT slug FROM games WHERE published IS NULL OR published != 0").all();
+  const publishedSlugs=new Set([
+    ...catalogue.filter(game=>game.published!==false).map(game=>game.slug),
+    ...(dbRows.results||[]).map(row=>row.slug)
+  ]);
+  const current=await env.DB.prepare("SELECT slug FROM featured_games ORDER BY position,created_at").all();
+  let slugs=(current.results||[]).map(row=>row.slug).filter(value=>publishedSlugs.has(value)&&value!==slug);
+  const isPublished=publishedSlugs.has(slug);
+  if(!isPublished)return json({error:"Only published games can be featured."},404);
+  if(pin) {
+    if(slugs.length>=5)return json({error:"You can feature a maximum of five published games. Unfeature one first."},409);
+    slugs.push(slug);
+  }
+  await env.DB.prepare("DELETE FROM featured_games").run();
+  for(let i=0;i<slugs.length;i++) {
+    await env.DB.prepare("INSERT INTO featured_games (slug,position) VALUES (?,?)").bind(slugs[i],i).run();
+  }
+  return json({ok:true,slug,featured:pin});
+}
