@@ -12,6 +12,10 @@ export async function onRequest({ request, next }) {
     : "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https:; connect-src 'self'; frame-src 'self' https://raw.githack.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self'";
   headers.set("Content-Security-Policy", policy);
   const standalonePhone = /^\/games\/excruciating-phone(?:\/|$)/.test(path);
+  if (standalonePhone) {
+    headers.set("Cache-Control", "no-store, no-cache, must-revalidate");
+    headers.set("CDN-Cache-Control", "no-store");
+  }
   if (gameRoute && !standalonePhone && (headers.get("Content-Type") || "").includes("text/html")) {
     const transformed = new HTMLRewriter()
       .on("body", {
