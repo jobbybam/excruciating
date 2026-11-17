@@ -273,14 +273,18 @@ const gameShellUiStyle=document.createElement("style");
   controlsToggle.className = "excruciating-game-control";
   controlsToggle.setAttribute("aria-expanded", "false");
   controlsToggle.setAttribute("aria-controls", "excruciating-touch-controls");
-  controlsToggle.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5H5v3M16 5h3v3M5 16v3h3M19 16v3h-3"/><path d="M9 9h6v6H9z"/></svg><span>Show controls</span>';
+  controlsToggle.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5H5v3M16 5h3v3M5 16v3h3M19 16v3h-3"/><path d="M9 9h6v6H9z"/></svg>';
+  controlsToggle.setAttribute("aria-label", "Show controls");
+  controlsToggle.title = "Show controls";
 
   const moveToggle = document.createElement("button");
   moveToggle.id = "excruciating-controls-move";
   moveToggle.type = "button";
   moveToggle.className = "excruciating-game-control";
   moveToggle.setAttribute("aria-pressed", "false");
-  moveToggle.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18M8 8l4-5 4 5M8 16l4 5 4-5"/></svg><span>Move</span>';
+  moveToggle.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18M8 8l4-5 4 5M8 16l4 5 4-5"/></svg>';
+  moveToggle.setAttribute("aria-label", "Move controls");
+  moveToggle.title = "Move controls";
 
   const isNativeTouchGame = /(?:^|\/)(?:mahjong-link|water-sort|mini-golf|sudoku|aquapark-slides|eaglerfaithful|crossyroad|fruitninja|tiny-fishing)(?:\/|$)/i.test(location.pathname);
   const toolbar = document.createElement("div");
@@ -367,7 +371,8 @@ const gameShellUiStyle=document.createElement("style");
     if (nativeTools) { nativeTools.hidden = true; nativeTools.style.display = "none"; }
     const nativeRoot = document.getElementById("undertale-mobile-controls");
     if (nativeRoot && !nativeRoot.hidden) {
-      controlsToggle.querySelector("span").textContent = "Hide controls";
+      controlsToggle.setAttribute("aria-label", "Hide controls");
+      controlsToggle.title = "Hide controls";
       controlsToggle.setAttribute("aria-expanded", "true");
     }
   }
@@ -378,12 +383,14 @@ const gameShellUiStyle=document.createElement("style");
       if (root) root.hidden = !root.hidden;
       const visible = Boolean(root && !root.hidden);
       controlsToggle.setAttribute("aria-expanded", String(visible));
-      controlsToggle.querySelector("span").textContent = visible ? "Hide controls" : "Show controls";
+      controlsToggle.setAttribute("aria-label", visible ? "Hide controls" : "Show controls");
+      controlsToggle.title = visible ? "Hide controls" : "Show controls";
     } else {
       touchControls.hidden = !touchControls.hidden;
       if (isEaglerGame) lookSurface.hidden = touchControls.hidden;
       controlsToggle.setAttribute("aria-expanded", String(!touchControls.hidden));
-      controlsToggle.querySelector("span").textContent = touchControls.hidden ? "Show controls" : "Hide controls";
+      controlsToggle.setAttribute("aria-label", touchControls.hidden ? "Show controls" : "Hide controls");
+      controlsToggle.title = touchControls.hidden ? "Show controls" : "Hide controls";
     }
   });
   moveToggle.addEventListener("click", () => {
@@ -396,7 +403,8 @@ const gameShellUiStyle=document.createElement("style");
       touchControls.classList.toggle("is-moving", controlsMoveMode);
     }
     moveToggle.setAttribute("aria-pressed", String(controlsMoveMode));
-    moveToggle.querySelector("span").textContent = controlsMoveMode ? "Done" : "Move";
+    moveToggle.setAttribute("aria-label", controlsMoveMode ? "Finish moving controls" : "Move controls");
+    moveToggle.title = controlsMoveMode ? "Finish moving controls" : "Move controls";
   });
   if (!isUndertaleGame && !isNativeTouchGame && matchMedia("(hover:none) and (pointer:coarse)").matches) {
     let drag = null;
