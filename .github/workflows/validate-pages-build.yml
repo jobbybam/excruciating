@@ -143,6 +143,35 @@ jobs:
               if not icon_path.is_file():
                   raise SystemExit(f"Favicon target does not exist for {page}: {href}")
 
+          # Verify only the requested Henry Stickmin games, including split SWFs.
+          for slug in ("henry-breaking-the-bank", "henry-escaping-the-prison", "henry-stealing-the-diamond", "henry-infiltrating-the-airship", "henry-fleeing-the-complex"):
+              source_swf = root / "games" / slug / "game.swf"
+              deployed_dir = dist / "games" / slug
+              deployed_swf = deployed_dir / "game.swf"
+              manifest = deployed_dir / "game.swf.parts.json"
+              page = deployed_dir / "index.html"
+              if not source_swf.is_file() or not page.is_file():
+                  raise SystemExit(f"Henry game files are missing: {slug}")
+              html = page.read_text(encoding="utf-8")
+              if "/ruffle-game.js" not in html or 'data-swf="game.swf"' not in html:
+                  raise SystemExit(f"Henry page is not connected to the local Ruffle loader: {slug}")
+              if source_swf.stat().st_size > max_bytes:
+                  if deployed_swf.exists() or not manifest.is_file():
+                      raise SystemExit(f"Oversized Henry SWF was not split for Cloudflare Pages: {slug}")
+                  pieces = json.loads(manifest.read_text(encoding="utf-8"))
+                  if len(pieces) < 2:
+                      raise SystemExit(f"Henry SWF split manifest is incomplete: {slug}")
+                  total = 0
+                  for piece in pieces:
+                      piece_path = deployed_dir / piece
+                      if not piece_path.is_file() or piece_path.stat().st_size > max_bytes:
+                          raise SystemExit(f"Henry SWF split piece is missing or over the Pages limit: {slug}/{piece}")
+                      total += piece_path.stat().st_size
+                  if total != source_swf.stat().st_size:
+                      raise SystemExit(f"Henry SWF split pieces do not match the source size: {slug}")
+              elif not deployed_swf.is_file():
+                  raise SystemExit(f"Henry SWF is missing from Pages output: {slug}")
+
           catalogue = json.loads((dist / "catalog/games.json").read_text(encoding="utf-8"))
           retired = {"angry-birds", "happywheels", "yohoho"}
           if any(game.get("slug") in retired for game in catalogue.get("games", [])):
