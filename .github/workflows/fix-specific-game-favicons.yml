@@ -109,6 +109,7 @@ jobs:
               )
               page.write_text(html, encoding="utf-8")
               game["icon"] = href
+              game["thumbnail"] = href
 
               # Remove only the known generic SVGs that this mapping supersedes.
               for obsolete in (folder / "favicon.svg", Path("favicons") / f"{slug}.svg"):
@@ -155,6 +156,7 @@ jobs:
               slug = game.get("slug")
               if slug in artwork:
                   game["icon"] = f"/games/{slug}/{artwork[slug]}"
+                  game["thumbnail"] = f"/games/{slug}/{artwork[slug]}"
           catalogue_path.write_text(json.dumps(catalogue, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
           PY
                     git add "$file"
