@@ -156,6 +156,10 @@ jobs:
           catalogue["version"] = int(catalogue.get("version", 1)) + 1
           catalogue["source"] = "Locally hosted games, including selected mobile-oriented 3kh0 Assets imports."
           catalogue_path.write_text(json.dumps(catalogue, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          Path("/tmp/excruciating-mobile-game-entries.json").write_text(
+              json.dumps([entries[slug] for slug, _, _ in selected if slug in entries and slug in {item[0] for item in selected}], ensure_ascii=False, indent=2),
+              encoding="utf-8"
+          )
           print("Imported:", ", ".join(imported))
           PY
 
@@ -184,4 +188,48 @@ jobs:
             if [ -d "games/$folder" ]; then git add "games/$folder"; fi
           done
           git commit -m "Add selected mobile-first 3kh0 games"
-          git push origin main
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            if ! git rebase origin/main; then
+              conflicts="$(git diff --name-only --diff-filter=U)"
+              for file in $conflicts; do
+                case "$file" in
+                  catalog/games.json)
+                    git checkout --ours -- "$file"
+                    python3 - <<'PY'
+          import json
+          from pathlib import Path
+          catalogue_path = Path("catalog/games.json")
+          entries_path = Path("/tmp/excruciating-mobile-game-entries.json")
+          catalogue = json.loads(catalogue_path.read_text(encoding="utf-8"))
+          new_entries = json.loads(entries_path.read_text(encoding="utf-8"))
+          by_slug = {game["slug"]: game for game in catalogue.get("games", [])}
+          for game in new_entries:
+              by_slug[game["slug"]] = game
+          catalogue["games"] = list(by_slug.values())
+          catalogue["version"] = int(catalogue.get("version", 1)) + 1
+          catalogue["source"] = "Locally hosted games, including selected mobile-oriented 3kh0 Assets imports."
+          catalogue_path.write_text(json.dumps(catalogue, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          PY
+                    git add "$file"
+                    ;;
+                  games/crossyroad/*|games/fruitninja/*|games/tiny-fishing/*)
+                    git checkout --theirs -- "$file"
+                    git add "$file"
+                    ;;
+                  *)
+                    echo "Unexpected import conflict: $file"
+                    git rebase --abort
+                    exit 1
+                    ;;
+                esac
+              done
+              GIT_EDITOR=true git rebase --continue
+            fi
+            if git push origin main; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Unable to push selected mobile games after five attempts."
+          exit 1
