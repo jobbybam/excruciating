@@ -1,17 +1,17 @@
-name: Import uploaded EaglercraftX 1.8 build
+name: Import EaglercraftX 1.8 mobile client
 
 on:
   push:
     branches: [main]
     paths:
-      - "eaglercraft-import.zip"
+      - ".github/workflows/import-eaglercraft-upload.yml"
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: import-eaglercraft-upload
+  group: excruciating-eaglercraft-import
   cancel-in-progress: false
 
 jobs:
@@ -21,90 +21,104 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Prepare the uploaded offline client for Pages
+      - name: Fetch EaglercraftX 1.8 from the supplied repository
         shell: bash
         run: |
           set -euo pipefail
-          test -s eaglercraft-import.zip
-          mkdir -p games/eaglercraft
+          git clone --depth 1 --filter=blob:none --sparse https://github.com/eaglercraftx1-8/eaglercraftx1-8.github.io.git /tmp/eaglercraft
+          git -C /tmp/eaglercraft sparse-checkout set eagler-files/1.8/Main
+          git -C /tmp/eaglercraft checkout
+          test -s /tmp/eaglercraft/eagler-files/1.8/Main/index.html
+          test -s /tmp/eaglercraft/eagler-files/1.8/Main/classes.js
+          test -s /tmp/eaglercraft/eagler-files/1.8/Main/assets.epk
+          rm -rf games/eaglerfaithful
+          mkdir -p games/eaglerfaithful
+          rsync -a --delete /tmp/eaglercraft/eagler-files/1.8/Main/ games/eaglerfaithful/
+      - name: Remove upstream analytics and set the mobile viewport
+        shell: bash
+        run: |
+          set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
-          import zipfile, re, json
-
-          archive = Path("eaglercraft-import.zip")
-          with zipfile.ZipFile(archive) as z:
-              names = z.namelist()
-              candidates = [n for n in names if n.lower().endswith(".html") and Path(n).name.lower() == "eaglercraft1-8.html"]
-              if len(candidates) != 1:
-                  raise SystemExit("Expected exactly one eaglercraft1-8.html in the uploaded archive")
-              html = z.read(candidates[0]).decode("utf-8")
-
-          script_re = re.compile(r'(<script\b[^>]*>)(.*?)(</script\s*>)', re.I | re.S)
-          index = 0
-          def externalize(match):
-              global index
-              body = match.group(2)
-              # Keep the tiny boot-options script inline; externalize the two
-              # large compiled client scripts so no Pages asset exceeds 25 MiB.
-              if len(body.encode("utf-8")) < 500_000:
-                  return match.group(0)
-              index += 1
-              name = f"client-{index}.js"
-              Path("games/eaglercraft", name).write_text(body, encoding="utf-8")
-              opening = re.sub(r'\s+src=(["\']).*?\1', "", match.group(1), flags=re.I)
-              return f'{opening[:-1]} src="./{name}"></script>'
-
-          html = script_re.sub(externalize, html)
-          if index < 2:
-              raise SystemExit(f"Expected to externalize 2 large scripts; found {index}")
-          Path("games/eaglercraft/index.html").write_text(html, encoding="utf-8")
-          Path("games/eaglercraft/favicon.svg").write_text(
-            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#17212b"/><text x="32" y="43" text-anchor="middle" font-size="38" font-family="Arial" font-weight="700" fill="#fff">E</text></svg>',
-            encoding="utf-8"
+          import re
+          page = Path("games/eaglerfaithful/index.html")
+          html = page.read_text(encoding="utf-8")
+          html = re.sub(r'<script\b[^>]*src=["\']/js/ga4\.js["\'][^>]*>\s*</script\s*>', "", html, flags=re.I)
+          mobile = """
+          <style id="excruciating-eagler-mobile">
+            html,body,#game_frame{width:100%;height:100%;height:100dvh;margin:0;overflow:hidden;background:#000;overscroll-behavior:none;touch-action:none}
+            #game_frame canvas{touch-action:none;-webkit-user-select:none;user-select:none}
+          </style>
+          """
+          if "excruciating-eagler-mobile" not in html:
+              html = html.replace("</head>", mobile + "\n</head>", 1)
+          page.write_text(html, encoding="utf-8")
+          Path("games/eaglerfaithful/ATTRIBUTION.md").write_text(
+              "# EaglercraftX 1.8\n\n"
+              "Client files are sourced from the EaglercraftX Client Collections repository, directory eagler-files/1.8/Main. The source repository README requests credit. Eaglercraft is unofficial; Minecraft is a trademark of Mojang/Microsoft.\n\n"
+              "Source: https://github.com/eaglercraftx1-8/eaglercraftx1-8.github.io/tree/main/eagler-files/1.8/Main\n",
+              encoding="utf-8"
           )
-
-          path = Path("catalog/games.json")
-          data = json.loads(path.read_text(encoding="utf-8"))
-          games = [g for g in data.get("games", []) if g.get("slug") != "eaglerfaithful"]
-          games = [g for g in games if g.get("slug") != "eaglercraft"]
-          games.append({
-            "slug": "eaglercraft",
-            "title": "Eaglercraft 1.8",
-            "category": "Multiplayer",
-            "description": "Locally hosted EaglercraftX 1.8 offline client.",
-            "url": "/games/eaglercraft/index.html",
-            "thumbnail": "/games/eaglercraft/favicon.svg",
-            "source_url": "https://gitlab.com/lax1dude/eaglercraftx-1.8/",
-            "license": "Community client build; preserve upstream notices and comply with upstream terms.",
-            "attribution": "EaglercraftX community build. Minecraft is a trademark of Mojang/Microsoft; this is unofficial.",
-            "published": True
-          })
-          data["games"] = games
-          data["version"] = int(data.get("version", 0)) + 1
-          data["source"] = "Locally hosted games and explicitly labelled external site links."
-          path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-          archive.unlink()
           PY
-      - name: Validate Eaglercraft assets
+      - name: Validate local client assets and Cloudflare Pages file limits
         shell: bash
         run: |
           set -euo pipefail
-          test -s games/eaglercraft/index.html
-          test -s games/eaglercraft/client-1.js
-          test -s games/eaglercraft/client-2.js
-          for file in games/eaglercraft/*; do
-            size="$(stat -c%s "$file")"
-            if [ "$size" -gt 26214400 ]; then
-              echo "Pages asset exceeds 25 MiB: $file ($size bytes)"
-              exit 1
-            fi
+          for file in index.html classes.js assets.epk favicon.png; do
+            test -s "games/eaglerfaithful/$file"
           done
-      - name: Commit Eaglercraft build
+          python3 - <<'PY'
+          from pathlib import Path
+          root = Path("games/eaglerfaithful")
+          maximum = 25 * 1024 * 1024
+          oversized = [p for p in root.rglob("*") if p.is_file() and p.stat().st_size > maximum]
+          if oversized:
+              raise SystemExit("Eaglercraft contains a file over the 25 MiB Pages limit: " + str(oversized[0]))
+          html = (root / "index.html").read_text(encoding="utf-8")
+          if "/js/ga4.js" in html or "https://cdnjs.cloudflare.com" in html:
+              raise SystemExit("An external analytics or library dependency remains.")
+          if "eaglercraftXOpts" not in html or "classes.js" not in html:
+              raise SystemExit("The upstream EaglercraftX 1.8 launch configuration is incomplete.")
+          PY
+      - name: Update the catalogue entry
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path("catalog/games.json")
+          data = json.loads(path.read_text(encoding="utf-8"))
+          entries = [g for g in data.get("games", []) if g.get("slug") not in {"eaglercraft", "eaglerfaithful"}]
+          entries.append({
+            "slug": "eaglerfaithful",
+            "title": "EaglercraftX 1.8",
+            "category": "Multiplayer",
+            "description": "EaglercraftX 1.8 with its touchscreen mode and Excruciating's iPad joystick, look surface and action controls.",
+            "url": "/games/eaglerfaithful/index.html",
+            "thumbnail": "/games/eaglerfaithful/favicon.png",
+            "icon": "/games/eaglerfaithful/favicon.png",
+            "source_url": "https://github.com/eaglercraftx1-8/eaglercraftx1-8.github.io/tree/main/eagler-files/1.8/Main",
+            "license": "The upstream repository requests credit; third-party game rights remain with their respective owners.",
+            "attribution": "EaglercraftX Client Collections. Unofficial Minecraft browser client.",
+            "published": True
+          })
+          data["games"] = entries
+          data["version"] = int(data.get("version", 1)) + 1
+          path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          PY
+      - name: Commit the selected Eaglercraft client
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A eaglercraft-import.zip games/eaglercraft catalog/games.json
-          git commit -m "Add locally hosted EaglercraftX 1.8"
-          git push origin main
+          git add -A games/eaglerfaithful catalog/games.json
+          git commit -m "Replace Eaglercraft with mobile-ready EaglercraftX 1.8"
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git rebase origin/main
+            if git push origin main; then exit 0; fi
+            sleep 2
+          done
+          exit 1
