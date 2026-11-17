@@ -134,7 +134,7 @@
   `;
   document.head.append(styles);
   const loaderStyle=document.createElement("style");
-  loaderStyle.textContent='#excruciating-loader{position:fixed;inset:0;z-index:2147483646;display:grid;place-items:center;background:#080808;color:#f5f5f5;font-family:system-ui,sans-serif;transition:opacity .35s ease,visibility .35s ease}#excruciating-loader.is-done{opacity:0;visibility:hidden;pointer-events:none}#excruciating-loader .inner{width:min(300px,calc(100vw - 52px));text-align:center}#excruciating-loader .brand{font-size:23px;font-weight:850;letter-spacing:-1px;margin-bottom:23px}#excruciating-loader .brand b{margin-right:7px}#excruciating-loader .track{height:3px;border-radius:9px;background:#242424;overflow:hidden}#excruciating-loader .fill{height:100%;width:4%;background:#fff;transition:width .2s ease}#excruciating-loader .status{margin-top:11px;color:#777;font-size:10px;letter-spacing:.5px}';
+  loaderStyle.textContent='#excruciating-loader{position:fixed;inset:0;z-index:2147483646;display:grid;place-items:center;background:#080808;color:#f5f5f5;font-family:system-ui,sans-serif;transition:opacity .35s ease,visibility .35s ease}#excruciating-loader.is-done{opacity:0;visibility:hidden;pointer-events:none}#excruciating-loader .inner{width:min(320px,calc(100vw - 52px));text-align:center}#excruciating-loader .brand{font-size:23px;font-weight:850;letter-spacing:-1px;margin-bottom:12px}#excruciating-loader .brand b{margin-right:7px}#excruciating-loader .game-title{margin:0 0 24px;color:#aaa;font-size:12px;font-weight:600;letter-spacing:.04em}#excruciating-loader .track{height:3px;border-radius:9px;background:#242424;overflow:hidden}#excruciating-loader .fill{height:100%;width:4%;background:#fff;transition:width .2s ease}#excruciating-loader .status{margin-top:11px;color:#777;font-size:10px;letter-spacing:.5px}';
   document.head.append(loaderStyle);
 const gameShellUiStyle=document.createElement("style");
   gameShellUiStyle.textContent="#excruciating-chat-unread{position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;padding:0 4px;display:grid;place-items:center;border:2px solid #080808;border-radius:99px;background:#eee;color:#111;font:700 9px/1 system-ui,sans-serif}#excruciating-chat-unread[hidden]{display:none!important}.excruciating-loader-retry{margin-top:18px;padding:10px 16px;border:1px solid #444;border-radius:8px;background:#222;color:#fff;font:600 12px system-ui,sans-serif;cursor:pointer}.excruciating-loader-retry:hover{background:#333}";
@@ -144,7 +144,11 @@ const gameShellUiStyle=document.createElement("style");
     overlay.id="excruciating-loader";
     overlay.setAttribute("role","status");
     overlay.setAttribute("aria-live","polite");
-    overlay.innerHTML='<div class="inner"><div class="brand"><b>&gt;</b>excruciating</div><div class="track" role="progressbar" aria-label="Loading game" aria-valuemin="0" aria-valuemax="100" aria-valuenow="4"><div class="fill"></div></div><div class="status">LOADING GAME</div></div>';
+    overlay.innerHTML='<div class="inner"><div class="brand"><b>&gt;</b>excruciating</div><div class="game-title"></div><div class="track" role="progressbar" aria-label="Loading game" aria-valuemin="0" aria-valuemax="100" aria-valuenow="4"><div class="fill"></div></div><div class="status">LOADING GAME</div></div>';
+    const gameTitle=String(document.querySelector("#game[aria-label],#game_frame[aria-label]")?.getAttribute("aria-label")||document.title||"Game").trim().slice(0,90)||"Game";
+    overlay.querySelector(".game-title").textContent=gameTitle;
+    overlay.querySelector(".status").textContent="LOADING "+gameTitle.toLocaleUpperCase();
+    overlay.querySelector(".track").setAttribute("aria-label","Loading "+gameTitle);
     (document.body||document.documentElement).append(overlay);
     const fill=overlay.querySelector(".fill"),track=overlay.querySelector(".track");
     const undertale=/(?:^|\/)undertale(?:\/|$)/i.test(location.pathname);
@@ -166,8 +170,11 @@ const gameShellUiStyle=document.createElement("style");
       return style.display!=="none"&&style.visibility!=="hidden"&&Number(style.opacity||1)>0.05&&rect.width>24&&rect.height>24;
     };
     const hasVisibleGame=()=>{
-      const surface=document.querySelector("canvas,ruffle-player,video,#ruffle,#unity-container,#game-container");
-      return isVisible(surface);
+      if(window.ExcruciatingGameReady===true)return true;
+      const surfaces=[...document.querySelectorAll("canvas,ruffle-player,video,iframe,object,embed,#ruffle,#unity-container,#game-container,[data-game-ready='true'],[data-game-status='ready']")];
+      if(surfaces.some(isVisible))return true;
+      const roots=[...document.querySelectorAll("#game,#game_frame,.game-root,[data-game-root]")];
+      return roots.some(root=>isVisible(root)&&(root.querySelector("canvas,video,iframe,button,[role='button'],[data-game-ready='true']")||String(root.textContent||"").trim().length>24));
     };
     const explicitLoaderActive=()=>{
       const candidates=[...document.querySelectorAll("#loading,.loading,.loading-screen,.loading-overlay,[aria-busy='true']")];
@@ -177,7 +184,7 @@ const gameShellUiStyle=document.createElement("style");
       if(requiresExplicitLoad) return window.ExcruciatingGameReady === true;
       if(!loaded)return false;
       if(explicitLoaderActive())return false;
-      return hasVisibleGame()||Date.now()-startedAt>3200;
+      return hasVisibleGame();
     };
     const stop=()=>{
       if(finished)return;
