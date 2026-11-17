@@ -91,7 +91,7 @@ function allConnected(){
  });
 }
 function renderPlayers(){
- $("players").innerHTML=players.map(p=>'<div class="player"><span>'+esc(p.name)+(p.id===hostId?' <span class="pill">HOST</span>':'')+'</span><span class="pill">'+(p.id===id?"YOU":p.connected&&(!host||channels.get(p.id)?.readyState==="open")?"CONNECTED":"CONNECTING")+'</span></div>').join("");
+ $("players").innerHTML=players.map(p=>'<div class="player"><span>'+esc(p.name)+(p.id===hostId?' <span class="pill">HOST</span>':'')+'</span><span class="row"><span class="pill">'+(p.id===id?"YOU":p.connected&&(!host||channels.get(p.id)?.readyState==="open")?"CONNECTED":"CONNECTING")+'</span>'+(host&&p.id!==id?'<button type="button" class="remove-player" data-player="'+esc(p.id)+'" aria-label="Remove '+esc(p.name)+'" title="Remove player" style="padding:4px 8px;font-size:11px">Remove</button>':'')+'</span></div>').join("");
  $("playerCount").textContent=players.length+" / "+MAX_PLAYERS+" players";
  $("start").hidden=!host;
  $("timerSettings").hidden=!host;
@@ -139,6 +139,19 @@ function sendData(pid,message){
  for(let index=0;index<total;index++)channel.send(JSON.stringify({__phoneChunk:true,id:chunkId,index,total,data:data.slice(index*chunkSize,(index+1)*chunkSize)}));
  return true;
 }
+function endGuestRoom(message="The host disconnected. This game has ended."){
+ if(host||!room)return;
+ stopRoom();show("home");$("homeStatus").textContent=message;
+}
+function removePlayer(pid){
+ if(!host||!pid||pid===id)return;
+ const player=players.find(p=>p.id===pid);if(!player)return;
+ sendData(pid,{type:"removed",message:"The host removed you from the room."});
+ try{pcMap.get(pid)?.close()}catch{}
+ pcMap.delete(pid);channels.delete(pid);pendingCandidates.delete(pid);clearPlayerTimer(pid);
+ players=players.filter(p=>p.id!==pid);
+ renderPlayers();broadcast({type:"players",players,hostId});
+}
 function handleData(pid,raw){
  let message;try{message=JSON.parse(raw)}catch{return}
  if(message.hostNow)clockOffset=Number(message.hostNow)-Date.now();
@@ -148,12 +161,16 @@ function handleData(pid,raw){
   else if(message.type==="request-state"){sendData(pid,{type:"players",players,hostId,hostNow:Date.now()});sendData(pid,{type:"state",state,hostNow:Date.now()});}
   return;
  }
- if(message.type==="players"){players=message.players||players;hostId=message.hostId||hostId;renderPlayers();}
+ if(message.type==="players"){
+  players=message.players||players;hostId=message.hostId||hostId;renderPlayers();
+  if(!players.some(p=>p.id===id))endGuestRoom("The host removed you from the room.");
+ }
+ else if(message.type==="removed"){endGuestRoom(message.message||"The host removed you from the room.");}
  else if(message.type==="state"){state=message.state||null;taskKey="";if(state)renderState();else show("lobby");}
  else if(message.type==="progress"){
   if(state){state.submissions=state.submissions||{};(message.submittedIds||[]).forEach(pid=>state.submissions[pid]={pending:true});renderState();$("playStatus").textContent=message.count+" of "+message.total+" players submitted.";}
  }
- else if(message.type==="room-closed"){stopRoom();show("home");$("homeStatus").textContent="The host closed this room.";}
+ else if(message.type==="room-closed"){endGuestRoom("The host ended the room. This game has ended.");}
 }
 function attach(pid,channel){
  channels.set(pid,channel);
@@ -172,7 +189,11 @@ function attach(pid,channel){
    if(entry.received===entry.total){incomingChunks.delete(packet.id);handleData(pid,entry.parts.join(""));}
   }else handleData(pid,event.data);
  };
- channel.onclose=()=>{updatePlayer(pid,{connected:false});renderPlayers();if(host){broadcast({type:"players",players,hostId});scheduleDrop(pid,12000);}else{const message="Connection to the host was lost. Return to the room and rejoin.";if(!$("play").classList.contains("hidden"))$("playStatus").textContent=message;else $("lobbyStatus").textContent=message;}};
+ channel.onclose=()=>{
+  updatePlayer(pid,{connected:false});renderPlayers();
+  if(host){broadcast({type:"players",players,hostId});scheduleDrop(pid,12000);}
+  else endGuestRoom("The host connection was lost. This game has ended.");
+ };
  channel.onerror=()=>{updatePlayer(pid,{connected:false});renderPlayers();};
 }
 async function makePeer(pid){
@@ -339,6 +360,9 @@ $("submitDrawing").onclick=()=>{
  const small=document.createElement("canvas");small.width=640;small.height=370;small.getContext("2d").drawImage(canvas,0,0,640,370);
  const value=small.toDataURL("image/jpeg",.55);$("submitDrawing").disabled=true;sendHost({type:"submit",value});sound(700);
 };
+$("players").addEventListener("click",event=>{
+ const button=event.target.closest("[data-player]");if(button)removePlayer(button.dataset.player);
+});
 $("create").onclick=()=>{
  name=$("hostName").value.trim().slice(0,18)||"Host";room=roomCode();host=true;hostId=id;players=[{id,name,connected:true}];state=null;welcomed=true;
  show("lobby");$("codeLabel").textContent=room;$("lobbyStatus").textContent="Room created. Share the code to invite players.";
@@ -369,7 +393,10 @@ $("backLobby").onclick=()=>{
  if(!host)return;
  state=null;taskKey="";broadcast({type:"state",state:null});show("lobby");renderPlayers();$("lobbyStatus").textContent="Room reset. Everyone can start a new game when ready.";
 };
-window.addEventListener("beforeunload",()=>{closed=true;stopRoom();});
+window.addEventListener("beforeunload",()=>{
+ if(host&&room){for(const pid of channels.keys())sendData(pid,{type:"room-closed"});}
+ closed=true;stopRoom();
+});
 startTimerLoop();
 })();
 
