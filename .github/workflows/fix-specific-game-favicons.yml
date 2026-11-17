@@ -120,6 +120,7 @@ jobs:
               raise SystemExit("Some real game icons could not be assigned:\n" + "\n".join(failed))
 
           catalogue_path.write_text(json.dumps(catalogue, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          Path("/tmp/excruciating-game-artwork-map.json").write_text(json.dumps(artwork, indent=2), encoding="utf-8")
           print("Assigned actual game artwork:")
           print("\n".join(changed))
           print("No placeholder artwork was generated.")
@@ -136,4 +137,39 @@ jobs:
             git add "games/$folder/index.html"
           done
           git commit -m "Assign actual game artwork to individual favicons"
-          git push origin main
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            if ! git rebase origin/main; then
+              conflicts="$(git diff --name-only --diff-filter=U)"
+              for file in $conflicts; do
+                case "$file" in
+                  catalog/games.json)
+                    git checkout --ours -- "$file"
+                    python3 - <<'PY'
+          import json
+          from pathlib import Path
+          catalogue_path = Path("catalog/games.json")
+          artwork = json.loads(Path("/tmp/excruciating-game-artwork-map.json").read_text(encoding="utf-8"))
+          catalogue = json.loads(catalogue_path.read_text(encoding="utf-8"))
+          for game in catalogue.get("games", []):
+              slug = game.get("slug")
+              if slug in artwork:
+                  game["icon"] = f"/games/{slug}/{artwork[slug]}"
+          catalogue_path.write_text(json.dumps(catalogue, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          PY
+                    git add "$file"
+                    ;;
+                  *)
+                    echo "Unexpected favicon merge conflict: $file"
+                    git rebase --abort
+                    exit 1
+                    ;;
+                esac
+              done
+              GIT_EDITOR=true git rebase --continue
+            fi
+            if git push origin main; then exit 0; fi
+            sleep 2
+          done
+          echo "Unable to push favicon assignments after five attempts."
+          exit 1
