@@ -443,7 +443,8 @@ const gameShellUiStyle=document.createElement("style");
     lookSurface.hidden = !touchDevice;
     if (touchDevice) {
       controlsToggle.setAttribute("aria-expanded", "true");
-      controlsToggle.querySelector("span").textContent = "Hide controls";
+      controlsToggle.setAttribute("aria-label", "Hide controls");
+      controlsToggle.title = "Hide controls";
     }
   }
 
