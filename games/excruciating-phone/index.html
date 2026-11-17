@@ -18,6 +18,7 @@ const API="/api/phone-signal";
 const MIN_PLAYERS=3,MAX_PLAYERS=8,CONNECT_TIMEOUT=25000;
 const id=(crypto.randomUUID?crypto.randomUUID():("p-"+Math.random().toString(36).slice(2)+Date.now().toString(36)));
 const ice={iceServers:[{urls:"stun:stun.l.google.com:19302"},{urls:"stun:stun1.l.google.com:19302"},{urls:"stun:stun2.l.google.com:19302"}]};
+let turnLoaded=false,turnLoading=null;
 let name="",room="",host=false,hostId="",players=[],state=null;
 let pcMap=new Map(),channels=new Map(),pendingCandidates=new Map(),incomingChunks=new Map();
 let polling=false,pollTimer=null,connectionTimer=null,connectionExpiry=null,hostPlayerTimers=new Map(),timerLoop=null;
@@ -33,6 +34,18 @@ async function fetchSignal(url,options={}){
  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),8000);
  try{return await fetch(url,{...options,signal:controller.signal});}
  finally{clearTimeout(timeout);}
+}
+async function loadTurnServers(){
+ if(turnLoaded)return;
+ if(turnLoading)return turnLoading;
+ turnLoading=(async()=>{
+  try{
+   const response=await fetchSignal("/api/phone-turn",{cache:"no-store"});
+   if(response.ok){const data=await response.json();if(Array.isArray(data.iceServers))ice.iceServers.push(...data.iceServers);}
+  }catch{}
+  turnLoaded=true;
+ })();
+ await turnLoading;
 }
 async function signal(to,payload){
  const response=await fetchSignal(API,{method:"POST",cache:"no-store",headers:{"content-type":"application/json"},body:JSON.stringify({room,from:id,to,payload})});
@@ -197,6 +210,7 @@ function attach(pid,channel){
  channel.onerror=()=>{updatePlayer(pid,{connected:false});renderPlayers();};
 }
 async function makePeer(pid){
+ await loadTurnServers();
  const pc=peer(pid,true),offer=await pc.createOffer();await pc.setLocalDescription(offer);
  await signal(pid,{type:"offer",sdp:pc.localDescription});
 }
@@ -237,6 +251,7 @@ async function receiveSignal(message){
   return;
  }
  if(payload.type==="offer"&&!host){
+  await loadTurnServers();
   const pc=peer(from,false);await pc.setRemoteDescription(payload.sdp);await flushCandidates(from);
   const answer=await pc.createAnswer();await pc.setLocalDescription(answer);
   await signal(from,{type:"answer",sdp:pc.localDescription});return;
