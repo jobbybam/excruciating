@@ -1,5 +1,5 @@
-# Attribution
+# EaglercraftX 1.8
 
-Game files sourced from the 3kh0 Assets collection. Please credit 3kh0. Original game names, trademarks and third-party game rights remain with their respective creators.
+Client files are sourced from the EaglercraftX Client Collections repository, directory eagler-files/1.8/Main. The source repository README requests credit. Eaglercraft is unofficial; Minecraft is a trademark of Mojang/Microsoft.
 
-Source: https://gitlab.com/3kh0/3kh0-assets
+Source: https://github.com/eaglercraftx1-8/eaglercraftx1-8.github.io/tree/main/eagler-files/1.8/Main

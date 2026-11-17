@@ -1,5 +1,5 @@
 {
-  "version": 32,
+  "version": 33,
   "source": "Published catalogue entries are locally hosted games with verified original source and licence metadata; titles without a verified self-hosted build are excluded.",
   "attribution": "Published games are hosted locally. Original source, licence and attribution details are recorded with each game.",
   "games": [
@@ -319,18 +319,6 @@
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
       "icon": "/favicons/slope.svg"
-    },
-    {
-      "slug": "eaglerfaithful",
-      "title": "Eaglercraft",
-      "category": "Multiplayer",
-      "description": "Locally hosted game imported from the 3kh0 assets collection.",
-      "url": "/games/eaglerfaithful/index.html",
-      "thumbnail": "/favicons/eaglerfaithful.svg",
-      "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "Reuse permitted by the 3kh0 Assets archive.",
-      "published": true,
-      "icon": "/favicons/eaglerfaithful.svg"
     },
     {
       "slug": "polytrack",
@@ -1232,6 +1220,19 @@
       "published": true,
       "thumbnail": "/games/sudoku/favicon.svg",
       "icon": "/games/sudoku/favicon.svg"
+    },
+    {
+      "slug": "eaglerfaithful",
+      "title": "EaglercraftX 1.8",
+      "category": "Multiplayer",
+      "description": "EaglercraftX 1.8 with its touchscreen mode and Excruciating's iPad joystick, look surface and action controls.",
+      "url": "/games/eaglerfaithful/index.html",
+      "thumbnail": "/games/eaglerfaithful/favicon.png",
+      "icon": "/games/eaglerfaithful/favicon.png",
+      "source_url": "https://github.com/eaglercraftx1-8/eaglercraftx1-8.github.io/tree/main/eagler-files/1.8/Main",
+      "license": "The upstream repository requests credit; third-party game rights remain with their respective owners.",
+      "attribution": "EaglercraftX Client Collections. Unofficial Minecraft browser client.",
+      "published": true
     }
   ]
 }
