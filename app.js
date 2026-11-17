@@ -37,7 +37,7 @@ function renderRecent(){
 function render(){
  const q=state.query.trim().toLowerCase();
  renderCategoryFilters();
- const visible=state.games.filter(game=>(!q||game.title.toLowerCase().includes(q))&&(state.category==="All"||game.category===state.category));
+ const visible=state.games.filter(game=>(!q||game.title.toLowerCase().includes(q))&&(state.category==="All"||game.category===state.category)).sort((a,b)=>String(a.title||"").localeCompare(String(b.title||""),undefined,{sensitivity:"base",numeric:true})||String(a.slug||"").localeCompare(String(b.slug||"")));
  grid.replaceChildren();count.textContent=visible.length+" "+(visible.length===1?"game":"games");empty.hidden=visible.length!==0;
  for(const game of visible)grid.append(gameCard(game));
  renderFeatured();renderRecent();
