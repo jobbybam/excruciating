@@ -82,9 +82,16 @@ function updatePlayer(pid,patch){
  const player=players.find(p=>p.id===pid);if(player)Object.assign(player,patch);
 }
 function connected(pid){return pid===id&&host ? true : players.some(p=>p.id===pid&&p.connected===true)}
-function allConnected(){return players.length>=MIN_PLAYERS&&players.every(p=>p.id===id&&host||p.connected===true)}
+function allConnected(){
+ if(players.length<MIN_PLAYERS)return false;
+ return players.every(p=>{
+  if(p.id===id&&host)return true;
+  if(!p.connected)return false;
+  return !host||channels.get(p.id)?.readyState==="open";
+ });
+}
 function renderPlayers(){
- $("players").innerHTML=players.map(p=>'<div class="player"><span>'+esc(p.name)+(p.id===hostId?' <span class="pill">HOST</span>':'')+'</span><span class="pill">'+(p.id===id?"YOU":p.connected?"CONNECTED":"CONNECTING")+'</span></div>').join("");
+ $("players").innerHTML=players.map(p=>'<div class="player"><span>'+esc(p.name)+(p.id===hostId?' <span class="pill">HOST</span>':'')+'</span><span class="pill">'+(p.id===id?"YOU":p.connected&&(!host||channels.get(p.id)?.readyState==="open")?"CONNECTED":"CONNECTING")+'</span></div>').join("");
  $("playerCount").textContent=players.length+" / "+MAX_PLAYERS+" players";
  $("start").hidden=!host;
  $("timerSettings").hidden=!host;
@@ -109,7 +116,9 @@ function peer(pid,offerer){
  pc.ondatachannel=event=>attach(pid,event.channel);
  pc.onconnectionstatechange=()=>{
   const status=pc.connectionState;
-  if(status==="connected"){clearPlayerTimer(pid);updatePlayer(pid,{connected:true});renderPlayers();if(host)broadcast({type:"players",players,hostId});}
+  if(status==="connected"){
+   if(channels.get(pid)?.readyState==="open"){clearPlayerTimer(pid);updatePlayer(pid,{connected:true});renderPlayers();if(host)broadcast({type:"players",players,hostId});}
+  }
   else if(status==="failed"||status==="closed"||status==="disconnected"){updatePlayer(pid,{connected:false});renderPlayers();if(host){broadcast({type:"players",players,hostId});scheduleDrop(pid,status==="disconnected"?20000:12000);}else{const message="Connection to the host was lost. Return to the room and rejoin.";if(!$("play").classList.contains("hidden"))$("playStatus").textContent=message;else $("lobbyStatus").textContent=message;}}
  };
  if(offerer){const channel=pc.createDataChannel("phone",{ordered:true});attach(pid,channel);}
