@@ -1,5 +1,7 @@
 (() => {
   "use strict";
+  // Standalone multiplayer experience: never inject shell UI or its loader here.
+  if (location.pathname === "/games/excruciating-phone" || location.pathname.startsWith("/games/excruciating-phone/")) return;
   if (window.__excruciatingGameShellLoaded) return;
   window.__excruciatingGameShellLoaded = true;
 
