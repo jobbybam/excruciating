@@ -1,8 +1,21 @@
 {
-  "version": 31,
+  "version": 32,
   "source": "Published catalogue entries are locally hosted games with verified original source and licence metadata; titles without a verified self-hosted build are excluded.",
   "attribution": "Published games are hosted locally. Original source, licence and attribution details are recorded with each game.",
   "games": [
+    {
+      "slug": "excruciating-phone",
+      "title": "Excruciating Phone",
+      "category": "Multiplayer",
+      "description": "A classic drawing telephone game. Write, draw, pass it on and reveal the chaos with friends.",
+      "url": "/games/excruciating-phone/index.html",
+      "thumbnail": "/favicons/excruciating-phone.svg",
+      "icon": "/favicons/excruciating-phone.svg",
+      "source_url": "https://github.com/jobbybam/excruciating",
+      "license": "Original Excruciating Phone implementation",
+      "attribution": "Excruciating Phone — original project",
+      "published": true
+    },
     {
       "slug": "undertale",
       "title": "Undertale",
