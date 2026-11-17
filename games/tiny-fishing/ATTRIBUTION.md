@@ -1,5 +1,5 @@
-# Attribution
+# Tiny Fishing
 
-Game files sourced from the 3kh0 Assets collection. Please credit 3kh0. Original game names, trademarks and third-party game rights remain with their respective creators.
+Game files sourced from the archived 3kh0 Assets collection. The original project README states that archived games may be reused; credit is retained here. Game trademarks and any third-party rights remain with their respective owners.
 
-Source: https://gitlab.com/3kh0/3kh0-assets
+Source: https://gitlab.com/3kh0/3kh0-assets/-/tree/main/tiny-fishing

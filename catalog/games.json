@@ -1,6 +1,6 @@
 {
-  "version": 33,
-  "source": "Published catalogue entries are locally hosted games with verified original source and licence metadata; titles without a verified self-hosted build are excluded.",
+  "version": 34,
+  "source": "Locally hosted games, including selected mobile-oriented 3kh0 Assets imports.",
   "attribution": "Published games are hosted locally. Original source, licence and attribution details are recorded with each game.",
   "games": [
     {
@@ -570,13 +570,14 @@
       "slug": "fruitninja",
       "title": "Fruit Ninja",
       "category": "Arcade",
-      "description": "Locally hosted game imported from the 3kh0 assets collection.",
+      "description": "Locally hosted, touch-oriented Fruit Ninja.",
       "url": "/games/fruitninja/index.html",
-      "thumbnail": "/favicons/fruitninja.svg",
-      "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "Reuse permitted by the 3kh0 Assets archive.",
-      "published": true,
-      "icon": "/favicons/fruitninja.svg"
+      "thumbnail": "/games/fruitninja/assets/splash/splash screen.png",
+      "icon": "/games/fruitninja/assets/splash/splash screen.png",
+      "source_url": "https://gitlab.com/3kh0/3kh0-assets/-/tree/main/fruitninja",
+      "license": "Archived 3kh0 Assets README permits reuse; third-party rights remain with their owners.",
+      "attribution": "Sourced from 3kh0 Assets; credit retained and third-party game rights belong to their respective owners.",
+      "published": true
     },
     {
       "slug": "hextris",
@@ -774,25 +775,27 @@
       "slug": "tiny-fishing",
       "title": "Tiny Fishing",
       "category": "Arcade",
-      "description": "Locally hosted game imported from the 3kh0 assets collection.",
+      "description": "Locally hosted, touch-oriented Tiny Fishing.",
       "url": "/games/tiny-fishing/index.html",
-      "thumbnail": "/favicons/tiny-fishing.png",
-      "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "Reuse permitted by the 3kh0 Assets archive.",
-      "published": true,
-      "icon": "/favicons/tiny-fishing.png"
+      "thumbnail": "/games/tiny-fishing/thumb.png",
+      "icon": "/games/tiny-fishing/thumb.png",
+      "source_url": "https://gitlab.com/3kh0/3kh0-assets/-/tree/main/tiny-fishing",
+      "license": "Archived 3kh0 Assets README permits reuse; third-party rights remain with their owners.",
+      "attribution": "Sourced from 3kh0 Assets; credit retained and third-party game rights belong to their respective owners.",
+      "published": true
     },
     {
       "slug": "crossyroad",
       "title": "Crossy Road",
       "category": "Arcade",
-      "description": "Locally hosted game imported from the 3kh0 assets collection.",
+      "description": "Locally hosted, touch-oriented Crossy Road.",
       "url": "/games/crossyroad/index.html",
-      "thumbnail": "/favicons/crossyroad.svg",
-      "source_url": "https://gitlab.com/3kh0/3kh0-assets",
-      "license": "Reuse permitted by the 3kh0 Assets archive.",
-      "published": true,
-      "icon": "/favicons/crossyroad.svg"
+      "thumbnail": "/games/crossyroad/sprites/poki-icon.png",
+      "icon": "/games/crossyroad/sprites/poki-icon.png",
+      "source_url": "https://gitlab.com/3kh0/3kh0-assets/-/tree/main/crossyroad",
+      "license": "Archived 3kh0 Assets README permits reuse; third-party rights remain with their owners.",
+      "attribution": "Sourced from 3kh0 Assets; credit retained and third-party game rights belong to their respective owners.",
+      "published": true
     },
     {
       "slug": "bad-ice-cream",
