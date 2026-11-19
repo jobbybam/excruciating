@@ -306,7 +306,7 @@
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/games/rooftop-snipers/img/thumb.png"
+      "icon": "/games/rooftop-snipers/favicon.svg"
     },
     {
       "slug": "slope",
@@ -625,7 +625,7 @@
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/games/drift-boss/media/graphics/splash/mobile/cover-start.jpg"
+      "icon": "/games/drift-boss/favicon.svg"
     },
     {
       "slug": "stickman-hook",
@@ -637,7 +637,7 @@
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/games/stickman-hook/images/48b008015901097a88b7803f4ad868da-title.png"
+      "icon": "/games/stickman-hook/favicon.svg"
     },
     {
       "slug": "ctr",
@@ -778,7 +778,7 @@
       "description": "Locally hosted, touch-oriented Tiny Fishing.",
       "url": "/games/tiny-fishing/index.html",
       "thumbnail": "/games/tiny-fishing/thumb.png",
-      "icon": "/games/tiny-fishing/thumb.png",
+      "icon": "/games/tiny-fishing/favicon.svg",
       "source_url": "https://gitlab.com/3kh0/3kh0-assets/-/tree/main/tiny-fishing",
       "license": "Archived 3kh0 Assets README permits reuse; third-party rights remain with their owners.",
       "attribution": "Sourced from 3kh0 Assets; credit retained and third-party game rights belong to their respective owners.",
@@ -915,7 +915,7 @@
       "source_url": "https://gitlab.com/3kh0/3kh0-assets",
       "license": "Reuse permitted by the 3kh0 Assets archive.",
       "published": true,
-      "icon": "/games/monkey-mart/bg_loading.png"
+      "icon": "/games/monkey-mart/favicon.svg"
     },
     {
       "slug": "backflip-dive-3d",
