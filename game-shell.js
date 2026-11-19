@@ -82,6 +82,7 @@
     .excruciating-stick:before { content:""; position:absolute; inset:24%; border:1px solid #ffffff25; border-radius:50%; }
     .excruciating-stick-knob { position:absolute; left:50%; top:50%; width:42%; aspect-ratio:1; border:1px solid #ffffff66; border-radius:50%; background:#ffffff30; transform:translate(-50%,-50%); pointer-events:none; }
     .excruciating-control-left .excruciating-dpad,.excruciating-control-left .excruciating-actions { pointer-events:auto; }
+    #excruciating-touch-controls .excruciating-control-left .excruciating-actions { justify-content:flex-start; }
     .excruciating-control-right .excruciating-actions { pointer-events:auto; }
     #excruciating-touch-controls .excruciating-actions { display:flex; flex-wrap:wrap; justify-content:flex-end; max-width:min(42vw,260px); }
     #excruciating-touch-controls .excruciating-actions button { min-width:52px; min-height:52px; padding:6px; }
