@@ -12,7 +12,7 @@ This audit covers the 33 selected games. The shared shell should not put a gener
 | Jetpack Joyride | One right-side Fly button (Space); holding it controls lift. |
 | Moto X3M | Right-side Gas, Brake and left/right Flip buttons; no joystick. |
 | Rooftop Snipers | Player 1 Jump / Shoot buttons on the left and Player 2 Jump / Shoot on the right (W / E and I / O). |
-| OvO | Left virtual joystick; right-side Jump (Space). |
+| OvO | Left virtual joystick for left/right movement, jump (Up) and slide / ground pound (Down); no extra action button. |
 | PolyTrack | Right-side steering, Accelerate and Brake buttons; no joystick. |
 | Draw the Hill | Native pointer drawing interaction; no movement overlay. |
 | Bad Time Simulator | Left directional pad; right-side Confirm (Z), Cancel (X) and Focus (Shift). |
@@ -29,7 +29,7 @@ This audit covers the 33 selected games. The shared shell should not put a gener
 | Subway Surfers | Left virtual joystick for lane changes and movement; right-side Jump and Roll actions. |
 | Friday Night Funkin' | Left four-direction note pad; right-side Accept (Enter) and Back (Esc). |
 | Backflip Dive 3D | Right-side Left, Right and Jump buttons; no joystick. |
-| Monkey Mart | Left virtual joystick; right-side Interact (E). |
+| Monkey Mart | Left virtual joystick; the game automatically interacts near crops, shelves and the register. |
 | Henry Stickmin: Breaking the Bank | Native tap/click choice interface; no movement overlay. |
 | Henry Stickmin: Escaping the Prison | Native tap/click choice interface; no movement overlay. |
 | Henry Stickmin: Stealing the Diamond | Native tap/click choice interface; no movement overlay. |
