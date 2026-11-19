@@ -289,7 +289,7 @@ const gameShellUiStyle=document.createElement("style");
   moveToggle.setAttribute("aria-label", "Move controls");
   moveToggle.title = "Move controls";
 
-  const isNativeTouchGame = /(?:^|\/)(?:mahjong-link|water-sort|mini-golf|sudoku|aquapark-slides|polytrack|drive-mad|crossyroad|fruitninja|tiny-fishing|papas-pizzeria|bitlife|draw-the-hill|fnaf-[1-4]|ctr|paperio2|google-feud|henry-breaking-the-bank|henry-escaping-the-prison|henry-stealing-the-diamond|henry-infiltrating-the-airship|henry-fleeing-the-complex)(?:\/|$)/i.test(location.pathname);
+  const isNativeTouchGame = /(?:^|\/)(?:mahjong-link|water-sort|mini-golf|sudoku|aquapark-slides|motox3m|polytrack|drive-mad|crossyroad|fruitninja|tiny-fishing|papas-pizzeria|bitlife|draw-the-hill|fnaf-[1-4]|ctr|paperio2|google-feud|henry-breaking-the-bank|henry-escaping-the-prison|henry-stealing-the-diamond|henry-infiltrating-the-airship|henry-fleeing-the-complex)(?:\/|$)/i.test(location.pathname);
   const toolbar = document.createElement("div");
   toolbar.id = "excruciating-game-controls";
   toolbar.append(back, chatToggle);
@@ -368,7 +368,6 @@ const gameShellUiStyle=document.createElement("style");
     "deltarune": {move:"stick",keys:["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"],actions:[["Confirm","z"],["Cancel","x"],["Menu","Escape"]]},
     "slope": {move:"none",actions:[["Steer left","ArrowLeft"],["Steer right","ArrowRight"]]},
     "jetpack-joyride": {move:"none",actions:[["Fly","Space"]]},
-    "motox3m": {move:"none",actions:[["Gas","ArrowUp"],["Brake","ArrowDown"],["Flip","ArrowLeft"],["Flip","ArrowRight"]]},
     "rooftop-snipers": {move:"none",leftActions:[["P1 Jump","w"],["P1 Shoot","e"]],rightActions:[["P2 Jump","i"],["P2 Shoot","o"]]},
     "ovo": {move:"stick",keys:["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"],actions:[]},
     "draw-the-hill": {move:"none",actions:[]},
