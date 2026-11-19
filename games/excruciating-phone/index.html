@@ -10,6 +10,9 @@ html,body{width:100%;height:100%;height:100dvh;margin:0;overflow:hidden;overscro
 body{min-height:0;position:fixed;inset:0}
 .wrap{height:100%;min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;padding-top:max(12px,env(safe-area-inset-top));padding-bottom:max(16px,env(safe-area-inset-bottom))}
 #play.stage{width:min(100%,800px);max-height:calc(100dvh - 58px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;padding:8px 2px 18px;margin:8px auto 0}
+.phone-stage .wrap{overflow:hidden}
+.phone-stage #play.stage,.phone-stage #results.stage{height:calc(100dvh - 72px - env(safe-area-inset-top) - env(safe-area-inset-bottom));max-height:none;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.phone-stage .footer{display:none}
 #play .canvas-wrap{width:100%;max-height:min(52dvh,520px);display:flex;align-items:center;justify-content:center}
 #play .canvas-wrap canvas{width:100%;height:auto;max-height:min(52dvh,520px);object-fit:contain;touch-action:none}
 #play .tools{position:sticky;top:0;z-index:2;padding:5px 0;background:linear-gradient(#080808 80%,transparent)}
@@ -59,7 +62,7 @@ const canvas=$("canvas"),ctx=canvas.getContext("2d");
 function now(){return Date.now()+clockOffset}
 function esc(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function sound(freq=520,duration=.08,type="sine"){try{audio??=new(window.AudioContext||window.webkitAudioContext)();if(audio.state==="suspended")audio.resume();const o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.055,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+duration)}catch{}}
-function show(section){["home","lobby","play","results"].forEach(x=>$(x).classList.toggle("hidden",x!==section))}
+function show(section){["home","lobby","play","results"].forEach(x=>$(x).classList.toggle("hidden",x!==section));document.body.classList.toggle("phone-stage",section==="play"||section==="results")}
 function roomCode(){return Math.random().toString(36).slice(2,8).toUpperCase()}
 function setStatus(text){const target=$("lobby").classList.contains("hidden")?$("playStatus"):$("lobbyStatus");if(target)target.textContent=text||""}
 async function fetchSignal(url,options={}){
