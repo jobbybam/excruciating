@@ -1,17 +1,30 @@
 (() => {
   "use strict";
+
   const container = document.getElementById("game");
   const errorPanel = document.getElementById("game-error");
   if (!container || !errorPanel) return;
 
   const source = container.dataset.swf || "game.swf";
-  const base = new URL("./", location.href);
+
+  // A Pages route may be requested as /games/<slug> (without a trailing
+  // slash). Treat that as a directory route so relative SWF URLs stay inside
+  // the game's folder instead of resolving to /games/.
+  const pageUrl = new URL(location.href);
+  const lastPathSegment = pageUrl.pathname.split("/").pop() || "";
+  if (!pageUrl.pathname.endsWith("/") && !/\.[a-z0-9]+$/i.test(lastPathSegment)) {
+    pageUrl.pathname += "/";
+  }
+  const base = new URL("./", pageUrl);
+
   window.ExcruciatingGameReady = false;
   window.ExcruciatingGameLoadFailed = false;
+
   const markReady = () => {
     window.ExcruciatingGameReady = true;
     window.dispatchEvent(new Event("excruciating:game-ready"));
   };
+
   const showError = (message) => {
     errorPanel.hidden = false;
     errorPanel.textContent = message;
@@ -25,6 +38,48 @@
     document.head.append(script);
   });
 
+  async function loadDirect(api) {
+    const swfUrl = new URL(source, base);
+    const response = await fetch(swfUrl, { cache: "no-cache" });
+    if (!response.ok) {
+      throw new Error(`Game file not found (${response.status}): ${swfUrl.pathname}`);
+    }
+    await api.load({ data: await response.arrayBuffer(), swfFileName: source, base: base.href });
+  }
+
+  async function loadSplit(api, manifestUrl) {
+    const response = await fetch(manifestUrl, { cache: "no-cache" });
+    if (response.status === 404) return false;
+    if (!response.ok) throw new Error(`Game file manifest request failed (${response.status}).`);
+
+    const parts = await response.json();
+    if (!Array.isArray(parts) || parts.length < 2 ||
+        parts.some((part) => typeof part !== "string" || !part.trim())) {
+      throw new Error("The local game file list is invalid.");
+    }
+
+    const buffers = await Promise.all(parts.map(async (part) => {
+      const partUrl = new URL(part, base);
+      const partResponse = await fetch(partUrl, { cache: "no-cache" });
+      if (!partResponse.ok) {
+        throw new Error(`Game file part not found (${partResponse.status}): ${partUrl.pathname}`);
+      }
+      return partResponse.arrayBuffer();
+    }));
+
+    const totalBytes = buffers.reduce((total, buffer) => total + buffer.byteLength, 0);
+    if (!totalBytes) throw new Error("The split game files are empty.");
+
+    const data = new Uint8Array(totalBytes);
+    let offset = 0;
+    for (const buffer of buffers) {
+      data.set(new Uint8Array(buffer), offset);
+      offset += buffer.byteLength;
+    }
+    await api.load({ data, swfFileName: source, base: base.href });
+    return true;
+  }
+
   async function loadGame() {
     await loadScript("/games/ruffle/ruffle.js");
     const ruffle = window.RufflePlayer?.newest?.();
@@ -37,30 +92,9 @@
     container.replaceChildren(player);
 
     const api = typeof player.ruffle === "function" ? player.ruffle() : player;
-    const manifestResponse = await fetch(new URL(source + ".parts.json", base), { cache: "force-cache" });
-    if (!manifestResponse.ok) {
-      await api.load({ url: new URL(source, base).href });
-      markReady();
-      return;
-    }
-
-    const parts = await manifestResponse.json();
-    if (!Array.isArray(parts) || parts.length < 2 || parts.some((part) => typeof part !== "string")) {
-      throw new Error("The local game file list is invalid.");
-    }
-    const buffers = await Promise.all(parts.map(async (part) => {
-      const response = await fetch(new URL(part, base), { cache: "force-cache" });
-      if (!response.ok) throw new Error("A local game file could not be loaded.");
-      return response.arrayBuffer();
-    }));
-    const totalBytes = buffers.reduce((total, buffer) => total + buffer.byteLength, 0);
-    const data = new Uint8Array(totalBytes);
-    let offset = 0;
-    for (const buffer of buffers) {
-      data.set(new Uint8Array(buffer), offset);
-      offset += buffer.byteLength;
-    }
-    await api.load({ data, swfFileName: source, base: base.href });
+    const manifestUrl = new URL(source + ".parts.json", base);
+    const loadedFromParts = await loadSplit(api, manifestUrl);
+    if (!loadedFromParts) await loadDirect(api);
     markReady();
   }
 
@@ -68,6 +102,6 @@
     window.ExcruciatingGameLoadFailed = true;
     window.dispatchEvent(new Event("excruciating:game-failed"));
     console.error("Could not start the locally hosted Ruffle game.", error);
-    showError("This game could not start. Reload the page, or try again when the local game files are available.");
+    showError(error instanceof Error ? error.message : "This game could not start. Reload the page and try again.");
   });
 })();
