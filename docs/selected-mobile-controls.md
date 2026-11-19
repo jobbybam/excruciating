@@ -38,6 +38,8 @@ This audit covers the 33 selected games. The shared shell should not put a gener
 | Google Feud | Native text entry and tap selection; no movement overlay. |
 | EaglercraftX 1.8 | Left Minecraft movement joystick and right-side look surface, Jump, Sprint, Sneak, Inventory, Mine, Use, Chat, Menu and 1–9 hotbar. |
 
+Games outside this selected set retain the legacy generic D-pad plus Jump / E / Z / X shell fallback until they receive an individual audit. Their catalogue entries and assets remain untouched.
+
 ## Verification checklist
 
 - Keep the catalogue at 33 selected titles without removing or hiding other games.
