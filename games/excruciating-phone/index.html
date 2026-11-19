@@ -305,10 +305,12 @@ function broadcast(message){
  for(const pid of channels.keys())sendData(pid,packet);
 }
 function sendHost(message){
- if(host){applySubmission(id,message);return true;}
+ if(!state)return false;
+ const packet={...message,round:state.round,phase:state.phase};
+ if(host){applySubmission(id,packet);return true;}
  const channel=channels.get(hostId);
  if(!channel||channel.readyState!=="open"){$("playStatus").textContent="Connection to the host was lost. Rejoin the room.";return false;}
- if(!sendData(hostId,message))return false;
+ if(!sendData(hostId,packet))return false;
  state.submissions=state.submissions||{};state.submissions[id]={pending:true};renderState();
  $("playStatus").textContent="Submitted. Waiting for the other players…";
  return true;
@@ -322,6 +324,8 @@ function begin(){
 }
 function applySubmission(pid,message){
  if(!host||!state||state.phase==="results"||state.submissions[pid])return;
+ // Reject late packets so a slow peer cannot submit an old turn into the next one.
+ if(message.round!==state.round||message.phase!==state.phase)return;
  const book=state.books.find(b=>b.holder===pid&&b.entries.length===state.round);
  if(!book)return;
  let value=typeof message.value==="string"?message.value:"";
@@ -416,8 +420,10 @@ $("undo").onclick=()=>{if(undoStack.length>1){undoStack.pop();const image=new Im
 $("clear").onclick=()=>resetCanvas();
 $("submitSentence").onclick=()=>{const value=$("sentence").value.trim();if(!value)return;$("submitSentence").disabled=true;sendHost({type:"submit",value});sound(540)};
 $("submitDrawing").onclick=()=>{
- const small=document.createElement("canvas");small.width=640;small.height=370;small.getContext("2d").drawImage(canvas,0,0,640,370);
- const value=small.toDataURL("image/jpeg",.38);$("submitDrawing").disabled=true;sendHost({type:"submit",value});sound(700);
+ const small=document.createElement("canvas");small.width=480;small.height=278;small.getContext("2d").drawImage(canvas,0,0,480,278);
+ let value=small.toDataURL("image/jpeg",.42);
+ if(value.length>160000){small.width=400;small.height=231;small.getContext("2d").drawImage(canvas,0,0,400,231);value=small.toDataURL("image/jpeg",.3);}
+ $("submitDrawing").disabled=true;sendHost({type:"submit",value});sound(700);
 };
 $("players").addEventListener("click",event=>{
  const button=event.target.closest("[data-player]");if(button)removePlayer(button.dataset.player);
