@@ -40,7 +40,7 @@ body{min-height:0;position:fixed;inset:0}
 <section id="home"><div class="hero"><div class="eyebrow">THE DRAWING TELEPHONE GAME</div><h1>Excruciating Phone</h1><p>Write it. Draw it. Pass it on. Watch it fall apart.</p></div><div class="home-actions"><div class="panel"><h2>Create a room</h2><p class="muted">Start a classic telephone game and invite your friends.</p><label class="field">Your name<input id="hostName" maxlength="18" placeholder="Player name"></label><button class="primary" id="create">Create room</button></div><div class="panel"><h2>Join a room</h2><p class="muted">Enter the room code shared by the host.</p><label class="field">Your name<input id="joinName" maxlength="18" placeholder="Player name"></label><label class="field">Room code<input id="roomCode" maxlength="6" placeholder="ABC123" autocapitalize="characters"></label><button id="join">Join room</button></div></div><p class="status" id="homeStatus" style="text-align:center"></p></section>
 <section id="lobby" class="hidden"><div class="row spread"><div><div class="eyebrow">ROOM LOBBY</div><h1 style="margin:5px 0">Room <span id="codeLabel"></span></h1><p class="muted">Share this code with your friends.</p></div><button id="copyCode">Copy invite code</button></div><div class="lobby-grid"><div class="panel"><h2>Ready when you are</h2><p class="muted">Everyone writes a starting sentence. Pages pass to the next player, alternating between drawing and describing until each album has gone around the room.</p><p id="startRequirement" class="muted">You need 2 more players to start.</p><div id="timerSettings"><label class="field">Turn timer (seconds)<input id="turnTimer" type="number" min="15" max="600" step="5" value="60"></label><p class="muted">Host only · Each turn advances when time runs out.</p></div><button class="primary" id="start" disabled>Start game</button><p class="status" id="lobbyStatus"></p></div><div class="panel"><div class="row spread"><strong>Players</strong><span class="pill" id="playerCount">0 online</span></div><div class="players" id="players"></div></div></div></section>
 <section id="play" class="stage hidden"><div class="row spread"><span class="pill" id="roundLabel">ROUND</span><span class="pill" id="timerDisplay">01:00</span><span class="muted" id="progress"></span></div><h2 id="taskTitle">Your turn</h2><p class="muted" id="taskHint"></p><div id="writeTask" class="panel hidden"><label class="field">Write a sentence<textarea id="sentence" maxlength="120" rows="3" placeholder="Something wonderfully ridiculous…"></textarea></label><button class="primary" id="submitSentence">Pass sentence</button></div><div id="drawTask" class="hidden"><div class="prompt" id="drawPrompt"></div><div class="tools"><button id="pen" class="primary">Pen</button><button id="eraser">Eraser</button><input id="colour" type="color" value="#171717" aria-label="Pen colour"><label class="muted">Size <input id="size" type="range" min="2" max="24" value="5"></label><button id="undo">Undo</button><button id="clear">Clear</button></div><div class="canvas-wrap"><canvas id="canvas" width="900" height="520"></canvas></div><div class="row" style="margin-top:12px"><button class="primary" id="submitDrawing">Pass drawing</button></div></div><div id="waitTask" class="panel hidden"><h2>You're all caught up.</h2><p class="muted">Waiting for the other players to finish their pages…</p></div><p class="status" id="playStatus"></p></section>
-<section id="results" class="stage hidden"><div class="eyebrow">THE REVEAL</div><h1>Look what happened.</h1><p class="muted">Every sentence and drawing, in order.</p><div class="book" id="books"></div><button class="primary" id="backLobby" style="margin-top:18px">Back to lobby</button></section><p class="footer">EXCRUCIATING PHONE · CLASSIC MODE</p></div>
+<section id="results" class="stage hidden"><div class="eyebrow">THE REVEAL</div><h1>Look what happened.</h1><p class="muted">Every sentence and drawing, in order.</p><div class="book" id="books"></div><div class="row spread" style="margin-top:18px"><span class="muted" id="revealProgress" aria-live="polite"></span><button class="primary" id="nextReveal">Next album →</button><button class="primary" id="backLobby">Back to lobby</button></div></section><p class="footer">EXCRUCIATING PHONE · CLASSIC MODE</p></div>
 <script>
 
 (()=>{
@@ -341,7 +341,7 @@ function advanceRound(){
   book.holder=state.order[(index+1)%state.order.length].id;
  }
  state.round++;
- if(state.round>=state.order.length){state.phase="results";state.deadlineAt=null;state.submissions={};}
+ if(state.round>=state.order.length){state.phase="results";state.revealIndex=0;state.deadlineAt=null;state.submissions={};}
  else{state.phase=state.round%2===0?"write":"draw";state.submissions={};state.deadlineAt=now()+state.timerSeconds*1000;}
  taskKey="";broadcast({type:"state",state});renderState();sound(state.phase==="results"?880:600);
 }
@@ -356,16 +356,23 @@ function startTimerLoop(){if(timerLoop)clearInterval(timerLoop);timerLoop=setInt
 function renderState(){
  if(!state){show("lobby");return;}
  if(state.phase==="results"){
-  show("results");$("books").innerHTML=state.books.map(book=>{
-   const owner=state.order.find(p=>p.id===book.owner);
-   const entries=book.entries.map(entry=>{
-    if(entry.type==="text")return "<p>"+esc(entry.value||"(No sentence submitted.)")+"</p>";
-    if(entry.value&&entry.value.startsWith("data:image/jpeg;base64,"))return '<img alt="Player drawing" src="'+entry.value+'">';
-    return '<p class="muted">(No drawing submitted.)</p>';
-   }).join("");
-   return '<div class="book-item"><strong>'+esc(owner?.name||"Player")+"</strong>"+entries+"</div>";
+  show("results");
+  const index=Math.max(0,Math.min(Number(state.revealIndex)||0,state.books.length-1));
+  const book=state.books[index];
+  const owner=state.order.find(p=>p.id===book?.owner);
+  const entries=(book?.entries||[]).map(entry=>{
+   if(entry.type==="text")return '<div class="book-item"><span class="pill">DESCRIPTION · '+esc(entry.author)+'</span><p>'+esc(entry.value||"(No sentence submitted.)")+'</p></div>';
+   if(entry.value&&entry.value.startsWith("data:image/jpeg;base64,"))return '<div class="book-item"><span class="pill">DRAWING · '+esc(entry.author)+'</span><img alt="Player drawing" src="'+entry.value+'"></div>';
+   return '<div class="book-item"><span class="pill">DRAWING · '+esc(entry.author)+'</span><p class="muted">(No drawing submitted.)</p></div>';
   }).join("");
-  $("roundLabel").textContent="COMPLETE";$("progress").textContent="THE REVEAL";updateTimer();return;
+  $("books").innerHTML='<div class="book-item"><div class="eyebrow">ALBUM '+(index+1)+' · STARTED BY '+esc(owner?.name||"Player")+'</div><div class="book">'+entries+'</div></div>';
+  $("revealProgress").textContent="ALBUM "+(index+1)+" OF "+state.books.length;
+  $("nextReveal").hidden=!host;
+  $("nextReveal").disabled=index>=state.books.length-1;
+  $("nextReveal").textContent=index>=state.books.length-1?"Final album revealed":"Next album →";
+  $("roundLabel").textContent="REVEAL "+(index+1)+" / "+state.books.length;
+  $("progress").textContent="THE REVEAL";
+  updateTimer();return;
  }
  show("play");$("roundLabel").textContent="TURN "+(state.round+1)+" / "+state.order.length+" · "+(state.phase==="write"?"WRITE":"DRAW");$("progress").textContent="BOOK "+(Math.max(0,state.books.findIndex(b=>b.owner===id)+1))+" / "+state.books.length;
  const book=state.books.find(b=>b.holder===id);
@@ -437,6 +444,11 @@ $("copyCode").onclick=async()=>{
  else{window.prompt("Copy this room code:",room);}}catch{$("lobbyStatus").textContent="Room code: "+room;}
 };
 $("start").onclick=begin;
+$("nextReveal").onclick=()=>{
+ if(!host||!state||state.phase!=="results")return;
+ state.revealIndex=Math.min(state.books.length-1,(Number(state.revealIndex)||0)+1);
+ broadcast({type:"state",state});renderState();sound(700);
+};
 $("turnTimer").addEventListener("change",()=>{const seconds=safeTimerSeconds();$("turnTimer").value=String(seconds);$("lobbyStatus").textContent="Turn timer set to "+seconds+" seconds.";});
 $("backLobby").onclick=()=>{
  if(!host)return;
