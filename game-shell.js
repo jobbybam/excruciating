@@ -495,7 +495,7 @@ const gameShellUiStyle=document.createElement("style");
   const keyInfo = {
     ArrowUp: ["ArrowUp", "ArrowUp", 38], ArrowDown: ["ArrowDown", "ArrowDown", 40],
     ArrowLeft: ["ArrowLeft", "ArrowLeft", 37], ArrowRight: ["ArrowRight", "ArrowRight", 39],
-    w: ["w", "KeyW", 87], a: ["a", "KeyA", 65], s: ["s", "KeyS", 83], d: ["d", "KeyD", 68], i: ["i", "KeyI", 73], o: ["o", "KeyO", 79], e: ["e", "KeyE", 69],
+    w: ["w", "KeyW", 87], a: ["a", "KeyA", 65], s: ["s", "KeyS", 83], d: ["d", "KeyD", 68], i: ["i", "KeyI", 73], o: ["o", "KeyO", 79],
     Space: [" ", "Space", 32], e: ["e", "KeyE", 69], KeyE: ["e", "KeyE", 69],
     z: ["z", "KeyZ", 90], KeyZ: ["z", "KeyZ", 90], x: ["x", "KeyX", 88], KeyX: ["x", "KeyX", 88],
     Control: ["Control", "ControlLeft", 17], Shift: ["Shift", "ShiftLeft", 16],
