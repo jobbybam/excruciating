@@ -361,7 +361,7 @@ const gameShellUiStyle=document.createElement("style");
           ? '<div class="excruciating-actions" aria-label="Steering"><button type="button" data-keys="ArrowLeft,a" aria-label="Steer left">LEFT</button><button type="button" data-keys="ArrowRight,d" aria-label="Steer right">RIGHT</button></div>'
           : '<div class="excruciating-dpad" aria-label="Movement"><button type="button" data-keys="ArrowUp,w" data-direction="up" aria-label="Move up">↑</button><button type="button" data-keys="ArrowLeft,a" data-direction="left" aria-label="Move left">←</button><button type="button" data-keys="ArrowRight,d" data-direction="right" aria-label="Move right">→</button><button type="button" data-keys="ArrowDown,s" data-direction="down" aria-label="Move down">↓</button></div><div class="excruciating-actions" aria-label="Action keys"><button type="button" data-keys="Space">Jump<br>Space</button><button type="button" data-keys="e,KeyE">E</button><button type="button" data-keys="z,KeyZ">Z</button><button type="button" data-keys="x,KeyX">X</button></div>';
   // Per-game touch layouts: movement is only shown when it makes sense for that game's controls.
-  const gameSlug = location.pathname.match(/^\\/games\\/([^/]+)/)?.[1] || "";
+  const gameSlug = location.pathname.match(/^\/games\/([^/]+)/)?.[1] || "";
   const touchProfiles = {
     "deltarune": {move:"stick",keys:["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"],actions:[["Confirm","z,KeyZ"],["Cancel","x,KeyX"],["Menu","Escape"]]},
     "jetpack-joyride": {move:"none",actions:[["Fly","Space"]]},
