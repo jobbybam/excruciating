@@ -34,6 +34,7 @@ const EXCLUDED_ROOT_ENTRIES = new Set([
   "functions",
   "migrations",
   "scripts",
+  "tests",
   "package.json",
   "package-lock.json",
   "pnpm-lock.yaml",
@@ -351,6 +352,14 @@ async function main() {
   await installGameShell();
   await splitSubwaySurfersData();
 
+  let hasDeltarune = true;
+  try {
+    await stat(INDEX_FILE);
+  } catch {
+    hasDeltarune = false;
+  }
+
+  if (hasDeltarune) {
   const html = await readFile(INDEX_FILE, "utf8");
   const archiveMapMatch = html.match(
     /(const deltaruneArchives\s*=\s*)(\{[^\n]*\})(;)/
@@ -410,6 +419,24 @@ async function main() {
   );
   await writeFile(INDEX_FILE, rewrittenHtml, "utf8");
 
+  for (const [chapter, chunks] of Object.entries(archiveMap)) {
+    for (const chunk of chunks) {
+      try {
+        await stat(path.join(GAME_DIR, chunk));
+      } catch {
+        throw new Error(`Chapter ${chapter} archive piece is missing: ${chunk}`);
+      }
+    }
+  }
+
+  if (archiveMapMatch[2] && !rewrittenHtml.includes("deltaruneArchives")) {
+    throw new Error("Deployment page lost the Deltarune archive map.");
+  }
+  console.log(
+    `Verified ${splitFiles.size} Deltarune archive file(s) for Pages.`
+  );
+  }
+
   const outputFiles = await listFiles(OUT_DIR);
   const oversized = [];
   for (const file of outputFiles) {
@@ -427,21 +454,8 @@ async function main() {
     );
   }
 
-  for (const [chapter, chunks] of Object.entries(archiveMap)) {
-    for (const chunk of chunks) {
-      try {
-        await stat(path.join(GAME_DIR, chunk));
-      } catch {
-        throw new Error(`Chapter ${chapter} archive piece is missing: ${chunk}`);
-      }
-    }
-  }
-
-  if (archiveMapMatch[2] && !rewrittenHtml.includes("deltaruneArchives")) {
-    throw new Error("Deployment page lost the Deltarune archive map.");
-  }
   console.log(
-    `Pages build complete: copied ${outputFiles.length} static files to dist/; split ${splitFiles.size} archive file(s); every asset is at or below 25 MiB.`
+    `Pages build complete: copied ${outputFiles.length} static files to dist/; every asset is at or below 25 MiB.`
   );
 }
 

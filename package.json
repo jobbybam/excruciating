@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/prepare-pages.mjs",
+    "test": "node --test",
     "generate:vapid": "node scripts/generate-vapid-keys.mjs"
   },
   "dependencies": {

@@ -7,7 +7,6 @@
 
   const styles = document.createElement("style");
   styles.textContent = `
-    #c2canvasdiv { transform: scale(1.08); transform-origin: center center; }
     #excruciating-game-controls {
       position: fixed;
       top: max(14px, env(safe-area-inset-top));

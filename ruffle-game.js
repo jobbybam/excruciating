@@ -52,7 +52,23 @@
     if (response.status === 404) return false;
     if (!response.ok) throw new Error(`Game file manifest request failed (${response.status}).`);
 
-    const parts = await response.json();
+    const manifestText = await response.text();
+    // Cloudflare Pages can serve the game's HTML fallback with status 200 for a
+    // missing static manifest. Treat that response like a missing manifest and
+    // load the ordinary SWF instead of trying to parse the page as JSON.
+    if (/^\s*</.test(manifestText)) return false;
+
+    const contentType = response.headers.get("content-type") || "";
+    if (!contentType.toLowerCase().includes("json")) {
+      throw new Error("The local game file manifest has an unexpected content type.");
+    }
+
+    let parts;
+    try {
+      parts = JSON.parse(manifestText);
+    } catch {
+      throw new Error("The local game file manifest is not valid JSON.");
+    }
     if (!Array.isArray(parts) || parts.length < 2 ||
         parts.some((part) => typeof part !== "string" || !part.trim())) {
       throw new Error("The local game file list is invalid.");

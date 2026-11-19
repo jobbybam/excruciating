@@ -1,19 +1,17 @@
 # Excruciating Leg Pain
 
-A self-hosted browser-game library built from files in this repository and deployed with Cloudflare Pages.
+A browser-game library deployed with Cloudflare Pages. It hosts selected games locally and links to third-party hosted games when redistribution rights are not recorded.
 
 ## Locally hosted games
 
-The catalogue contains exactly 33 selected locally hosted games. All other game catalogue entries and their game folders have been removed. Published game entries open files inside this repository; there are no external game-launch entries. Local highlights include:
+The catalogue retains games listed on [024333.xyz](https://024333.xyz/), plus Deltarune and the five Henry Stickmin games. It contains 24 local game pages and 9 HTTPS links that open the actual third-party hosted games on 024333.xyz. The linked games are not copied into this repository.
 
-- **Undertale and Deltarune** — browser builds in `games/undertale/` and `games/deltarune/`. Deltarune archive chunks are split for Cloudflare Pages during the build and reassembled by the loader.
-- **14 Papa's games** — Standard Version SWF files played through the local Ruffle WebAssembly runtime.
-- **Henry Stickmin** — the five original Flash games, played through the local Ruffle runtime.
-- **Temple Run 2, Retro Bowl, Google Feud, and Unlimited Wordle** — locally bundled game packages with matching catalogue icons.
-- **Idle Mining Empire** — the official responsive HTML5 package, hosted locally with permission from the publisher.
-- **Mahjong Link, Water Sort, Mini Golf, and Sudoku** — mobile-first, self-contained HTML5 games included under the MIT License with their licence files and local icons.
+- **Papa's Pizzeria** — hosted locally with Flipline Studios' website hosting permission and played through the local Ruffle WebAssembly runtime.
+- **Deltarune and the five Henry Stickmin games** — locally hosted browser/Flash builds. The build checks the Deltarune archive and splits oversized game files for Cloudflare Pages.
+- **BitLife, Jetpack Joyride, Moto X3M, PolyTrack, four FNAF games, Drive Mad, Drift Boss, Cut the Rope, Paper.io 2, Tiny Fishing, Monkey Mart, Subway Surfers, Google Feud, and Eaglercraft** — locally hosted games retained from the reference site's catalogue.
+- **Krillion, Count Master, Wordle Unlimited, Stack, Idle Mining Empire, Bottle Flip, Cubes 2048 IO, Helix Jump, and Ballistic** — actual games launched on their 024333.xyz source pages, with their artwork served by that site.
 
-Every published catalogue entry has a local `/games/<slug>/` page. Source and licence metadata are kept alongside each imported game.
+Local games launch from `/games/<slug>/`. External games open their HTTPS source page in a new tab and are marked in the catalogue. Local imports retain their source and licence metadata.
 
 ## Add games
 
@@ -28,13 +26,13 @@ Keep all local asset paths working. Do not copy proprietary games or assets just
 
 ## Mobile controls
 
-Game pages receive the shared toolbar from the Pages middleware. On touch devices, the shared controls can be shown or hidden and repositioned. Controls are configured per game: analogue movement sticks for games such as Deltarune, OvO, Subway Surfers and Monkey Mart; directional pads for games such as Bad Time Simulator; separate two-player buttons for Rooftop Snipers; and dedicated action buttons for driving, jumping, rhythm and other game-specific actions. Eaglercraft has a Minecraft-style stick, look surface, action buttons and hotbar. Games with built-in touch interfaces, including Moto X3M, PolyTrack and Drive Mad, keep those native controls rather than receiving a competing overlay. Other tap, drag and swipe games likewise retain their native interactions.
+Local game pages receive the shared toolbar from the Pages middleware. On touch devices, controls can be shown or hidden and repositioned. Deltarune, Subway Surfers, Monkey Mart and Eaglercraft have game-specific touch controls. Games with built-in touch interfaces, including Moto X3M, PolyTrack and Drive Mad, keep those native controls rather than receiving a competing overlay. Linked games run on their source site with its own controls.
 
 ## Cloudflare build
 
-The build command is `npm run build`. It creates a clean `dist/` deployment directory, copies the static site into it, splits any Deltarune archive file larger than Cloudflare Pages' 25 MiB per-file limit into 20 MiB pieces, and updates only the deployment copy of the Deltarune loader's archive map. The loader fetches those pieces and concatenates them in their original order into a Blob before starting the game.
+The build command is `npm run build`. It creates a clean `dist/` deployment directory, splits Deltarune archive files and oversized Henry SWFs into 20 MiB pieces, and checks every local asset against Cloudflare Pages' 25 MiB per-file limit. Split maps are written only to the deployment copy.
 
-The original Deltarune archive chunks in Git remain unchanged. Pages Functions and D1 migrations remain in the repository root and are not copied into the static output directory.
+Pages Functions and D1 migrations remain in the repository root and are not copied into the static output directory.
 
 ## Cloudflare Pages setup
 
