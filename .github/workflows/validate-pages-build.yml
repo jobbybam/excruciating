@@ -25,6 +25,16 @@ jobs:
           node --check app.js
           node --check account.js
           node --check game-shell.js
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          html = Path("games/excruciating-phone/index.html").read_text(encoding="utf-8")
+          scripts = re.findall(r"<script>([\\s\\S]*?)</script>", html)
+          if len(scripts) != 1:
+              raise SystemExit(f"Expected one inline Excruciating Phone script, found {len(scripts)}")
+          Path("/tmp/excruciating-phone.js").write_text(scripts[0], encoding="utf-8")
+          PY
+          node --check /tmp/excruciating-phone.js
       - name: Build static Pages output
         run: npm run build
       - name: Verify asset limits, Ruffle files and Deltarune reconstruction
@@ -184,8 +194,14 @@ jobs:
                   raise SystemExit(f"External game must use HTTPS: {game.get('slug')}")
 
           papa_pages = list((dist / "games").glob("papas-*/index.html"))
-          if len(papa_pages) != 14:
-              raise SystemExit(f"Expected 14 Papa game wrappers, found {len(papa_pages)}")
+          papa_slugs = {game.get("slug") for game in catalogue.get("games", [])
+                        if game.get("published") is not False and str(game.get("slug", "")).startswith("papas-")}
+          expected_papa_pages = {dist / "games" / slug / "index.html" for slug in papa_slugs}
+          actual_papa_pages = set(papa_pages)
+          if actual_papa_pages != expected_papa_pages:
+              missing = sorted(str(path.relative_to(dist)) for path in expected_papa_pages - actual_papa_pages)
+              unexpected = sorted(str(path.relative_to(dist)) for path in actual_papa_pages - expected_papa_pages)
+              raise SystemExit(f"Papa wrapper/catalogue mismatch. Missing={missing}, unexpected={unexpected}")
           for page in papa_pages:
               html = page.read_text(encoding="utf-8")
               if '/games/ruffle/ruffle.js' not in html or 'new URL("/games/ruffle/"' not in html:
