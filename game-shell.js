@@ -366,7 +366,7 @@ const gameShellUiStyle=document.createElement("style");
     "deltarune": {move:"stick",keys:["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"],actions:[["Confirm","z,KeyZ"],["Cancel","x,KeyX"],["Menu","Escape"]]},
     "jetpack-joyride": {move:"none",actions:[["Fly","Space"]]},
     "motox3m": {move:"none",actions:[["Gas","ArrowUp,w"],["Brake","ArrowDown,s"],["Flip","ArrowLeft,a"],["Flip","ArrowRight,d"]]},
-    "rooftop-snipers": {move:"buttons",actions:[["Left","a,ArrowLeft"],["Right","d,ArrowRight"],["Jump","w,ArrowUp"],["Shoot","Space"]]},
+    "rooftop-snipers": {move:"buttons",actions:[["Jump","w,ArrowUp"],["Shoot","Space"]]},
     "ovo": {move:"stick",keys:["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"],actions:[["Jump","Space"]]},
     "polytrack": {move:"none",actions:[["Steer left","ArrowLeft,a"],["Steer right","ArrowRight,d"],["Accelerate","ArrowUp,w"],["Brake","ArrowDown,s"]]},
     "draw-the-hill": {move:"none",actions:[]},
