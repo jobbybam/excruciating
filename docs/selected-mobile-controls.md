@@ -13,7 +13,7 @@ This audit covers the 33 selected games. The shared shell should not put a gener
 | Moto X3M | Right-side Gas, Brake and left/right Flip buttons; no joystick. |
 | Rooftop Snipers | Player 1 Jump / Shoot buttons on the left and Player 2 Jump / Shoot on the right (W / E and I / O). |
 | OvO | Left virtual joystick for left/right movement, jump (Up) and slide / ground pound (Down); no extra action button. |
-| PolyTrack | Right-side steering, Accelerate and Brake buttons; no joystick. |
+| PolyTrack | Use PolyTrack's built-in mobile steering and pedal controls; no duplicate shell overlay. |
 | Draw the Hill | Native pointer drawing interaction; no movement overlay. |
 | Bad Time Simulator | Left directional pad; right-side Confirm (Z), Cancel (X) and Focus (Shift). |
 | Five Nights at Freddy's 1 | Native tap/click for doors, lights and cameras; no movement overlay. |
@@ -21,7 +21,7 @@ This audit covers the 33 selected games. The shared shell should not put a gener
 | Five Nights at Freddy's 3 | Native tap/click for cameras and systems; no movement overlay. |
 | Five Nights at Freddy's 4 | Native tap/click and hold interactions; no movement overlay. |
 | Drift Boss | One right-side Turn button (Space); no joystick. |
-| Drive Mad | Right-side Gas and Brake buttons; no joystick. |
+| Drive Mad | Use Drive Mad's native left/right touch zones for acceleration and braking; no duplicate shell overlay. |
 | Cut the Rope | Native swipe/drag interaction; no movement overlay. |
 | Paper.io 2 | Native directional swipe/drag interaction; no duplicate movement overlay. |
 | Stickman Hook | One right-side Hook / Release button (Space); no joystick. |
