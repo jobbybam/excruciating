@@ -287,7 +287,7 @@ const gameShellUiStyle=document.createElement("style");
   moveToggle.setAttribute("aria-label", "Move controls");
   moveToggle.title = "Move controls";
 
-  const isNativeTouchGame = /(?:^|\/)(?:mahjong-link|water-sort|mini-golf|sudoku|aquapark-slides|crossyroad|fruitninja|tiny-fishing|papas-pizzeria|bitlife|draw-the-hill|fnaf-[1-4]|ctr|paperio2|google-feud|henry-breaking-the-bank|henry-escaping-the-prison|henry-stealing-the-diamond|henry-infiltrating-the-airship|henry-fleeing-the-complex)(?:\/|$)/i.test(location.pathname);
+  const isNativeTouchGame = /(?:^|\/)(?:mahjong-link|water-sort|mini-golf|sudoku|aquapark-slides|polytrack|drive-mad|crossyroad|fruitninja|tiny-fishing|papas-pizzeria|bitlife|draw-the-hill|fnaf-[1-4]|ctr|paperio2|google-feud|henry-breaking-the-bank|henry-escaping-the-prison|henry-stealing-the-diamond|henry-infiltrating-the-airship|henry-fleeing-the-complex)(?:\/|$)/i.test(location.pathname);
   const toolbar = document.createElement("div");
   toolbar.id = "excruciating-game-controls";
   toolbar.append(back, chatToggle);
