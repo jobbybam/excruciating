@@ -28,7 +28,7 @@ Keep all local asset paths working. Do not copy proprietary games or assets just
 
 ## Mobile controls
 
-Game pages receive the shared toolbar from the Pages middleware. On touch devices, the shared controls can be shown or hidden and repositioned. Controls are configured per game: analogue movement sticks for games such as Deltarune, OvO, Subway Surfers and Monkey Mart; directional pads for games such as Bad Time Simulator; separate two-player buttons for Rooftop Snipers; and dedicated action buttons for driving, jumping, rhythm and other game-specific actions. Eaglercraft has a Minecraft-style stick, look surface, action buttons and hotbar. Games with built-in touch interfaces, including PolyTrack and Drive Mad, keep those native controls rather than receiving a competing overlay. Other tap, drag and swipe games likewise retain their native interactions.
+Game pages receive the shared toolbar from the Pages middleware. On touch devices, the shared controls can be shown or hidden and repositioned. Controls are configured per game: analogue movement sticks for games such as Deltarune, OvO, Subway Surfers and Monkey Mart; directional pads for games such as Bad Time Simulator; separate two-player buttons for Rooftop Snipers; and dedicated action buttons for driving, jumping, rhythm and other game-specific actions. Eaglercraft has a Minecraft-style stick, look surface, action buttons and hotbar. Games with built-in touch interfaces, including Moto X3M, PolyTrack and Drive Mad, keep those native controls rather than receiving a competing overlay. Other tap, drag and swipe games likewise retain their native interactions.
 
 ## Cloudflare build
 
