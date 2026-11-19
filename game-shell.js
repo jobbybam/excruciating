@@ -70,23 +70,24 @@
     #excruciating-game-chat-frame { width:100%; flex:1; min-height:0; border:0; background:#101010; }
     #excruciating-controls-toggle, #excruciating-controls-move { display:none; }
     #excruciating-touch-controls {
-      position: fixed;
-      z-index: 2147483646;
-      left: max(14px, env(safe-area-inset-left));
-      bottom: max(16px, env(safe-area-inset-bottom));
-      display: flex;
-      align-items: flex-end;
-      gap: clamp(20px, 8vw, 52px);
-      padding: 8px;
-      border: 1px solid rgba(255,255,255,.15);
-      border-radius: 18px;
-      background: rgba(8,8,10,.52);
-      -webkit-backdrop-filter: blur(8px);
-      backdrop-filter: blur(8px);
-      touch-action: none;
-      user-select: none;
-      -webkit-user-select: none;
+      position:fixed; z-index:2147483646; inset:auto 0 max(12px,env(safe-area-inset-bottom));
+      display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
+      width:100%; box-sizing:border-box; padding:10px max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));
+      border:0; border-radius:0; background:transparent; box-shadow:none;
+      pointer-events:none; touch-action:none; user-select:none; -webkit-user-select:none;
     }
+    .excruciating-control-left,.excruciating-control-right { display:flex; align-items:flex-end; gap:10px; pointer-events:none; }
+    .excruciating-control-right { margin-left:auto; justify-content:flex-end; }
+    .excruciating-stick { position:relative; width:clamp(112px,18vw,154px); aspect-ratio:1; flex:none; border:2px solid rgba(255,255,255,.25); border-radius:50%; background:rgba(10,12,16,.48); box-shadow:0 5px 24px #0005; pointer-events:auto; touch-action:none; }
+    .excruciating-stick:before { content:""; position:absolute; inset:24%; border:1px solid #ffffff25; border-radius:50%; }
+    .excruciating-stick-knob { position:absolute; left:50%; top:50%; width:42%; aspect-ratio:1; border:1px solid #ffffff66; border-radius:50%; background:#ffffff30; transform:translate(-50%,-50%); pointer-events:none; }
+    .excruciating-control-left .excruciating-dpad { pointer-events:auto; }
+    .excruciating-control-right .excruciating-actions { pointer-events:auto; }
+    #excruciating-touch-controls .excruciating-actions { display:flex; flex-wrap:wrap; justify-content:flex-end; max-width:min(42vw,260px); }
+    #excruciating-touch-controls .excruciating-actions button { min-width:52px; min-height:52px; padding:6px; }
+    #excruciating-touch-controls .excruciating-dpad { grid-template-columns:repeat(3,42px); grid-template-rows:repeat(3,42px); }
+    #excruciating-touch-controls button { pointer-events:auto; }
+    #excruciating-touch-controls[hidden] { display:none!important; }
     .excruciating-dpad { display:grid; grid-template-columns:repeat(3,48px); grid-template-rows:repeat(3,48px); gap:4px; }
     .excruciating-dpad button,.excruciating-actions button { border:1px solid rgba(255,255,255,.25); border-radius:13px; background:rgba(35,35,39,.8); color:#fff; font:700 15px/1 system-ui,sans-serif; touch-action:none; user-select:none; -webkit-user-select:none; }
     .excruciating-dpad button[data-direction="up"] { grid-column:2; grid-row:1; }
@@ -116,7 +117,7 @@
       #excruciating-game-chat-heading { padding-top:env(safe-area-inset-top); height:calc(48px + env(safe-area-inset-top)); }
       #excruciating-game-chat-close { padding-right:max(0px, env(safe-area-inset-right)); }
       #excruciating-controls-toggle, #excruciating-controls-move { display:inline-flex; }
-      #excruciating-touch-controls { left:max(7px,env(safe-area-inset-left));bottom:max(7px,env(safe-area-inset-bottom));gap:clamp(8px,5vw,24px);padding:6px; }
+      #excruciating-touch-controls { left:0;right:0;bottom:max(7px,env(safe-area-inset-bottom));width:100%;padding:6px max(8px,env(safe-area-inset-right)) 6px max(8px,env(safe-area-inset-left)); }
       .excruciating-dpad { grid-template-columns:repeat(3,42px);grid-template-rows:repeat(3,42px);gap:3px; }
       .excruciating-actions { grid-template-columns:repeat(2,48px);gap:5px; }
       .excruciating-actions button { min-height:48px;font-size:10px; }
@@ -359,6 +360,46 @@ const gameShellUiStyle=document.createElement("style");
         : isSlopeGame
           ? '<div class="excruciating-actions" aria-label="Steering"><button type="button" data-keys="ArrowLeft,a" aria-label="Steer left">LEFT</button><button type="button" data-keys="ArrowRight,d" aria-label="Steer right">RIGHT</button></div>'
           : '<div class="excruciating-dpad" aria-label="Movement"><button type="button" data-keys="ArrowUp,w" data-direction="up" aria-label="Move up">↑</button><button type="button" data-keys="ArrowLeft,a" data-direction="left" aria-label="Move left">←</button><button type="button" data-keys="ArrowRight,d" data-direction="right" aria-label="Move right">→</button><button type="button" data-keys="ArrowDown,s" data-direction="down" aria-label="Move down">↓</button></div><div class="excruciating-actions" aria-label="Action keys"><button type="button" data-keys="Space">Jump<br>Space</button><button type="button" data-keys="e,KeyE">E</button><button type="button" data-keys="z,KeyZ">Z</button><button type="button" data-keys="x,KeyX">X</button></div>';
+  // Per-game touch layouts: movement is only shown when it makes sense for that game's controls.
+  const gameSlug = location.pathname.match(/^\\/games\\/([^/]+)/)?.[1] || "";
+  const touchProfiles = {
+    "deltarune": {move:"stick",keys:["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"],actions:[["Confirm","z,KeyZ"],["Cancel","x,KeyX"],["Menu","Escape"]]},
+    "jetpack-joyride": {move:"none",actions:[["Fly","Space"]]},
+    "motox3m": {move:"none",actions:[["Gas","ArrowUp,w"],["Brake","ArrowDown,s"],["Flip","ArrowLeft,a"],["Flip","ArrowRight,d"]]},
+    "rooftop-snipers": {move:"buttons",actions:[["Left","a,ArrowLeft"],["Right","d,ArrowRight"],["Jump","w,ArrowUp"],["Shoot","Space"]]},
+    "ovo": {move:"stick",keys:["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"],actions:[["Jump","Space"]]},
+    "polytrack": {move:"none",actions:[["Steer left","ArrowLeft,a"],["Steer right","ArrowRight,d"],["Accelerate","ArrowUp,w"],["Brake","ArrowDown,s"]]},
+    "draw-the-hill": {move:"none",actions:[]},
+    "bad-time-simulator": {move:"buttons",actions:[["Up","ArrowUp"],["Down","ArrowDown"],["Left","ArrowLeft"],["Right","ArrowRight"],["Confirm","z,KeyZ"],["Cancel","x,KeyX"],["Focus","Shift"]]},
+    "fnaf-1": {move:"none",actions:[]}, "fnaf-2": {move:"none",actions:[]}, "fnaf-3": {move:"none",actions:[]}, "fnaf-4": {move:"none",actions:[]},
+    "drift-boss": {move:"none",actions:[["Turn","Space"]]},
+    "drive-mad": {move:"none",actions:[["Gas","ArrowUp,w"],["Brake","ArrowDown,s"]]},
+    "stickman-hook": {move:"none",actions:[["Hook / release","Space"]]},
+    "subway-surfers": {move:"stick",keys:["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"],actions:[["Jump","Space"],["Roll","ArrowDown,s"]]},
+    "fridaynightfunkin": {move:"buttons",actions:[["Left","ArrowLeft"],["Down","ArrowDown"],["Up","ArrowUp"],["Right","ArrowRight"],["Accept","Enter"],["Back","Escape"]]},
+    "backflip-dive-3d": {move:"none",actions:[["Left","ArrowLeft,a"],["Right","ArrowRight,d"],["Jump","Space"]]},
+    "monkey-mart": {move:"stick",keys:["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"],actions:[["Interact","e,KeyE"]]},
+    "paperio2": {move:"none",actions:[]},
+    "google-feud": {move:"none",actions:[]},
+    "papas-pizzeria": {move:"none",actions:[]},
+    "bitlife": {move:"none",actions:[]},
+    "henry-breaking-the-bank": {move:"none",actions:[]},
+    "henry-escaping-the-prison": {move:"none",actions:[]},
+    "henry-stealing-the-diamond": {move:"none",actions:[]},
+    "henry-infiltrating-the-airship": {move:"none",actions:[]},
+    "henry-fleeing-the-complex": {move:"none",actions:[]}
+  };
+  const profile = touchProfiles[gameSlug] || {move:"none",actions:[]};
+  if (!isEaglerGame && !isFunkinGame && !isUndertaleControls) {
+    const left = document.createElement("div"); left.className = "excruciating-control-left";
+    const right = document.createElement("div"); right.className = "excruciating-control-right";
+    const actionMarkup = (profile.actions || []).map(([label,keys]) => '<button type="button" data-keys="'+keys+'" aria-label="'+label+'">'+label+'</button>').join("");
+    if (profile.move === "stick") left.innerHTML = '<div class="excruciating-stick" role="application" aria-label="Movement joystick"><span class="excruciating-stick-knob"></span></div>';
+    if (profile.move === "buttons") left.innerHTML = '<div class="excruciating-dpad" aria-label="Movement"><button type="button" data-keys="ArrowUp,w" data-direction="up" aria-label="Up">↑</button><button type="button" data-keys="ArrowLeft,a" data-direction="left" aria-label="Left">←</button><button type="button" data-keys="ArrowRight,d" data-direction="right" aria-label="Right">→</button><button type="button" data-keys="ArrowDown,s" data-direction="down" aria-label="Down">↓</button></div>';
+    right.innerHTML = actionMarkup ? '<div class="excruciating-actions" aria-label="Game actions">'+actionMarkup+'</div>' : "";
+    touchControls.replaceChildren(left,right);
+    touchControls.classList.toggle("controls-no-movement", profile.move === "none");
+  }
   // Undertale already ships its own joystick + Z/X touch interface in its game page.
   // Do not mount the generic shell controls over it.
   if (!isUndertaleGame && !isNativeTouchGame) document.body.append(touchControls);
@@ -529,6 +570,31 @@ const gameShellUiStyle=document.createElement("style");
     };
     button.addEventListener("pointerup", release); button.addEventListener("pointercancel", release);
     button.addEventListener("lostpointercapture", release); button.addEventListener("contextmenu", event => event.preventDefault());
+  }
+  const genericStick = touchControls.querySelector(".excruciating-stick");
+  let genericStickPointer = null, genericStickKeys = new Set();
+  function updateGenericStick(nextKeys,x,y) {
+    const next = new Set(nextKeys);
+    for (const key of genericStickKeys) if (!next.has(key)) releaseGameKey(key);
+    for (const key of next) if (!genericStickKeys.has(key)) holdGameKey(key);
+    genericStickKeys = next;
+    const knob = genericStick?.querySelector(".excruciating-stick-knob");
+    if (knob) knob.style.transform = `translate(calc(-50% + ${x}px),calc(-50% + ${y}px))`;
+  }
+  if (genericStick) {
+    const move = event => {
+      const rect=genericStick.getBoundingClientRect(), radius=rect.width*.34;
+      const dx=event.clientX-rect.left-rect.width/2,dy=event.clientY-rect.top-rect.height/2;
+      const distance=Math.hypot(dx,dy)||1,scale=Math.min(1,radius/distance),x=dx*scale,y=dy*scale;
+      const keys=[];
+      if(y < -radius*.22) keys.push("ArrowUp"); if(y > radius*.22) keys.push("ArrowDown");
+      if(x < -radius*.22) keys.push("ArrowLeft"); if(x > radius*.22) keys.push("ArrowRight");
+      updateGenericStick(keys,x,y);
+    };
+    genericStick.addEventListener("pointerdown",event=>{event.preventDefault();genericStickPointer=event.pointerId;genericStick.setPointerCapture?.(event.pointerId);move(event);});
+    genericStick.addEventListener("pointermove",event=>{if(event.pointerId===genericStickPointer){event.preventDefault();move(event);}});
+    const release=event=>{if(event.pointerId!==genericStickPointer)return;genericStickPointer=null;updateGenericStick([],0,0);};
+    genericStick.addEventListener("pointerup",release);genericStick.addEventListener("pointercancel",release);genericStick.addEventListener("lostpointercapture",release);
   }
   const eaglerStick = isEaglerGame ? touchControls.querySelector("#excruciating-eagler-stick") : null;
   let stickPointer = null;
