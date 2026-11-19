@@ -105,12 +105,8 @@ jobs:
 
           local_games = {game["slug"] for game in games if str(game.get("url", "")).startswith("/games/")}
           external_games = {game["slug"] for game in games if game.get("external") is True}
-          expected_external = {
-              "krillion", "count-master", "wordle-unlimited", "stack", "idle-mining-empire",
-              "bottle-flip", "cubes-2048-io", "helix-jump", "ballistic"
-          }
-          if external_games != expected_external:
-              raise SystemExit(f"External game catalogue mismatch. Expected={sorted(expected_external)}, actual={sorted(external_games)}")
+          if external_games:
+              raise SystemExit(f"External game launches are not allowed: {sorted(external_games)}")
 
           if "deltarune" in local_games:
               source_index = (root / "games/deltarune/index.html").read_text(encoding="utf-8")
@@ -192,10 +188,7 @@ jobs:
               raise SystemExit("A removed game is still present in the public catalogue.")
           for game in games:
               url = game.get("url", "")
-              if game.get("external") is True:
-                  if not url.startswith("https://") or not str(game.get("thumbnail", "")).startswith("https://"):
-                      raise SystemExit(f"External game must use HTTPS for its launch and thumbnail: {game.get('slug')}")
-              elif not url.startswith("/games/") or not (dist / url.lstrip("/")).is_file():
+              if not url.startswith("/games/") or not (dist / url.lstrip("/")).is_file():
                   raise SystemExit(f"Catalogue entry has no local launch page: {game.get('slug')}")
 
           expected_pages = {dist / "games" / slug / "index.html" for slug in local_games}
@@ -243,7 +236,7 @@ jobs:
                   raise SystemExit(f"Ad SDK reference remains in {page}")
 
           print(f"Verified {len(game_pages)} local game pages against the catalogue.")
-          print(f"Verified {len(external_games)} HTTPS source-site game links.")
+          print("Verified that all published games launch from local repository pages.")
           print(f"Verified local favicons for all game pages and {len(papa_pages)} Papa wrappers.")
           print("All Pages output assets meet the 25 MiB limit.")
           PY

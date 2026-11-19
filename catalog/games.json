@@ -1,8 +1,21 @@
 {
-  "version": 37,
-  "source": "Locally hosted games plus linked third-party games from 024333.xyz.",
-  "attribution": "Locally hosted games retain their source and licence metadata. Third-party games open on their source site.",
+  "version": 38,
+  "source": "Locally hosted games with source and licence metadata.",
+  "attribution": "Each locally hosted game retains its original source and licence metadata.",
   "games": [
+    {
+      "slug": "excruciating-phone",
+      "title": "Excruciating Phone",
+      "category": "Multiplayer",
+      "description": "A classic drawing telephone game. Write, draw, pass it on and reveal the chaos with friends.",
+      "url": "/games/excruciating-phone/index.html",
+      "thumbnail": "/favicons/excruciating-phone.svg",
+      "icon": "/games/excruciating-phone/favicon.svg",
+      "source_url": "https://github.com/jobbybam/excruciating",
+      "license": "Original Excruciating Phone implementation",
+      "attribution": "Excruciating Phone — original project",
+      "published": true
+    },
     {
       "slug": "papas-pizzeria",
       "title": "Papa's Pizzeria",
@@ -305,123 +318,6 @@
       "attribution": "Henry Stickmin © PuffballsUnited. Original game by PuffballsUnited; SWF supplied by the site owner from Archive.org.",
       "published": true,
       "thumbnail": "/favicons/henry-fleeing-the-complex.webp"
-    },
-    {
-      "slug": "krillion",
-      "title": "Krillion",
-      "category": "Arcade",
-      "description": "Krillion, hosted by 024333.xyz.",
-      "url": "https://024333.xyz/static/OpenKrillion/index.html",
-      "external": true,
-      "thumbnail": "https://024333.xyz/static/OpenKrillion/i.webp",
-      "source_url": "https://024333.xyz/static/OpenKrillion/index.html",
-      "license": "Third-party hosted game; assets remain on 024333.xyz.",
-      "attribution": "Game and artwork are provided by 024333.xyz.",
-      "published": true
-    },
-    {
-      "slug": "count-master",
-      "title": "Count Master",
-      "category": "Arcade",
-      "description": "Count Master, hosted by 024333.xyz.",
-      "url": "https://024333.xyz/static/CountMaster/index.html",
-      "external": true,
-      "thumbnail": "https://024333.xyz/static/CountMaster/i.webp",
-      "source_url": "https://024333.xyz/static/CountMaster/index.html",
-      "license": "Third-party hosted game; assets remain on 024333.xyz.",
-      "attribution": "Game and artwork are provided by 024333.xyz.",
-      "published": true
-    },
-    {
-      "slug": "wordle-unlimited",
-      "title": "Wordle Unlimited",
-      "category": "Puzzle",
-      "description": "Wordle Unlimited, hosted by 024333.xyz.",
-      "url": "https://024333.xyz/static/WordleUnlimited/index.html",
-      "external": true,
-      "thumbnail": "https://024333.xyz/static/WordleUnlimited/i.webp",
-      "source_url": "https://024333.xyz/static/WordleUnlimited/index.html",
-      "license": "Third-party hosted game; assets remain on 024333.xyz.",
-      "attribution": "Game and artwork are provided by 024333.xyz.",
-      "published": true
-    },
-    {
-      "slug": "stack",
-      "title": "Stack",
-      "category": "Arcade",
-      "description": "Stack, hosted by 024333.xyz.",
-      "url": "https://024333.xyz/static/stack/index.html",
-      "external": true,
-      "thumbnail": "https://024333.xyz/static/stack/i.webp",
-      "source_url": "https://024333.xyz/static/stack/index.html",
-      "license": "Third-party hosted game; assets remain on 024333.xyz.",
-      "attribution": "Game and artwork are provided by 024333.xyz.",
-      "published": true
-    },
-    {
-      "slug": "idle-mining-empire",
-      "title": "Idle Mining Empire",
-      "category": "Idle",
-      "description": "Idle Mining Empire, hosted by 024333.xyz.",
-      "url": "https://024333.xyz/static/IdleMiningEmpire/index.html",
-      "external": true,
-      "thumbnail": "https://024333.xyz/static/IdleMiningEmpire/i.webp",
-      "source_url": "https://024333.xyz/static/IdleMiningEmpire/index.html",
-      "license": "Third-party hosted game; assets remain on 024333.xyz.",
-      "attribution": "Game and artwork are provided by 024333.xyz.",
-      "published": true
-    },
-    {
-      "slug": "bottle-flip",
-      "title": "Bottle Flip",
-      "category": "Arcade",
-      "description": "Bottle Flip, hosted by 024333.xyz.",
-      "url": "https://024333.xyz/static/BottleFlip/index.html",
-      "external": true,
-      "thumbnail": "https://024333.xyz/static/BottleFlip/i.webp",
-      "source_url": "https://024333.xyz/static/BottleFlip/index.html",
-      "license": "Third-party hosted game; assets remain on 024333.xyz.",
-      "attribution": "Game and artwork are provided by 024333.xyz.",
-      "published": true
-    },
-    {
-      "slug": "cubes-2048-io",
-      "title": "Cubes 2048 IO",
-      "category": "Puzzle",
-      "description": "Cubes 2048 IO, hosted by 024333.xyz.",
-      "url": "https://024333.xyz/static/Cubes2048IO/index.html",
-      "external": true,
-      "thumbnail": "https://024333.xyz/static/Cubes2048IO/i.webp",
-      "source_url": "https://024333.xyz/static/Cubes2048IO/index.html",
-      "license": "Third-party hosted game; assets remain on 024333.xyz.",
-      "attribution": "Game and artwork are provided by 024333.xyz.",
-      "published": true
-    },
-    {
-      "slug": "helix-jump",
-      "title": "Helix Jump",
-      "category": "Arcade",
-      "description": "Helix Jump, hosted by 024333.xyz.",
-      "url": "https://024333.xyz/static/helixjump/index.html",
-      "external": true,
-      "thumbnail": "https://024333.xyz/static/helixjump/i.webp",
-      "source_url": "https://024333.xyz/static/helixjump/index.html",
-      "license": "Third-party hosted game; assets remain on 024333.xyz.",
-      "attribution": "Game and artwork are provided by 024333.xyz.",
-      "published": true
-    },
-    {
-      "slug": "ballistic",
-      "title": "Ballistic",
-      "category": "Puzzle",
-      "description": "Ballistic, hosted by 024333.xyz.",
-      "url": "https://024333.xyz/static/Ballistic/index.html",
-      "external": true,
-      "thumbnail": "https://024333.xyz/static/Ballistic/i.webp",
-      "source_url": "https://024333.xyz/static/Ballistic/index.html",
-      "license": "Third-party hosted game; assets remain on 024333.xyz.",
-      "attribution": "Game and artwork are provided by 024333.xyz.",
-      "published": true
     }
   ]
 }

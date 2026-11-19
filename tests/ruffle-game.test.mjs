@@ -128,3 +128,10 @@ test("still loads valid split SWF manifests in listed order", async () => {
   assert.equal(result.requests.includes("/games/henry-breaking-the-bank/game.swf"), false);
   assert.equal(result.window.ExcruciatingGameReady, true);
 });
+
+test("Excruciating Phone inline JavaScript parses", async () => {
+  const page = await readFile(new URL("../games/excruciating-phone/index.html", import.meta.url), "utf8");
+  const scripts = [...page.matchAll(/<script>([\s\S]*?)<\/script>/g)];
+  assert.equal(scripts.length, 1, "expected one inline game script");
+  assert.doesNotThrow(() => new vm.Script(scripts[0][1], { filename: "excruciating-phone.js" }));
+});

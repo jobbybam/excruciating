@@ -4,14 +4,13 @@ A browser-game library deployed with Cloudflare Pages. It hosts selected games l
 
 ## Locally hosted games
 
-The catalogue retains games listed on [024333.xyz](https://024333.xyz/), plus Deltarune and the five Henry Stickmin games. It contains 24 local game pages and 9 HTTPS links that open the actual third-party hosted games on 024333.xyz. The linked games are not copied into this repository.
+The catalogue retains games listed on [024333.xyz](https://024333.xyz/), plus Excruciating Phone, Deltarune, and the five Henry Stickmin games. All 25 published game pages and their assets are hosted in this repository.
 
 - **Papa's Pizzeria** — hosted locally with Flipline Studios' website hosting permission and played through the local Ruffle WebAssembly runtime.
-- **Deltarune and the five Henry Stickmin games** — locally hosted browser/Flash builds. The build checks the Deltarune archive and splits oversized game files for Cloudflare Pages.
+- **Excruciating Phone, Deltarune and the five Henry Stickmin games** — locally hosted browser/Flash builds. The build checks the Deltarune archive and splits oversized game files for Cloudflare Pages.
 - **BitLife, Jetpack Joyride, Moto X3M, PolyTrack, four FNAF games, Drive Mad, Drift Boss, Cut the Rope, Paper.io 2, Tiny Fishing, Monkey Mart, Subway Surfers, Google Feud, and Eaglercraft** — locally hosted games retained from the reference site's catalogue.
-- **Krillion, Count Master, Wordle Unlimited, Stack, Idle Mining Empire, Bottle Flip, Cubes 2048 IO, Helix Jump, and Ballistic** — actual games launched on their 024333.xyz source pages, with their artwork served by that site.
 
-Local games launch from `/games/<slug>/`. External games open their HTTPS source page in a new tab and are marked in the catalogue. Local imports retain their source and licence metadata.
+Every published game launches from a local `/games/<slug>/` page. Local imports retain their source and licence metadata.
 
 ## Add games
 
@@ -26,7 +25,7 @@ Keep all local asset paths working. Do not copy proprietary games or assets just
 
 ## Mobile controls
 
-Local game pages receive the shared toolbar from the Pages middleware. On touch devices, controls can be shown or hidden and repositioned. Deltarune, Subway Surfers, Monkey Mart and Eaglercraft have game-specific touch controls. Games with built-in touch interfaces, including Moto X3M, PolyTrack and Drive Mad, keep those native controls rather than receiving a competing overlay. Linked games run on their source site with its own controls.
+Game pages receive the shared toolbar from the Pages middleware. On touch devices, controls can be shown or hidden and repositioned. Excruciating Phone contains its own multiplayer touch layout. Deltarune, Subway Surfers, Monkey Mart and Eaglercraft have game-specific touch controls. Games with built-in touch interfaces, including Moto X3M, PolyTrack and Drive Mad, keep those native controls rather than receiving a competing overlay.
 
 ## Cloudflare build
 
