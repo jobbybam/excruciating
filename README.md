@@ -4,7 +4,7 @@ A self-hosted browser-game library built from files in this repository and deplo
 
 ## Locally hosted games
 
-The catalogue contains 98 locally hosted games. Published game entries open files inside this repository; there are no external game-launch entries. Local highlights include:
+The catalogue contains 99 locally hosted games. Published game entries open files inside this repository; there are no external game-launch entries. Local highlights include:
 
 - **Undertale and Deltarune** — browser builds in `games/undertale/` and `games/deltarune/`. Deltarune archive chunks are split for Cloudflare Pages during the build and reassembled by the loader.
 - **14 Papa's games** — Standard Version SWF files played through the local Ruffle WebAssembly runtime.
@@ -28,7 +28,7 @@ Keep all local asset paths working. Do not copy proprietary games or assets just
 
 ## Mobile controls
 
-Game pages receive the shared toolbar from the Pages middleware. Touch devices can show/hide and reposition the shared controls. Game-specific profiles are used where needed: Undertale keeps its native joystick and Z/X buttons under the shared toolbar, while Slope uses left/right steering. Games with their own touch-first interactions keep those controls instead of receiving a duplicate overlay.
+Game pages receive the shared toolbar from the Pages middleware. On touch devices, the shared controls can be shown or hidden and repositioned. Controls are configured per game: analogue movement sticks for games such as Deltarune, OvO, Subway Surfers and Monkey Mart; directional pads for games such as Rooftop Snipers and Bad Time Simulator; and dedicated action buttons for driving, jumping, rhythm and other game-specific actions. Eaglercraft has a Minecraft-style stick, look surface, action buttons and hotbar. Games designed around tapping, dragging or swiping keep their native touch interaction instead of receiving a competing overlay.
 
 ## Cloudflare build
 
