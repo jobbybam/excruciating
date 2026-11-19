@@ -10,7 +10,7 @@ This audit covers the 33 selected games. The shared shell should not put a gener
 | Papa's Pizzeria | Native tap-and-drag order workflow; no movement overlay. |
 | BitLife | Native tap-driven menus; no movement overlay. |
 | Jetpack Joyride | One right-side Fly button (Space); holding it controls lift. |
-| Moto X3M | Right-side Gas, Brake and left/right Flip buttons; no joystick. |
+| Moto X3M | Keep Moto X3M's native mobile accelerate, brake and lean controls; no duplicate shell overlay. |
 | Rooftop Snipers | Player 1 Jump / Shoot buttons on the left and Player 2 Jump / Shoot on the right (W / E and I / O). |
 | OvO | Left virtual joystick for left/right movement, jump (Up) and slide / ground pound (Down); no extra action button. |
 | PolyTrack | Use PolyTrack's built-in mobile steering and pedal controls; no duplicate shell overlay. |
