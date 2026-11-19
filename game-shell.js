@@ -81,7 +81,7 @@
     .excruciating-stick { position:relative; width:clamp(112px,18vw,154px); aspect-ratio:1; flex:none; border:2px solid rgba(255,255,255,.25); border-radius:50%; background:rgba(10,12,16,.48); box-shadow:0 5px 24px #0005; pointer-events:auto; touch-action:none; }
     .excruciating-stick:before { content:""; position:absolute; inset:24%; border:1px solid #ffffff25; border-radius:50%; }
     .excruciating-stick-knob { position:absolute; left:50%; top:50%; width:42%; aspect-ratio:1; border:1px solid #ffffff66; border-radius:50%; background:#ffffff30; transform:translate(-50%,-50%); pointer-events:none; }
-    .excruciating-control-left .excruciating-dpad { pointer-events:auto; }
+    .excruciating-control-left .excruciating-dpad,.excruciating-control-left .excruciating-actions { pointer-events:auto; }
     .excruciating-control-right .excruciating-actions { pointer-events:auto; }
     #excruciating-touch-controls .excruciating-actions { display:flex; flex-wrap:wrap; justify-content:flex-end; max-width:min(42vw,260px); }
     #excruciating-touch-controls .excruciating-actions button { min-width:52px; min-height:52px; padding:6px; }
@@ -366,7 +366,7 @@ const gameShellUiStyle=document.createElement("style");
     "deltarune": {move:"stick",keys:["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"],actions:[["Confirm","z,KeyZ"],["Cancel","x,KeyX"],["Menu","Escape"]]},
     "jetpack-joyride": {move:"none",actions:[["Fly","Space"]]},
     "motox3m": {move:"none",actions:[["Gas","ArrowUp,w"],["Brake","ArrowDown,s"],["Flip","ArrowLeft,a"],["Flip","ArrowRight,d"]]},
-    "rooftop-snipers": {move:"buttons",actions:[["Jump","w,ArrowUp"],["Shoot","Space"]]},
+    "rooftop-snipers": {move:"none",leftActions:[["P1 Jump","w"],["P1 Shoot","e"]],rightActions:[["P2 Jump","i"],["P2 Shoot","o"]]},
     "ovo": {move:"stick",keys:["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"],actions:[["Jump","Space"]]},
     "polytrack": {move:"none",actions:[["Steer left","ArrowLeft,a"],["Steer right","ArrowRight,d"],["Accelerate","ArrowUp,w"],["Brake","ArrowDown,s"]]},
     "draw-the-hill": {move:"none",actions:[]},
@@ -393,10 +393,13 @@ const gameShellUiStyle=document.createElement("style");
   if (!isEaglerGame && !isFunkinGame && !isUndertaleControls) {
     const left = document.createElement("div"); left.className = "excruciating-control-left";
     const right = document.createElement("div"); right.className = "excruciating-control-right";
-    const actionMarkup = (profile.actions || []).map(([label,keys]) => '<button type="button" data-keys="'+keys+'" aria-label="'+label+'">'+label+'</button>').join("");
+    const makeActions = items => (items || []).map(([label,keys]) => '<button type="button" data-keys="'+keys+'" aria-label="'+label+'">'+label+'</button>').join("");
+    const actionMarkup = makeActions(profile.actions);
     if (profile.move === "stick") left.innerHTML = '<div class="excruciating-stick" role="application" aria-label="Movement joystick"><span class="excruciating-stick-knob"></span></div>';
     if (profile.move === "buttons") left.innerHTML = '<div class="excruciating-dpad" aria-label="Movement"><button type="button" data-keys="ArrowUp,w" data-direction="up" aria-label="Up">↑</button><button type="button" data-keys="ArrowLeft,a" data-direction="left" aria-label="Left">←</button><button type="button" data-keys="ArrowRight,d" data-direction="right" aria-label="Right">→</button><button type="button" data-keys="ArrowDown,s" data-direction="down" aria-label="Down">↓</button></div>';
-    right.innerHTML = actionMarkup ? '<div class="excruciating-actions" aria-label="Game actions">'+actionMarkup+'</div>' : "";
+    if (profile.leftActions) left.innerHTML = '<div class="excruciating-actions" aria-label="Player 1 actions">'+makeActions(profile.leftActions)+'</div>';
+    if (profile.rightActions) right.innerHTML = '<div class="excruciating-actions" aria-label="Player 2 actions">'+makeActions(profile.rightActions)+'</div>';
+    else right.innerHTML = actionMarkup ? '<div class="excruciating-actions" aria-label="Game actions">'+actionMarkup+'</div>' : "";
     touchControls.replaceChildren(left,right);
     touchControls.classList.toggle("controls-no-movement", profile.move === "none");
   }
@@ -492,7 +495,7 @@ const gameShellUiStyle=document.createElement("style");
   const keyInfo = {
     ArrowUp: ["ArrowUp", "ArrowUp", 38], ArrowDown: ["ArrowDown", "ArrowDown", 40],
     ArrowLeft: ["ArrowLeft", "ArrowLeft", 37], ArrowRight: ["ArrowRight", "ArrowRight", 39],
-    w: ["w", "KeyW", 87], a: ["a", "KeyA", 65], s: ["s", "KeyS", 83], d: ["d", "KeyD", 68],
+    w: ["w", "KeyW", 87], a: ["a", "KeyA", 65], s: ["s", "KeyS", 83], d: ["d", "KeyD", 68], i: ["i", "KeyI", 73], o: ["o", "KeyO", 79], e: ["e", "KeyE", 69],
     Space: [" ", "Space", 32], e: ["e", "KeyE", 69], KeyE: ["e", "KeyE", 69],
     z: ["z", "KeyZ", 90], KeyZ: ["z", "KeyZ", 90], x: ["x", "KeyX", 88], KeyX: ["x", "KeyX", 88],
     Control: ["Control", "ControlLeft", 17], Shift: ["Shift", "ShiftLeft", 16],
