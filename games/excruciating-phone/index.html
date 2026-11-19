@@ -4,9 +4,41 @@
   
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080808"><title>Excruciating Phone</title><style>
 :root{color-scheme:dark;--bg:#080808;--panel:#111;--line:#292929;--muted:#929292;--accent:#fff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f5f5f5;font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;min-height:100vh}button,input,textarea{font:inherit}button{cursor:pointer;border:1px solid #353535;background:#191919;color:#fff;border-radius:10px;padding:10px 15px;font-weight:650}button:hover{background:#242424;border-color:#555}button.primary{background:#f3f3f3;color:#080808;border-color:#f3f3f3}button:disabled{opacity:.45;cursor:not-allowed}.wrap{width:min(1100px,calc(100% - 32px));margin:auto;padding:25px 0 50px}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:35px}.brand{font-size:14px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:#fff}.brand span{color:#777}.back{color:#aaa;text-decoration:none}.hero{margin:40px auto 28px;text-align:center;max-width:650px}.eyebrow{font-size:10px;letter-spacing:.2em;color:#888;font-weight:800}.hero h1{font-size:clamp(38px,8vw,70px);letter-spacing:-.07em;line-height:1;margin:12px 0}.hero p{color:#999}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px}.home-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:650px;margin:28px auto}.field{display:grid;gap:7px;margin:12px 0;color:#aaa;font-size:12px}.field input,.field textarea{width:100%;background:#090909;border:1px solid #333;border-radius:9px;padding:12px;color:#fff;outline:none}.field input:focus,.field textarea:focus{border-color:#777}.muted{color:var(--muted)}.hidden{display:none!important}.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.spread{justify-content:space-between}.lobby-grid{display:grid;grid-template-columns:1fr 280px;gap:16px}.players{display:grid;gap:8px}.player{display:flex;justify-content:space-between;padding:10px;border:1px solid #292929;border-radius:9px}.pill{font-size:10px;color:#aaa;border:1px solid #333;padding:3px 7px;border-radius:99px}.stage{max-width:800px;margin:25px auto}.stage h2{font-size:24px;letter-spacing:-.04em}.prompt{font-size:23px;font-weight:750;line-height:1.3;margin:16px 0}.canvas-wrap{background:#fff;border-radius:12px;overflow:hidden;touch-action:none}.canvas-wrap canvas{display:block;width:100%;height:auto;touch-action:none;cursor:crosshair}.tools{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.tools input[type=color]{height:40px;width:48px;background:#181818;border:1px solid #333;border-radius:8px;padding:3px}.tools input[type=range]{width:110px}.book{display:grid;gap:12px}.book-item{padding:14px;background:#151515;border:1px solid #292929;border-radius:12px}.book-item img{max-width:100%;border-radius:8px;background:white}.status{color:#aaa;min-height:22px;font-size:12px}.timer-low{border-color:#a44;color:#ff9b9b}#timerSettings{margin:14px 0}#timerSettings input{width:100%;background:#090909;border:1px solid #333;border-radius:9px;padding:10px;color:#fff}#startRequirement{min-height:22px;margin:12px 0}.footer{margin-top:40px;text-align:center;color:#666;font-size:11px}@media(max-width:700px){.lobby-grid{grid-template-columns:1fr}.home-actions{grid-template-columns:1fr}.wrap{width:min(100% - 22px,1100px)}.panel{padding:16px}.top{margin-bottom:20px}}
+
+/* Phone/tablet viewport and scroll containment. */
+html,body{width:100%;height:100%;height:100dvh;margin:0;overflow:hidden;overscroll-behavior:none}
+body{min-height:0;position:fixed;inset:0}
+.wrap{height:100%;min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;padding-top:max(12px,env(safe-area-inset-top));padding-bottom:max(16px,env(safe-area-inset-bottom))}
+#play.stage{width:min(100%,800px);max-height:calc(100dvh - 58px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;padding:8px 2px 18px;margin:8px auto 0}
+#play .canvas-wrap{width:100%;max-height:min(52dvh,520px);display:flex;align-items:center;justify-content:center}
+#play .canvas-wrap canvas{width:100%;height:auto;max-height:min(52dvh,520px);object-fit:contain;touch-action:none}
+#play .tools{position:sticky;top:0;z-index:2;padding:5px 0;background:linear-gradient(#080808 80%,transparent)}
+#play .prompt{overflow-wrap:anywhere}
+@media(max-width:700px){
+ .wrap{width:calc(100% - 20px);padding-top:max(8px,env(safe-area-inset-top))}
+ .top{margin-bottom:12px;min-height:32px}
+ .hero{margin:16px auto 18px}
+ .hero h1{font-size:clamp(34px,10vw,54px)}
+ .panel{padding:13px}
+ .home-actions{margin:14px auto;gap:10px}
+ #play.stage{max-height:calc(100dvh - 58px);margin-top:2px}
+ #play .canvas-wrap,#play .canvas-wrap canvas{max-height:42dvh}
+ #play .tools{gap:6px}
+ #play .tools button{padding:8px 10px}
+ #play .tools input[type=range]{width:82px}
+ #play .prompt{font-size:19px;margin:9px 0}
+ .footer{margin-top:14px;padding-bottom:env(safe-area-inset-bottom)}
+}
+@media(orientation:landscape) and (max-height:520px){
+ .wrap{padding-top:4px;padding-bottom:4px}
+ .top{margin-bottom:4px}
+ #play.stage{max-height:calc(100dvh - 44px);margin-top:0;padding-top:2px}
+ #play .canvas-wrap,#play .canvas-wrap canvas{max-height:48dvh}
+ #play .tools{margin:4px 0}
+}
 </style></head><body><div class="wrap"><header class="top"><a class="brand" href="/">EXCRUCIATING<span> / PHONE</span></a><a class="back" href="/">← Games</a></header>
 <section id="home"><div class="hero"><div class="eyebrow">THE DRAWING TELEPHONE GAME</div><h1>Excruciating Phone</h1><p>Write it. Draw it. Pass it on. Watch it fall apart.</p></div><div class="home-actions"><div class="panel"><h2>Create a room</h2><p class="muted">Start a classic telephone game and invite your friends.</p><label class="field">Your name<input id="hostName" maxlength="18" placeholder="Player name"></label><button class="primary" id="create">Create room</button></div><div class="panel"><h2>Join a room</h2><p class="muted">Enter the room code shared by the host.</p><label class="field">Your name<input id="joinName" maxlength="18" placeholder="Player name"></label><label class="field">Room code<input id="roomCode" maxlength="6" placeholder="ABC123" autocapitalize="characters"></label><button id="join">Join room</button></div></div><p class="status" id="homeStatus" style="text-align:center"></p></section>
-<section id="lobby" class="hidden"><div class="row spread"><div><div class="eyebrow">ROOM LOBBY</div><h1 style="margin:5px 0">Room <span id="codeLabel"></span></h1><p class="muted">Share this code with your friends.</p></div><button id="copyCode">Copy invite code</button></div><div class="lobby-grid"><div class="panel"><h2>Ready when you are</h2><p class="muted">Everyone writes a starting sentence. Each page then alternates between a sentence and a drawing.</p><p id="startRequirement" class="muted">You need 2 more players to start.</p><div id="timerSettings"><label class="field">Turn timer (seconds)<input id="turnTimer" type="number" min="15" max="600" step="5" value="60"></label><p class="muted">Host only · Each turn advances when time runs out.</p></div><button class="primary" id="start" disabled>Start game</button><p class="status" id="lobbyStatus"></p></div><div class="panel"><div class="row spread"><strong>Players</strong><span class="pill" id="playerCount">0 online</span></div><div class="players" id="players"></div></div></div></section>
+<section id="lobby" class="hidden"><div class="row spread"><div><div class="eyebrow">ROOM LOBBY</div><h1 style="margin:5px 0">Room <span id="codeLabel"></span></h1><p class="muted">Share this code with your friends.</p></div><button id="copyCode">Copy invite code</button></div><div class="lobby-grid"><div class="panel"><h2>Ready when you are</h2><p class="muted">Everyone writes a starting sentence. Pages pass to the next player, alternating between drawing and describing until each album has gone around the room.</p><p id="startRequirement" class="muted">You need 2 more players to start.</p><div id="timerSettings"><label class="field">Turn timer (seconds)<input id="turnTimer" type="number" min="15" max="600" step="5" value="60"></label><p class="muted">Host only · Each turn advances when time runs out.</p></div><button class="primary" id="start" disabled>Start game</button><p class="status" id="lobbyStatus"></p></div><div class="panel"><div class="row spread"><strong>Players</strong><span class="pill" id="playerCount">0 online</span></div><div class="players" id="players"></div></div></div></section>
 <section id="play" class="stage hidden"><div class="row spread"><span class="pill" id="roundLabel">ROUND</span><span class="pill" id="timerDisplay">01:00</span><span class="muted" id="progress"></span></div><h2 id="taskTitle">Your turn</h2><p class="muted" id="taskHint"></p><div id="writeTask" class="panel hidden"><label class="field">Write a sentence<textarea id="sentence" maxlength="120" rows="3" placeholder="Something wonderfully ridiculous…"></textarea></label><button class="primary" id="submitSentence">Pass sentence</button></div><div id="drawTask" class="hidden"><div class="prompt" id="drawPrompt"></div><div class="tools"><button id="pen" class="primary">Pen</button><button id="eraser">Eraser</button><input id="colour" type="color" value="#171717" aria-label="Pen colour"><label class="muted">Size <input id="size" type="range" min="2" max="24" value="5"></label><button id="undo">Undo</button><button id="clear">Clear</button></div><div class="canvas-wrap"><canvas id="canvas" width="900" height="520"></canvas></div><div class="row" style="margin-top:12px"><button class="primary" id="submitDrawing">Pass drawing</button></div></div><div id="waitTask" class="panel hidden"><h2>You're all caught up.</h2><p class="muted">Waiting for the other players to finish their pages…</p></div><p class="status" id="playStatus"></p></section>
 <section id="results" class="stage hidden"><div class="eyebrow">THE REVEAL</div><h1>Look what happened.</h1><p class="muted">Every sentence and drawing, in order.</p><div class="book" id="books"></div><button class="primary" id="backLobby" style="margin-top:18px">Back to lobby</button></section><p class="footer">EXCRUCIATING PHONE · CLASSIC MODE</p></div>
 <script>
@@ -15,7 +47,7 @@
 "use strict";
 const $=id=>document.getElementById(id);
 const API="/api/phone-signal";
-const MIN_PLAYERS=3,MAX_PLAYERS=8,CONNECT_TIMEOUT=25000;
+const MIN_PLAYERS=2,MAX_PLAYERS=14,CONNECT_TIMEOUT=25000;
 const id=(crypto.randomUUID?crypto.randomUUID():("p-"+Math.random().toString(36).slice(2)+Date.now().toString(36)));
 const ice={iceServers:[{urls:"stun:stun.l.google.com:19302"},{urls:"stun:stun1.l.google.com:19302"},{urls:"stun:stun2.l.google.com:19302"}]};
 let turnLoaded=false,turnLoading=null;
@@ -300,6 +332,7 @@ function applySubmission(pid,message){
 }
 function advanceRound(){
  if(!host||!state||state.phase==="results")return;
+ // Each album starts with its owner's sentence, then visits every other player exactly once.
  for(const book of state.books){
   const current=state.order.find(p=>p.id===book.holder);
   const submission=state.submissions[book.holder];
@@ -308,7 +341,7 @@ function advanceRound(){
   book.holder=state.order[(index+1)%state.order.length].id;
  }
  state.round++;
- if(state.round>=state.order.length*2){state.phase="results";state.deadlineAt=null;state.submissions={};}
+ if(state.round>=state.order.length){state.phase="results";state.deadlineAt=null;state.submissions={};}
  else{state.phase=state.round%2===0?"write":"draw";state.submissions={};state.deadlineAt=now()+state.timerSeconds*1000;}
  taskKey="";broadcast({type:"state",state});renderState();sound(state.phase==="results"?880:600);
 }
@@ -334,7 +367,7 @@ function renderState(){
   }).join("");
   $("roundLabel").textContent="COMPLETE";$("progress").textContent="THE REVEAL";updateTimer();return;
  }
- show("play");$("roundLabel").textContent="ROUND "+(state.round+1);$("progress").textContent="BOOK "+(Math.max(0,state.books.findIndex(b=>b.owner===id)+1))+" / "+state.books.length;
+ show("play");$("roundLabel").textContent="TURN "+(state.round+1)+" / "+state.order.length+" · "+(state.phase==="write"?"WRITE":"DRAW");$("progress").textContent="BOOK "+(Math.max(0,state.books.findIndex(b=>b.owner===id)+1))+" / "+state.books.length;
  const book=state.books.find(b=>b.holder===id);
  if(!book||book.entries.length!==state.round){
   $("taskTitle").textContent="You're all caught up";$("taskHint").textContent="Waiting for the other players to finish their pages."; $("writeTask").classList.add("hidden");$("drawTask").classList.add("hidden");$("waitTask").classList.remove("hidden");updateTimer();return;
@@ -374,7 +407,7 @@ $("clear").onclick=()=>resetCanvas();
 $("submitSentence").onclick=()=>{const value=$("sentence").value.trim();if(!value)return;$("submitSentence").disabled=true;sendHost({type:"submit",value});sound(540)};
 $("submitDrawing").onclick=()=>{
  const small=document.createElement("canvas");small.width=640;small.height=370;small.getContext("2d").drawImage(canvas,0,0,640,370);
- const value=small.toDataURL("image/jpeg",.55);$("submitDrawing").disabled=true;sendHost({type:"submit",value});sound(700);
+ const value=small.toDataURL("image/jpeg",.38);$("submitDrawing").disabled=true;sendHost({type:"submit",value});sound(700);
 };
 $("players").addEventListener("click",event=>{
  const button=event.target.closest("[data-player]");if(button)removePlayer(button.dataset.player);
