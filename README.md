@@ -4,7 +4,7 @@ A self-hosted browser-game library built from files in this repository and deplo
 
 ## Locally hosted games
 
-The catalogue contains 99 locally hosted games. Published game entries open files inside this repository; there are no external game-launch entries. Local highlights include:
+The catalogue contains exactly 33 selected locally hosted games. All other game catalogue entries and their game folders have been removed. Published game entries open files inside this repository; there are no external game-launch entries. Local highlights include:
 
 - **Undertale and Deltarune** — browser builds in `games/undertale/` and `games/deltarune/`. Deltarune archive chunks are split for Cloudflare Pages during the build and reassembled by the loader.
 - **14 Papa's games** — Standard Version SWF files played through the local Ruffle WebAssembly runtime.
