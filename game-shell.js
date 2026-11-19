@@ -389,7 +389,8 @@ const gameShellUiStyle=document.createElement("style");
     "henry-infiltrating-the-airship": {move:"none",actions:[]},
     "henry-fleeing-the-complex": {move:"none",actions:[]}
   };
-  const profile = touchProfiles[gameSlug] || {move:"none",actions:[]};
+  // Keep the legacy fallback for games without a selected-game profile.
+  const profile = touchProfiles[gameSlug] || {move:"buttons",actions:[["Jump","Space"],["E","e"],["Z","z"],["X","x"]]};
   if (!isEaglerGame && !isFunkinGame && !isUndertaleControls) {
     const left = document.createElement("div"); left.className = "excruciating-control-left";
     const right = document.createElement("div"); right.className = "excruciating-control-right";
