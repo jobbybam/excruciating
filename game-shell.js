@@ -126,11 +126,12 @@
       .eagler-stick { width:clamp(112px,20vw,150px); }
       .eagler-action-grid { grid-template-columns:repeat(4,clamp(42px,7vw,56px));gap:5px; }
       .eagler-action-grid button { min-height:48px;font-size:9px; }
-      .eagler-hotbar { width:min(58vw,460px);gap:3px; }
+      .eagler-hotbar { grid-template-columns:repeat(9,minmax(0,1fr));width:min(54vw,360px);gap:3px; }
       .eagler-hotbar button { min-height:32px;font-size:11px; }
       #excruciating-eagler-look-surface { width:58vw; }
     }
-    @media (max-width: 680px) { .eagler-action-grid { grid-template-columns:repeat(3,clamp(40px,13vw,52px)); } .eagler-hotbar { width:min(62vw,360px); } }
+    @media (max-width: 680px) { .eagler-action-grid { grid-template-columns:repeat(3,clamp(40px,13vw,52px)); } .eagler-hotbar { grid-template-columns:repeat(9,minmax(0,1fr));width:min(54vw,360px); } }
+    @media (max-width: 380px) { .eagler-stick { width:100px; } }
     @media (hover:none) and (pointer:coarse) { #excruciating-controls-toggle, #excruciating-controls-move { display:inline-flex; } }
     #excruciating-touch-controls.is-moving { cursor:move; outline:1px dashed rgba(255,255,255,.72); outline-offset:5px; }
     #excruciating-touch-controls.is-moving button { pointer-events:none; }
